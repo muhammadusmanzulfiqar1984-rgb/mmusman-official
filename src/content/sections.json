@@ -1,0 +1,162 @@
+[
+  {
+    "id": "hero",
+    "type": "hero",
+    "eyebrow": "Lawyer · Trader · System Builder · Strategist",
+    "heading": "Mian Muhammad Usman —\nbuilt for the problems no one else will touch.",
+    "body": "Trained as a lawyer. Sharpened in capital markets. Tested across retail empires, oil fields, fashion runways and political corridors. Usman doesn't theorise about complexity — he has lived inside it, designed systems around it, and built organizations that outlast it.",
+    "buttons": [
+      { "label": "See the work", "href": "#work", "variant": "primary" },
+      { "label": "Start a conversation", "href": "#contact", "variant": "secondary" }
+    ],
+    "pill": "One mind. Every industry.",
+    "quote": "Every industry runs on a system. Most people inherit it. I design it from the ground up.",
+    "quoteSupport": "From the trading floor to the cabinet room. From runway production to oil field operations. The discipline never changes — see the whole system, find what's broken, build what lasts.",
+    "priority": 1,
+    "tags": ["identity"],
+    "audience": ["all"]
+  },
+  {
+    "id": "about",
+    "type": "about",
+    "eyebrow": "Lawyer · Trader · Founder · Strategist",
+    "label": "About",
+    "heading": "Mian Muhammad Usman",
+    "paragraphs": [
+      "He didn't read about complex systems — he built them. Trained in law, tested in capital markets, forged across retail empires, oil fields, fashion runways and political corridors, Mian Muhammad Usman is one of the rare minds that has operated at depth across radically different industries and made each one work.",
+      "His value isn't perspective — it's scar tissue. Every engagement draws on fifteen years of hands-on architecture: enterprise operating systems built from nothing, runway productions directed at scale, political strategy navigated at the highest levels, and markets traded with real capital on the line."
+    ],
+    "priority": 2,
+    "tags": ["background"],
+    "audience": ["all"]
+  },
+  {
+    "id": "work",
+    "type": "work",
+    "heading": "Work with Mian Muhammad Usman",
+    "subheading": "Not surface-level advisory. Hands-on architecture of the system itself — across six industries, fifteen years, zero shortcuts.",
+    "cards": [
+      { "tag": "Retail", "title": "Building retail operations that scale without losing their soul" },
+      { "tag": "Oil & Gas", "title": "Operational strategy and systems design in the energy sector" },
+      { "tag": "Fashion & Runway", "title": "Directing high-profile ramp productions and brand experiences" },
+      { "tag": "Political Strategy", "title": "Senior-level lobbying and political positioning for organizations and individuals" },
+      { "tag": "Capital Markets", "title": "Active trading, financial architecture and market strategy" },
+      { "tag": "Law", "title": "Legal structuring for complex, cross-border operations" }
+    ],
+    "stats": [
+      { "value": "50+", "label": "Conferences" },
+      { "value": "15+", "label": "Years operating" },
+      { "value": "6",   "label": "Industries" },
+      { "value": "25+", "label": "Organizations" }
+    ],
+    "priority": 3,
+    "tags": ["work", "proof"],
+    "audience": ["all"]
+  },
+  {
+    "id": "insights",
+    "type": "insights",
+    "heading": "Featured insights",
+    "subheading": "Not commentary. Convictions — formed in boardrooms, trading floors, political offices and on production stages.",
+    "cards": [
+      {
+        "tag": "Systems",
+        "title": "The system is the strategy. Everything else is noise.",
+        "body": "Most leaders confuse having a plan with having a system. A plan tells you what to do next. A system tells you what to do when the plan collapses — and it always collapses."
+      },
+      {
+        "tag": "Leadership",
+        "title": "You cannot lead what you have never built.",
+        "body": "There is a specific kind of judgment that only comes from having built something under pressure — made it work without resources, and watched it break when you made the wrong call. No classroom produces that."
+      },
+      {
+        "tag": "Capital Markets",
+        "title": "The market does not reward intelligence. It rewards discipline.",
+        "body": "Every intelligent person thinks they can trade. Very few understand that the edge is never in the analysis — it's in the ruthless execution of a system when everything in you is screaming to deviate from it."
+      },
+      {
+        "tag": "Cross-Industry",
+        "title": "The pattern you see in one industry is the blueprint for every other.",
+        "body": "Once you have run retail at scale, operated on an energy field, and navigated political strategy — you start to see the same three problems everywhere. Power, information asymmetry, and the gap between what people say and what they actually do."
+      }
+    ],
+    "priority": 4,
+    "tags": ["thought", "insights"],
+    "audience": ["founder", "executive", "recruiter"]
+  },
+  {
+    "id": "speaking",
+    "type": "speaking",
+    "heading": "Speaking & advisory",
+    "subheading": "Usman speaks on what he has personally operated — not trends he has read about, but systems he has built, broken and rebuilt. Conferences, leadership summits, private executive sessions.",
+    "cards": [
+      { "tag": "Systems Design", "title": "Building the architecture behind organizations that don't collapse under pressure" },
+      { "tag": "Cross-Industry", "title": "What retail taught me about oil fields — and what both taught me about people" },
+      { "tag": "Leadership", "title": "The operator's discipline — how founders think when managers freeze" },
+      { "tag": "Power & Strategy", "title": "How decisions actually get made — markets, law and political capital" }
+    ],
+    "priority": 5,
+    "tags": ["speaking", "forum"],
+    "audience": ["conference", "corporate"]
+  },
+  {
+    "id": "training",
+    "type": "training",
+    "heading": "Corporate training and programs",
+    "paragraphs": [
+      "Built for senior teams who are tired of generic frameworks. For people who want to think through real problems with someone who has actually solved them — across trading desks, energy operations, retail floors and political environments.",
+      "Every program is built around your organization's actual situation. No pre-packaged slides. No theory without scar tissue behind it."
+    ],
+    "topics": [
+      "How to design an operating system for a complex organization",
+      "Strategic thinking that works across industries — retail, energy, markets, law",
+      "Leading under commercial and political pressure simultaneously",
+      "Building decision-making frameworks that survive contact with reality",
+      "How to see your business the way a founder does — not a manager",
+      "AI and technology as operational tools, not buzzwords"
+    ],
+    "cta": { "label": "Discuss a program", "href": "#contact" },
+    "priority": 6,
+    "tags": ["training", "academy"],
+    "audience": ["corporate", "executive"]
+  },
+  {
+    "id": "talks",
+    "type": "talks",
+    "heading": "Talks & keynotes",
+    "subheading": "Talks that leave a room thinking differently — not because the slides were polished, but because every word came from somewhere real.",
+    "cards": [
+      {
+        "tag": "Systems & Architecture",
+        "title": "Design the system or the system will design you",
+        "body": "How the most durable organizations — from retail chains to energy companies — are built on invisible architecture that most leaders never think to design intentionally."
+      },
+      {
+        "tag": "Multi-Industry Mind",
+        "title": "What one person operating across six industries actually teaches you",
+        "body": "The patterns that emerge when you have personally run retail, oil & gas, fashion, trading, law and political strategy — and what they reveal about how all organizations really work."
+      },
+      {
+        "tag": "Power & Decision-Making",
+        "title": "The room where the real decision was already made",
+        "body": "A frank account of how commercial, legal and political power interact — and why leaders who understand all three always have more room to move than those who only understand one."
+      }
+    ],
+    "priority": 7,
+    "tags": ["talks", "addresses"],
+    "audience": ["conference", "corporate", "executive"]
+  },
+  {
+    "id": "contact",
+    "type": "contact",
+    "heading": "Start a conversation",
+    "subheading": "For speaking, advisory or collaboration. You will receive a personal response.",
+    "email": "Info@mmusman.com",
+    "phone": "+44 7830 755932",
+    "whatsapp": "https://wa.me/447830755932",
+    "engagementTypes": ["Keynote", "Advisory", "Leadership", "Private"],
+    "priority": 8,
+    "tags": ["contact"],
+    "audience": ["all"]
+  }
+]

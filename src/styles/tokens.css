@@ -1,0 +1,141 @@
+/* ═══════════════════════════════════════════════════════
+   MIAN WEB — DESIGN TOKENS
+   Single source of truth for all design values
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Colour — Base ── */
+  --color-bg:          #0a0a0a;
+  --color-bg-alt:      #0d0d0d;
+  --color-bg-card:     #0f0f0f;
+  --color-border:      #1a1a1a;
+  --color-border-soft: #141414;
+
+  /* ── Colour — Gold ── */
+  --color-gold:        #c8a96e;
+  --color-gold-dim:    rgba(200, 169, 110, 0.25);
+  --color-gold-glow:   rgba(200, 169, 110, 0.08);
+  --color-gold-shimmer:rgba(200, 169, 110, 0.15);
+
+  /* ── Colour — Text ── */
+  --color-text-primary:   #f4ede0;
+  --color-text-secondary: #e8e2d6;
+  --color-text-muted:     #9a9080;
+  --color-text-dim:       #5a5248;
+  --color-text-ghost:     #444;
+
+  /* ── Colour — Glassmorphism ── */
+  --glass-bg:          rgba(255, 255, 255, 0.03);
+  --glass-bg-hover:    rgba(255, 255, 255, 0.06);
+  --glass-border:      rgba(255, 255, 255, 0.08);
+  --glass-blur:        16px;
+
+  /* ── Typography ── */
+  /* Display: Cormorant Garamond — razor-thin, ultra-refined, editorial */
+  /* Body: SF Pro Display equivalent via system-ui with Inter as fallback */
+  /* Mono: DM Mono light */
+  --font-display:  'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --font-mono:     'DM Mono', 'SF Mono', 'Fira Mono', monospace;
+
+  /* Type scale — Apple-calibrated: generous display, refined body */
+  --text-xs:   0.65rem;   /* 10.4px — labels, metadata */
+  --text-sm:   0.78rem;   /* 12.5px — captions, eyebrows */
+  --text-base: 0.9375rem; /* 15px — body (Apple's body size) */
+  --text-lg:   1.0625rem; /* 17px */
+  --text-xl:   1.1875rem; /* 19px */
+  --text-2xl:  1.4375rem; /* 23px */
+  --text-3xl:  1.875rem;  /* 30px */
+  --text-4xl:  clamp(2.25rem, 3.5vw, 3.25rem);  /* 36–52px */
+  --text-5xl:  clamp(3rem,   6vw,   5.25rem);   /* 48–84px */
+
+  --leading-tight:  1.05;
+  --leading-snug:   1.2;
+  --leading-normal: 1.6;
+  --leading-loose:  1.75;
+
+  /* Tracking — Apple uses tight on display, slightly open on small */
+  --tracking-tightest: -0.04em;
+  --tracking-tight:    -0.025em;
+  --tracking-normal:   -0.005em;
+  --tracking-wide:      0.04em;
+  --tracking-wider:     0.08em;
+  --tracking-widest:    0.14em;
+
+  /* ── Spacing ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ── Radii ── */
+  --radius-sm:   2px;
+  --radius-md:   6px;
+  --radius-lg:   12px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-gold:  0 0 32px rgba(200, 169, 110, 0.12);
+  --shadow-gold-strong: 0 0 60px rgba(200, 169, 110, 0.2);
+  --shadow-card:  0 4px 32px rgba(0, 0, 0, 0.4);
+  --shadow-deep:  0 8px 64px rgba(0, 0, 0, 0.6);
+
+  /* ── Motion ── */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Motion — Enter / Exit grammar ── */
+  --ease-enter:  cubic-bezier(0.15, 0.9,  0.1, 1);   /* silky entrance */
+  --ease-exit:   cubic-bezier(0.22, 1,   0.36, 1);   /* same as ease-out — quick exit */
+  --ease-settle: cubic-bezier(0.34, 1.56, 0.64, 1);  /* spring overshoot settle */
+
+  --duration-fast:    150ms;
+  --duration-base:    300ms;
+  --duration-slow:    600ms;
+  --duration-slower: 1000ms;
+  --duration-enter:   280ms;
+  --duration-exit:    180ms;
+  --duration-shimmer: 600ms;
+  --duration-count:   800ms;
+
+  /* ── Shadows — focus aura ── */
+  --shadow-focus-aura:
+    0 0 0 2px #0a0a0a,
+    0 0 0 4px rgba(200, 169, 110, 0.45),
+    0 0 16px 4px rgba(200, 169, 110, 0.15);
+
+  /* ── Layout ── */
+  --container-max:    1280px;
+  --section-pad-x:    clamp(24px, 5vw, 72px);
+  --section-pad-y:    clamp(64px, 8vw, 120px);
+  --header-h:         72px;
+  --silk-slide-dist:  16px;   /* section entrance translation */
+  --parallax-hero:    0.06;
+  --parallax-weave:   0.04;
+}
+
+/* ── Reduced Motion — zero all durations ── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:    0ms;
+    --duration-base:    0ms;
+    --duration-slow:    0ms;
+    --duration-slower:  0ms;
+    --duration-enter:   0ms;
+    --duration-exit:    0ms;
+    --duration-shimmer: 0ms;
+    --duration-count:   0ms;
+    --silk-slide-dist:  0px;
+  }
+}

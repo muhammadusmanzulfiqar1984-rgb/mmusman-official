@@ -1,0 +1,65 @@
+[
+  {
+    "id": "recruiter",
+    "label": "Recruiter",
+    "when": [
+      { "key": "referrer", "op": "contains", "value": "linkedin" },
+      { "key": "referrer", "op": "contains", "value": "jobs" },
+      { "key": "referrer", "op": "contains", "value": "hiring" },
+      { "key": "searchTerm", "op": "contains", "value": "cv" },
+      { "key": "searchTerm", "op": "contains", "value": "hire" },
+      { "key": "searchTerm", "op": "contains", "value": "resume" }
+    ],
+    "matchAny": true,
+    "then": {
+      "sectionOrder": ["hero", "work", "about", "talks", "insights", "speaking", "training", "skillscape", "media", "truth", "contact"],
+      "heroCta": "See the work",
+      "heroCtaHref": "#work"
+    }
+  },
+  {
+    "id": "conference",
+    "label": "Conference Organizer",
+    "when": [
+      { "key": "referrer", "op": "contains", "value": "eventbrite" },
+      { "key": "referrer", "op": "contains", "value": "conference" },
+      { "key": "searchTerm", "op": "contains", "value": "speaker" },
+      { "key": "searchTerm", "op": "contains", "value": "keynote" },
+      { "key": "dwellSection", "op": "equals", "value": "speaking" },
+      { "key": "dwellSection", "op": "equals", "value": "talks" }
+    ],
+    "matchAny": true,
+    "then": {
+      "sectionOrder": ["hero", "speaking", "talks", "about", "work", "insights", "training", "skillscape", "media", "truth", "contact"],
+      "heroCta": "View speaking topics",
+      "heroCtaHref": "#speaking"
+    }
+  },
+  {
+    "id": "corporate",
+    "label": "Corporate Client",
+    "when": [
+      { "key": "dwellSection", "op": "equals", "value": "training" },
+      { "key": "searchTerm", "op": "contains", "value": "advisory" },
+      { "key": "searchTerm", "op": "contains", "value": "consulting" },
+      { "key": "searchTerm", "op": "contains", "value": "training" }
+    ],
+    "matchAny": true,
+    "then": {
+      "sectionOrder": ["hero", "training", "work", "about", "talks", "speaking", "insights", "skillscape", "media", "truth", "contact"],
+      "heroCta": "Discuss a program",
+      "heroCtaHref": "#training"
+    }
+  },
+  {
+    "id": "default",
+    "label": "General Visitor",
+    "when": [],
+    "matchAny": false,
+    "then": {
+      "sectionOrder": ["hero", "about", "work", "insights", "speaking", "training", "talks", "skillscape", "media", "truth", "contact"],
+      "heroCta": "See the work",
+      "heroCtaHref": "#work"
+    }
+  }
+]

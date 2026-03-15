@@ -1,65 +1,124 @@
-import Image from "next/image";
+'use client'
+import { useEffect } from 'react'
+import sections from '@/content/sections.json'
+import Header from '@/components/layout/Header'
+import HeroSection from '@/components/scenes/HeroSection'
+import AboutSection from '@/components/scenes/AboutSection'
+import WorkSection from '@/components/scenes/WorkSection'
+import InsightsSection from '@/components/scenes/InsightsSection'
+import SpeakingSection from '@/components/scenes/SpeakingSection'
+import TrainingSection from '@/components/scenes/TrainingSection'
+import TalksSection from '@/components/scenes/TalksSection'
+import ContactSection from '@/components/scenes/ContactSection'
+import SkillscapeSection from '@/components/scenes/SkillscapeSection'
+import TruthLens from '@/components/scenes/TruthLens'
+import ConversationsSection from '@/components/scenes/ConversationsSection'
+import { usePersonaEngine, PersonaBadge } from '@/components/ai/PersonaEngine'
+import { useCognitiveLoadBalancer, CognitiveLoadPrompt, SimplifiedModeBanner } from '@/components/ai/CognitiveLoadBalancer'
+
+function getSection(id: string) {
+  return sections.find(s => s.id === id)!
+}
+
+const DATA_SECTION_MAP: Record<string, React.FC<{ data: any }>> = {
+  hero:     HeroSection,
+  about:    AboutSection,
+  work:     WorkSection,
+  insights: InsightsSection,
+  speaking: SpeakingSection,
+  training: TrainingSection,
+  talks:    TalksSection,
+  contact:  ContactSection,
+}
+
+const STANDALONE_MAP: Record<string, React.FC> = {
+  skillscape: SkillscapeSection,
+  media:      ConversationsSection,
+  truth:      TruthLens,
+}
+
+const TOUR_STEPS = ['hero','about','work','insights','speaking','training','skillscape','media','contact']
 
 export default function Home() {
+  const { decision, sectionOrder } = usePersonaEngine()
+  const { mode, triggered, simplify, restore } = useCognitiveLoadBalancer()
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-mode', mode)
+    return () => document.documentElement.removeAttribute('data-mode')
+  }, [mode])
+
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>('.reveal')
+    const observer = new IntersectionObserver(
+      entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target) } }) },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    )
+    els.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [sectionOrder])
+
+  const runTour = () => {
+    let i = 0
+    const step = () => {
+      if (i >= TOUR_STEPS.length) return
+      const el = document.getElementById(TOUR_STEPS[i++])
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      if (i < TOUR_STEPS.length) setTimeout(step, 2200)
+    }
+    step()
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Header />
+
+      {mode === 'simplified' && <SimplifiedModeBanner onRestore={restore} />}
+      <CognitiveLoadPrompt triggered={triggered} onSimplify={simplify} onDismiss={() => {}} />
+
+      <main id="main-content" tabIndex={-1}>
+        {sectionOrder.map(id => {
+          const Standalone = STANDALONE_MAP[id]
+          if (Standalone) return <Standalone key={id} />
+          const Component = DATA_SECTION_MAP[id]
+          const data = getSection(id)
+          if (!Component || !data) return null
+          return <Component key={id} data={data as any} />
+        })}
       </main>
-    </div>
-  );
+
+      <PersonaBadge decision={decision} />
+
+      {/* Site tour button */}
+      <button
+        onClick={runTour}
+        aria-label="Start guided site tour"
+        style={{
+          position: 'fixed',
+          bottom: '92px',
+          right: '28px',
+          zIndex: 250,
+          background: 'rgba(10,10,10,0.92)',
+          border: '1px solid var(--color-border)',
+          borderRadius: 'var(--radius-full)',
+          padding: '8px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.6rem',
+          letterSpacing: '0.08em',
+          color: 'var(--color-text-ghost)',
+          cursor: 'pointer',
+          backdropFilter: 'blur(12px)',
+          transition: 'border-color var(--duration-base), color var(--duration-base)',
+        }}
+        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-gold-dim)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-gold)' }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-ghost)' }}
+      >
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Site tour
+      </button>
+    </>
+  )
 }
