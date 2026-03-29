@@ -5,29 +5,31 @@
 
 :root {
   /* ── Colour — Base ── */
-  --color-bg:          #0a0a0a;
-  --color-bg-alt:      #0d0d0d;
-  --color-bg-card:     #0f0f0f;
-  --color-border:      #1a1a1a;
-  --color-border-soft: #141414;
+  --color-bg:          #0d080a;
+  --color-bg-alt:      #130c0f;
+  --color-bg-card:     #3a2a0a;
+  --color-border:      #4a2835;
+  --color-border-soft: #3a2028;
 
   /* ── Colour — Gold ── */
-  --color-gold:        #c8a96e;
-  --color-gold-dim:    rgba(200, 169, 110, 0.25);
-  --color-gold-glow:   rgba(200, 169, 110, 0.08);
-  --color-gold-shimmer:rgba(200, 169, 110, 0.15);
+  --color-gold:         #f0c040;
+  --color-gold-bright:  #ffe066;
+  --color-gold-deep:    #c8920a;
+  --color-gold-dim:     rgba(240, 192, 64, 0.45);
+  --color-gold-glow:    rgba(240, 192, 64, 0.18);
+  --color-gold-shimmer: rgba(255, 224, 102, 0.55);
 
   /* ── Colour — Text ── */
-  --color-text-primary:   #f4ede0;
-  --color-text-secondary: #e8e2d6;
-  --color-text-muted:     #9a9080;
-  --color-text-dim:       #5a5248;
-  --color-text-ghost:     #444;
+  --color-text-primary:   #f5ede8;
+  --color-text-secondary: #e8ddd8;
+  --color-text-muted:     #a89890;
+  --color-text-dim:       #8a7a7a;
+  --color-text-ghost:     #968686;
 
   /* ── Colour — Glassmorphism ── */
-  --glass-bg:          rgba(255, 255, 255, 0.03);
-  --glass-bg-hover:    rgba(255, 255, 255, 0.06);
-  --glass-border:      rgba(255, 255, 255, 0.08);
+  --glass-bg:          rgba(255, 240, 240, 0.05);
+  --glass-bg-hover:    rgba(255, 240, 240, 0.09);
+  --glass-border:      rgba(255, 200, 200, 0.12);
   --glass-blur:        16px;
 
   /* ── Typography ── */
@@ -96,7 +98,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* ── Motion — Enter / Exit grammar ── */
-  --ease-enter:  cubic-bezier(0.15, 0.9,  0.1, 1);   /* silky entrance */
+  --ease-enter:  cubic-bezier(0.2, 0.9,  0.1, 1);   /* silky entrance */
   --ease-exit:   cubic-bezier(0.22, 1,   0.36, 1);   /* same as ease-out — quick exit */
   --ease-settle: cubic-bezier(0.34, 1.56, 0.64, 1);  /* spring overshoot settle */
 
@@ -104,10 +106,10 @@
   --duration-base:    300ms;
   --duration-slow:    600ms;
   --duration-slower: 1000ms;
-  --duration-enter:   280ms;
-  --duration-exit:    180ms;
-  --duration-shimmer: 600ms;
-  --duration-count:   800ms;
+  --duration-enter:   450ms;
+  --duration-exit:    200ms;
+  --duration-shimmer: 800ms;
+  --duration-count:   1200ms;
 
   /* ── Shadows — focus aura ── */
   --shadow-focus-aura:
@@ -138,4 +140,41 @@
     --duration-count:   0ms;
     --silk-slide-dist:  0px;
   }
+}
+
+/* ══════════════════════════════════════════════════════
+   LIGHT MODE — Warm Cream theme
+   Applied via html.light-mode class
+   ══════════════════════════════════════════════════════ */
+html.light-mode {
+  --color-bg:          #f5f0e8;
+  --color-bg-alt:      #ede8de;
+  --color-bg-card:     #e8e2d6;
+  --color-border:      #d4cec4;
+  --color-border-soft: #ddd8ce;
+
+  --color-gold:        #9a7440;
+  --color-gold-dim:    rgba(154, 116, 64, 0.3);
+  --color-gold-glow:   rgba(154, 116, 64, 0.1);
+  --color-gold-shimmer:rgba(154, 116, 64, 0.2);
+
+  --color-text-primary:   #1a1612;
+  --color-text-secondary: #2a2420;
+  --color-text-muted:     #6a6058;
+  --color-text-dim:       #7c7466;
+  --color-text-ghost:     #6b6355;
+
+  --glass-bg:          rgba(0, 0, 0, 0.03);
+  --glass-bg-hover:    rgba(0, 0, 0, 0.06);
+  --glass-border:      rgba(0, 0, 0, 0.1);
+
+  --shadow-gold:        0 0 32px rgba(154, 116, 64, 0.15);
+  --shadow-gold-strong: 0 0 60px rgba(154, 116, 64, 0.25);
+  --shadow-card:        0 4px 32px rgba(0, 0, 0, 0.1);
+  --shadow-deep:        0 8px 64px rgba(0, 0, 0, 0.15);
+
+  --shadow-focus-aura:
+    0 0 0 2px #f5f0e8,
+    0 0 0 4px rgba(154, 116, 64, 0.5),
+    0 0 16px 4px rgba(154, 116, 64, 0.18);
 }

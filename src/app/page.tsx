@@ -1,47 +1,51 @@
 'use client'
 import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import sections from '@/content/sections.json'
 import Header from '@/components/layout/Header'
-import HeroSection from '@/components/scenes/HeroSection'
-import AboutSection from '@/components/scenes/AboutSection'
-import WorkSection from '@/components/scenes/WorkSection'
-import InsightsSection from '@/components/scenes/InsightsSection'
-import SpeakingSection from '@/components/scenes/SpeakingSection'
-import TrainingSection from '@/components/scenes/TrainingSection'
-import TalksSection from '@/components/scenes/TalksSection'
-import ContactSection from '@/components/scenes/ContactSection'
-import SkillscapeSection from '@/components/scenes/SkillscapeSection'
-import TruthLens from '@/components/scenes/TruthLens'
-import ConversationsSection from '@/components/scenes/ConversationsSection'
+
+const HeroSection = dynamic(() => import('@/components/scenes/HeroSection'), { ssr: true })
+const AboutSection = dynamic(() => import('@/components/scenes/AboutSection'))
+const WorkSection = dynamic(() => import('@/components/scenes/WorkSection'))
+const InsightsSection = dynamic(() => import('@/components/scenes/InsightsSection'))
+const SpeakingSection = dynamic(() => import('@/components/scenes/SpeakingSection'))
+const TrainingSection = dynamic(() => import('@/components/scenes/TrainingSection'))
+const TalksSection = dynamic(() => import('@/components/scenes/TalksSection'))
+const ContactSection = dynamic(() => import('@/components/scenes/ContactSection'))
+const SkillscapeSection = dynamic(() => import('@/components/scenes/SkillscapeSection'))
+const TruthLens = dynamic(() => import('@/components/scenes/TruthLens'))
+const ConversationsSection = dynamic(() => import('@/components/scenes/ConversationsSection'))
+
 import { usePersonaEngine, PersonaBadge } from '@/components/ai/PersonaEngine'
 import { useCognitiveLoadBalancer, CognitiveLoadPrompt, SimplifiedModeBanner } from '@/components/ai/CognitiveLoadBalancer'
+import KeyboardShortcuts from '@/components/effects/KeyboardShortcuts'
+import ReadingProgress from '@/components/effects/ReadingProgress'
 
 function getSection(id: string) {
   return sections.find(s => s.id === id)!
 }
 
-const DATA_SECTION_MAP: Record<string, React.FC<{ data: any }>> = {
-  hero:     HeroSection,
-  about:    AboutSection,
-  work:     WorkSection,
-  insights: InsightsSection,
-  speaking: SpeakingSection,
-  training: TrainingSection,
-  talks:    TalksSection,
-  contact:  ContactSection,
-}
-
-const STANDALONE_MAP: Record<string, React.FC> = {
+const DATA_SECTION_MAP: Record<string, any> = {
+  hero:       HeroSection,
+  about:      AboutSection,
+  work:       WorkSection,
+  insights:   InsightsSection,
+  speaking:   SpeakingSection,
+  training:   TrainingSection,
+  talks:      TalksSection,
   skillscape: SkillscapeSection,
   media:      ConversationsSection,
   truth:      TruthLens,
+  contact:    ContactSection,
 }
 
-const TOUR_STEPS = ['hero','about','work','insights','speaking','training','skillscape','media','contact']
+const STANDALONE_MAP: Record<string, React.FC> = {}
+
+const TOUR_STEPS = ['hero','about','work','insights','speaking','talks','training','skillscape','media','truth','contact']
 
 export default function Home() {
   const { decision, sectionOrder } = usePersonaEngine()
-  const { mode, triggered, simplify, restore } = useCognitiveLoadBalancer()
+  const { mode, triggered, simplify, restore, dismiss } = useCognitiveLoadBalancer()
 
   useEffect(() => {
     document.documentElement.setAttribute('data-mode', mode)
@@ -74,7 +78,7 @@ export default function Home() {
       <Header />
 
       {mode === 'simplified' && <SimplifiedModeBanner onRestore={restore} />}
-      <CognitiveLoadPrompt triggered={triggered} onSimplify={simplify} onDismiss={() => {}} />
+      <CognitiveLoadPrompt triggered={triggered} onSimplify={simplify} onDismiss={dismiss} />
 
       <main id="main-content" tabIndex={-1}>
         {sectionOrder.map(id => {
@@ -88,6 +92,8 @@ export default function Home() {
       </main>
 
       <PersonaBadge decision={decision} />
+      <KeyboardShortcuts />
+      <ReadingProgress />
 
       {/* Site tour button */}
       <button

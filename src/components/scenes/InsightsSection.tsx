@@ -1,3 +1,5 @@
+import { HoloCard } from '@/components/effects/HoloCard'
+
 interface InsightCard {
   tag: string
   title: string
@@ -12,15 +14,16 @@ interface InsightsData {
 
 export default function InsightsSection({ data }: { data: InsightsData }) {
   return (
-    <section id="insights" aria-label="Featured insights" className="section" style={{ height: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', overflow: 'hidden', padding: 'clamp(20px, 3vw, 40px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)' }}>
+    <section id="insights" aria-label="Featured insights" className="section" style={{ boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}>
       <p className="section-label">Insights</p>
 
       <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
       <p className="body reveal" style={{ maxWidth: '600px', marginBottom: 'var(--space-10)' }}>{data.subheading}</p>
 
-      <div className="grid-2 reveal">
+      <div className="grid-2 reveal-stagger reveal">
         {data.cards.map((card, i) => (
-          <article key={i} className="card shimmer-wrap" aria-label={card.tag}>
+          <div key={i} className="spin-border">
+          <HoloCard className="card shimmer-wrap">
             <p style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
@@ -50,7 +53,8 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
             }}>
               {card.body}
             </p>
-          </article>
+          </HoloCard>
+          </div>
         ))}
       </div>
     </section>

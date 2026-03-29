@@ -16,12 +16,18 @@ export function useHoloCard() {
       const mx = (x / rect.width)  * 100
       const my = (y / rect.height) * 100
       const angle = Math.atan2(y - rect.height / 2, x - rect.width / 2) * (180 / Math.PI)
+      const tiltX = ((y / rect.height) - 0.5) * -8
+      const tiltY = ((x / rect.width)  - 0.5) *  8
       el.style.setProperty('--mx', `${mx}%`)
       el.style.setProperty('--my', `${my}%`)
       el.style.setProperty('--holo-angle', `${angle}deg`)
       el.style.setProperty('--holo-opacity', '1')
+      el.style.transform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`
     }
-    const onLeave = () => el.style.setProperty('--holo-opacity', '0')
+    const onLeave = () => {
+      el.style.setProperty('--holo-opacity', '0')
+      el.style.transform = ''
+    }
 
     el.addEventListener('mousemove', onMove)
     el.addEventListener('mouseleave', onLeave)

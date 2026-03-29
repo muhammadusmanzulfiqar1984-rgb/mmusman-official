@@ -1,167 +1,233 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 
-const MEDIA_ITEMS = [
+type MediaItem = {
+  type: 'video' | 'image'
+  title: string
+  subtitle: string
+  poster?: string
+  src?: string
+  videoUrl?: string  // YouTube embed URL or direct video URL
+}
+
+interface ConversationsData {
+  heading: string
+  subheading: string
+  items: MediaItem[]
+}
+
+const MEDIA_ITEMS_FALLBACK: MediaItem[] = [
   {
     type: 'video',
     title: 'Many industries. One mission.',
     subtitle: 'Signature talk',
     poster: '/images/speaking.png',
   },
-  {
-    type: 'image',
-    title: 'Leadership summit keynote',
-    subtitle: 'Conference address',
-    src: '/images/gallery-1.png',
-  },
-  {
-    type: 'image',
-    title: 'Industry roundtable',
-    subtitle: 'Panel discussion',
-    src: '/images/gallery-2.png',
-  },
-  {
-    type: 'image',
-    title: 'Advisory engagement',
-    subtitle: 'Private briefing',
-    src: '/images/gallery-3.png',
-  },
+  { type: 'image', title: 'Leadership summit keynote', subtitle: 'Conference address', src: '/images/gallery-1.png' },
+  { type: 'image', title: 'Industry roundtable', subtitle: 'Panel discussion', src: '/images/gallery-2.png' },
+  { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/gallery-3.png' },
 ]
 
-export default function ConversationsSection() {
+const getThumb = (item: MediaItem) => item.type === 'video' ? item.poster : item.src
+
+export default function ConversationsSection({ data }: { data?: ConversationsData }) {
+  const items = data?.items ?? MEDIA_ITEMS_FALLBACK
   const [active, setActive] = useState(0)
-  const current = MEDIA_ITEMS[active]
+  const [playing, setPlaying] = useState(false)
+  const current = items[active]
+
+  // Close on Escape
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') setPlaying(false)
+  }, [])
+  useEffect(() => {
+    if (playing) {
+      document.addEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = ''
+    }
+  }, [playing, handleKeyDown])
 
   return (
-    <section id="media" aria-label="Conversations and media" className="section" style={{ height: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', overflow: 'hidden', padding: 'clamp(20px, 3vw, 40px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)' }}>
+    <section id="media" aria-label="Conversations and media" className="section" style={{ minHeight: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', padding: 'clamp(20px, 3vw, 36px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', display: 'flex', flexDirection: 'column' }}>
       <p className="section-label">Conversations</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'end', marginBottom: 'var(--space-4)' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'var(--space-4)', textAlign: 'left' }}>
         <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>
-            In conversation<br />
-            <span style={{ color: 'var(--color-gold)' }}>on record.</span>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-1)', fontSize: 'clamp(1.4rem, 2vw, 2rem)' }}>
+            {data?.heading ?? 'In conversation on record.'}
           </h2>
-          <p className="body reveal" style={{ maxWidth: '560px' }}>
-            Podcasts, interviews and addresses — Mian Muhammad Usman in conversation on systems, leadership, markets and the forces reshaping organisations.
+          <p className="body reveal" style={{ maxWidth: '560px', fontSize: '0.82rem', opacity: 0.7, margin: 0 }}>
+            {data?.subheading ?? 'Podcasts, interviews and addresses.'}
           </p>
         </div>
-        <span className="pill reveal" style={{ marginBottom: 'var(--space-2)' }}>Immersive media room</span>
+        <span className="pill reveal">Immersive media room</span>
       </div>
 
-      {/* Main feature */}
+      {/* Cinema screen — 60% of section height */}
       <div className="reveal" style={{
+        flex: '1 1 0',
+        minHeight: 0,
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
-        border: '1px solid var(--color-border)',
+        border: '1px solid var(--color-gold-dim)',
         background: 'var(--color-bg-card)',
         position: 'relative',
-        aspectRatio: '16/9',
-        maxHeight: '320px',
+        marginBottom: 'var(--space-3)',
       }}>
-        <img
-          src={current.type === 'video' ? current.poster : current.src}
-          alt={current.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)', display: 'block' }}
-          onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
-        />
+        {getThumb(current) && (
+          <Image
+            src={getThumb(current)!}
+            alt={current.title}
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)' }}
+            onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+          />
+        )}
 
-        {/* Overlay */}
+        {/* Gradient overlay + text */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(10,10,10,0.85) 30%, transparent 70%)',
+          background: 'linear-gradient(to top, rgba(10,10,10,0.88) 25%, transparent 65%)',
           display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
           padding: 'var(--space-8)',
         }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-2)' }}>
             {current.subtitle}
           </p>
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2 }}>
+          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2, margin: 0 }}>
             {current.title}
           </p>
-
-          {/* Navigation dots */}
-          <div style={{ display: 'flex', gap: '8px', marginTop: 'var(--space-5)', alignItems: 'center' }}>
-            <button
-              onClick={() => setActive(a => (a - 1 + MEDIA_ITEMS.length) % MEDIA_ITEMS.length)}
-              aria-label="Previous"
-              style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', color: '#fff', fontSize: '1rem' }}
-            >‹</button>
-            {MEDIA_ITEMS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                aria-label={`Go to item ${i + 1}`}
-                aria-current={i === active}
-                style={{
-                  width: i === active ? '20px' : '8px',
-                  height: '8px',
-                  borderRadius: 'var(--radius-full)',
-                  background: i === active ? 'var(--color-gold)' : 'rgba(255,255,255,0.25)',
-                  border: 'none', cursor: 'pointer',
-                  transition: 'all var(--duration-base) var(--ease-out)',
-                  padding: 0,
-                }}
-              />
-            ))}
-            <button
-              onClick={() => setActive(a => (a + 1) % MEDIA_ITEMS.length)}
-              aria-label="Next"
-              style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', color: '#fff', fontSize: '1rem' }}
-            >›</button>
-          </div>
         </div>
 
-        {/* Play button for video items */}
+        {/* Play button for video */}
         {current.type === 'video' && (
-          <div
-            aria-hidden="true"
+          <button
+            onClick={() => setPlaying(true)}
+            aria-label={`Play video: ${current.title}`}
             style={{
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: '64px', height: '64px',
-              borderRadius: '50%',
+              width: '72px', height: '72px', borderRadius: '50%',
               background: 'rgba(200,169,110,0.2)',
               backdropFilter: 'blur(8px)',
               border: '1px solid rgba(200,169,110,0.4)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'background var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out)',
             }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.35)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1.08)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.2)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1)' }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--color-gold)" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--color-gold)" aria-hidden="true">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-          </div>
+          </button>
         )}
       </div>
 
-      {/* Thumbnail strip */}
-      <div style={{ display: 'none' }}>
-        {MEDIA_ITEMS.slice(1).map((item, i) => (
+      {/* 4 thumbnails in a row */}
+      <div className="reveal media-grid" style={{ gap: 'var(--space-3)', flex: '0 0 auto', height: 'clamp(80px, 12vh, 130px)' }}>
+        {items.map((item, i) => (
           <button
             key={i}
-            onClick={() => setActive(i + 1)}
+            onClick={() => setActive(i)}
             aria-label={item.title}
-            aria-pressed={active === i + 1}
+            aria-pressed={active === i}
             style={{
               borderRadius: 'var(--radius-md)',
               overflow: 'hidden',
-              border: active === i + 1 ? '1px solid var(--color-gold)' : '1px solid var(--color-border)',
+              border: active === i ? '1px solid var(--color-gold)' : '1px solid var(--color-gold-dim)',
               background: 'var(--color-bg-card)',
               cursor: 'pointer',
-              aspectRatio: '16/9',
               padding: 0,
               position: 'relative',
+              aspectRatio: undefined,
+              height: '100%',
+              transition: 'border-color var(--duration-base) var(--ease-out)',
             }}
           >
-            <img
-              src={item.src}
-              alt={item.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: active === i + 1 ? 'brightness(0.85)' : 'brightness(0.55)' }}
-              onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
-            />
+            {getThumb(item) && (
+              <Image
+                src={getThumb(item)!}
+                alt={item.title}
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center top', filter: active === i ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter var(--duration-base) var(--ease-out)' }}
+                onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+              />
+            )}
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '8px 10px', background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 100%)' }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: active === i ? 'var(--color-gold)' : 'rgba(255,255,255,0.5)', margin: 0 }}>
+                {item.subtitle}
+              </p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.62rem', color: active === i ? '#f0e8d8' : 'rgba(255,255,255,0.35)', margin: '2px 0 0', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {item.title}
+              </p>
+            </div>
+            {active === i && (
+              <div style={{ position: 'absolute', top: '6px', right: '6px', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-gold)' }} />
+            )}
           </button>
         ))}
       </div>
+
+        {/* Video modal */}
+        {playing && current.videoUrl && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Video: ${current.title}`}
+            onClick={() => setPlaying(false)}
+            onKeyDown={(e) => e.key === 'Escape' && setPlaying(false)}
+            tabIndex={-1}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 900,
+              background: 'rgba(0,0,0,0.92)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+          <div
+            onClick={e => e.stopPropagation()}
+            onKeyDown={e => e.stopPropagation()}
+            style={{ position: 'relative', width: 'min(900px, 92vw)', aspectRatio: '16/9' }}
+          >
+            <iframe
+              src={`${current.videoUrl}?autoplay=1&rel=0`}
+              title={current.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ width: '100%', height: '100%', border: 'none', borderRadius: 'var(--radius-lg)' }}
+            />
+            <button
+              onClick={() => setPlaying(false)}
+              aria-label="Close video"
+              style={{
+                position: 'absolute', top: '-40px', right: 0,
+                background: 'transparent',
+                border: '1px solid var(--color-gold-dim)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--color-text-muted)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.6rem',
+                letterSpacing: '0.08em',
+                padding: '4px 10px',
+                cursor: 'pointer',
+              }}
+            >
+              ESC / CLOSE
+            </button>
+          </div>
+        </div>
+      )}
+
     </section>
   )
 }

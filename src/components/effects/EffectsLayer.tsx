@@ -1,6 +1,8 @@
 'use client'
 import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 import { useGlassPhobic, useInertialHover } from './GlassPhobic'
+import { shouldEnableHeavyEffects } from '@/lib/deviceTier'
 
 // Dynamically import canvas/JS-heavy effects (no SSR)
 const SilkCursor            = dynamic(() => import('./SilkCursor'),                   { ssr: false })
@@ -18,6 +20,13 @@ const ComfortAutopilot      = dynamic(() => import('../ai/ComfortAutopilot'),   
 const ReadingPaceDetector   = dynamic(() => import('../ai/ReadingPaceDetector'),      { ssr: false })
 
 export default function EffectsLayer() {
+  const [enableHeavy, setEnableHeavy] = useState(true)
+
+  useEffect(() => {
+    // Check device capability on mount
+    setEnableHeavy(shouldEnableHeavyEffects())
+  }, [])
+
   useGlassPhobic()
   useInertialHover()
 
@@ -25,8 +34,8 @@ export default function EffectsLayer() {
     <>
       {/* Background layers (low z-index) */}
       <SilkWeave />
-      <GoldWave />
-      <GoldDust />
+      {enableHeavy && <GoldWave />}
+      {enableHeavy && <GoldDust />}
 
       {/* Ambient behavior */}
       <DepthBreathing />
@@ -34,8 +43,8 @@ export default function EffectsLayer() {
       <FocusNarrow />
       <SectionTransitionBeam />
 
-      {/* Foreground / UX */}
-      <SilkCursor />
+      {/* Foreground / UX - SilkCursor disabled on low-end devices */}
+      {enableHeavy && <SilkCursor />}
       <MicroPulse />
       <IntentHints />
 

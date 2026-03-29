@@ -1,0 +1,137 @@
+/* Responsive improvements - Mobile-first enhancements */
+
+/* Mobile optimizations (< 768px) */
+@media (max-width: 767px) {
+  /* Reduce section padding on mobile */
+  section {
+    padding-left: clamp(16px, 4vw, 24px) !important;
+    padding-right: clamp(16px, 4vw, 24px) !important;
+  }
+
+  /* Stack grids vertically on mobile */
+  .col2-grid, .grid-2, .grid-3, .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: clamp(20px, 4vw, 32px) !important;
+  }
+
+  /* Reduce heading sizes on mobile */
+  .h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+  }
+
+  .h2 {
+    font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+  }
+
+  /* Hide decorative elements on small screens */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Adjust button sizes */
+  .btn {
+    padding: 10px 20px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Reduce card padding */
+  .card {
+    padding: var(--space-4) !important;
+  }
+}
+
+/* Tablet optimizations (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  section {
+    padding-left: clamp(24px, 5vw, 48px) !important;
+    padding-right: clamp(24px, 5vw, 48px) !important;
+  }
+}
+
+/* Large screen optimizations (> 1440px) */
+@media (min-width: 1440px) {
+  body {
+    font-size: 17px;
+  }
+
+  .h1 {
+    font-size: clamp(3rem, 4vw, 4.5rem) !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets for mobile */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .btn:hover {
+    transform: none !important;
+  }
+
+  /* Disable parallax effects on touch devices */
+  [data-parallax] {
+    transform: none !important;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #f0f0f0;
+    --color-bg: #000000;
+    --color-border: #ffffff;
+  }
+}
+
+/* Dark mode is default - Light mode handled in tokens.css */
+
+/* Print styles */
+@media print {
+  header,
+  .skip-link,
+  [style*="position: fixed"],
+  button,
+  .hide-print {
+    display: none !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    padding: 20px !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  section {
+    min-height: auto !important;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+}

@@ -26,6 +26,7 @@
       "He didn't read about complex systems — he built them. Trained in law, tested in capital markets, forged across retail empires, oil fields, fashion runways and political corridors, Mian Muhammad Usman is one of the rare minds that has operated at depth across radically different industries and made each one work.",
       "His value isn't perspective — it's scar tissue. Every engagement draws on fifteen years of hands-on architecture: enterprise operating systems built from nothing, runway productions directed at scale, political strategy navigated at the highest levels, and markets traded with real capital on the line."
     ],
+    "displayTags": ["Lawyer", "Trader", "Founder", "Strategist"],
     "priority": 2,
     "tags": ["background"],
     "audience": ["all"]
@@ -90,10 +91,10 @@
     "heading": "Speaking & advisory",
     "subheading": "Usman speaks on what he has personally operated — not trends he has read about, but systems he has built, broken and rebuilt. Conferences, leadership summits, private executive sessions.",
     "cards": [
-      { "tag": "Systems Design", "title": "Building the architecture behind organizations that don't collapse under pressure" },
-      { "tag": "Cross-Industry", "title": "What retail taught me about oil fields — and what both taught me about people" },
-      { "tag": "Leadership", "title": "The operator's discipline — how founders think when managers freeze" },
-      { "tag": "Power & Strategy", "title": "How decisions actually get made — markets, law and political capital" }
+      { "tag": "Systems Design", "title": "Building the architecture behind organizations that don't collapse under pressure", "icon": "systems" },
+      { "tag": "Cross-Industry", "title": "What retail taught me about oil fields — and what both taught me about people", "icon": "globe" },
+      { "tag": "Leadership", "title": "The operator's discipline — how founders think when managers freeze", "icon": "users" },
+      { "tag": "Power & Strategy", "title": "How decisions actually get made — markets, law and political capital", "icon": "strategy" }
     ],
     "priority": 5,
     "tags": ["speaking", "forum"],
@@ -147,6 +148,53 @@
     "audience": ["conference", "corporate", "executive"]
   },
   {
+    "id": "skillscape",
+    "type": "skillscape",
+    "heading": "Six industries. One mind.",
+    "subheading": "Navigate Mian's world — hover any node to explore the domain.",
+    "nodes": [
+      { "id": "law",      "label": "Law",               "sub": "Legal architecture & cross-border structuring",             "color": "#c8a96e" },
+      { "id": "trading",  "label": "Capital Markets",    "sub": "Active trading, financial strategy, market design",          "color": "#d4b87a" },
+      { "id": "retail",   "label": "Retail",             "sub": "Enterprise operating systems at scale",                      "color": "#b89658" },
+      { "id": "oil",      "label": "Oil & Gas",          "sub": "Operational strategy in the energy sector",                  "color": "#a08040" },
+      { "id": "fashion",  "label": "Fashion & Runway",   "sub": "High-profile runway production & brand experience",          "color": "#c8a96e" },
+      { "id": "politics", "label": "Political Strategy", "sub": "Senior-level lobbying & political positioning",              "color": "#b08848" }
+    ],
+    "priority": 9,
+    "tags": ["skillscape"],
+    "audience": ["all"]
+  },
+  {
+    "id": "media",
+    "type": "media",
+    "heading": "In conversation on record.",
+    "subheading": "Podcasts, interviews and addresses — Mian Muhammad Usman in conversation on systems, leadership and markets.",
+    "items": [
+      { "type": "video", "title": "Many industries. One mission.", "subtitle": "Signature talk",      "poster": "/images/speaking.png" },
+      { "type": "image", "title": "Leadership summit keynote",     "subtitle": "Conference address",   "src": "/images/gallery-1.png" },
+      { "type": "image", "title": "Industry roundtable",           "subtitle": "Panel discussion",     "src": "/images/gallery-2.png" },
+      { "type": "image", "title": "Advisory engagement",           "subtitle": "Private briefing",     "src": "/images/gallery-3.png" }
+    ],
+    "priority": 10,
+    "tags": ["media", "conversations"],
+    "audience": ["all"]
+  },
+  {
+    "id": "truth",
+    "type": "truth",
+    "heading": "Every claim\nis verifiable.",
+    "subheading": "Hover or tap any highlighted figure below to see its basis. No inflated numbers, no marketing copy — just what actually happened.",
+    "claims": [
+      { "text": "50+ conferences",     "basis": "Speaker and panelist at global business, retail, and leadership conferences across Asia, Europe and the Middle East.",                                                                                                   "type": "stat" },
+      { "text": "15+ years operating", "basis": "Active since 2009 across law, capital markets, retail, oil & gas, fashion and political consulting.",                                                                                                                    "type": "fact" },
+      { "text": "6 industries",        "basis": "Law · Capital Markets · Retail · Oil & Gas · Fashion & Runway · Political Strategy — all with direct operational involvement, not advisory from the outside.",                                                           "type": "fact" },
+      { "text": "25+ organizations",   "basis": "Direct engagement across corporations, government bodies, retail chains, commodity firms, fashion houses and political entities.",                                                                                        "type": "stat" }
+    ],
+    "priority": 11,
+    "tags": ["truth"],
+    "audience": ["all"]
+  },
+  {
     "id": "contact",
     "type": "contact",
     "heading": "Start a conversation",
@@ -154,7 +202,7 @@
     "email": "Info@mmusman.com",
     "phone": "+44 7830 755932",
     "whatsapp": "https://wa.me/447830755932",
-    "engagementTypes": ["Keynote", "Advisory", "Leadership", "Private"],
+    "engagementTypes": ["Keynote", "Advisory", "Leadership", "Private", "Fast track"],
     "priority": 8,
     "tags": ["contact"],
     "audience": ["all"]

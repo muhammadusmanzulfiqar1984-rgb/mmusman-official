@@ -12,15 +12,16 @@ interface TalksData {
 
 export default function TalksSection({ data }: { data: TalksData }) {
   return (
-    <section id="talks" aria-label="Talks and keynotes" className="section" style={{ height: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', overflow: 'hidden', padding: 'clamp(20px, 3vw, 40px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)' }}>
+    <section id="talks" aria-label="Talks and keynotes" className="section" style={{ boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}>
       <p className="section-label">Talks & Keynotes</p>
 
       <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
       <p className="body reveal" style={{ maxWidth: '600px', marginBottom: 'var(--space-10)' }}>{data.subheading}</p>
 
-      <div className="grid-3 reveal">
+      <div className="grid-3">
         {data.cards.map((card, i) => (
-          <article key={i} className="card shimmer-wrap" aria-label={card.tag}>
+          <div key={i} className="spin-border">
+          <article className="card shimmer-wrap" aria-label={card.tag}>
             <p style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--text-xs)',
@@ -51,6 +52,7 @@ export default function TalksSection({ data }: { data: TalksData }) {
               {card.body}
             </p>
           </article>
+          </div>
         ))}
       </div>
     </section>

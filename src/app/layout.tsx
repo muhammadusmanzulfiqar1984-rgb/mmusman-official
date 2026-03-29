@@ -5,6 +5,7 @@ import VoiceOrb from '@/components/effects/VoiceOrb'
 import ChatWidget from '@/components/ai/ChatWidget'
 import ConsentBanner from '@/components/ai/ConsentBanner'
 import EffectsLayer from '@/components/effects/EffectsLayer'
+import DevOverlayLoader from '@/components/effects/DevOverlayLoader'
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
@@ -16,27 +17,43 @@ export const metadata: Metadata = {
     description: 'Lawyer, trader, founder and system architect with hands-on experience across six industries.',
     type: 'website',
     url: 'https://mmusman.com',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Mian Muhammad Usman — Lawyer, Trader, System Builder',
-      },
-    ],
+    siteName: 'Mian Muhammad Usman',
+    locale: 'en_GB',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder',
     description: 'Lawyer, trader, founder and system architect with hands-on experience across six industries.',
-    images: ['/og-image.png'],
+    creator: '@mianmusman',
   },
+}
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Mian Muhammad Usman',
+  url: 'https://mmusman.com',
+  image: 'https://mmusman.com/og-image.png',
+  jobTitle: 'Lawyer, Trader, System Builder & Multi-Industry Strategist',
+  description: 'System architect with experience across retail, oil & gas, capital markets, fashion, law and political strategy. Speaker and executive advisor.',
+  knowsAbout: [
+    'System Architecture',
+    'Trading & Capital Markets',
+    'Legal Strategy',
+    'Multi-Industry Consulting',
+    'Retail Operations',
+    'Strategic Advisory',
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -52,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ChatWidget />
         <ConsentBanner />
         <Analytics />
+        <DevOverlayLoader />
       </body>
     </html>
   )

@@ -1,10 +1,18 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
 }
+
+// History format the API expects (Gemini roles)
+interface HistoryTurn {
+  role: 'user' | 'model'
+  text: string
+}
+
+const WELCOME = "Hi! Ask me anything about Mian's work, speaking topics, experience, or how to get in touch."
 
 const QUICK_REPLIES = [
   'Who is Mian?',
@@ -14,11 +22,12 @@ const QUICK_REPLIES = [
 ]
 
 export default function ChatWidget() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]       = useState(false)
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! Ask me anything about Mian's work, speaking topics, experience, or how to get in touch." }
+    { role: 'assistant', content: WELCOME }
   ])
-  const [input, setInput] = useState('')
+  const [history, setHistory] = useState<HistoryTurn[]>([])
+  const [input, setInput]     = useState('')
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -26,26 +35,70 @@ export default function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, open])
 
+  const clearChat = useCallback(() => {
+    setMessages([{ role: 'assistant', content: WELCOME }])
+    setHistory([])
+    setInput('')
+  }, [])
+
   const send = async (text: string) => {
     const msg = text.trim()
     if (!msg || loading) return
     setInput('')
+
+    // Append user bubble immediately
     setMessages(prev => [...prev, { role: 'user', content: msg }])
+    // Add streaming assistant placeholder
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }])
     setLoading(true)
 
     try {
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg }),
+        body: JSON.stringify({ message: msg, history }),
       })
-      const data = await res.json()
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.reply ?? data.error ?? 'Something went wrong.',
-      }])
+
+      if (!res.ok || !res.body) {
+        // Non-streaming error response
+        const err = await res.json().catch(() => ({ error: 'Something went wrong.' }))
+        setMessages(prev => {
+          const next = [...prev]
+          next[next.length - 1] = { role: 'assistant', content: err.error ?? 'Something went wrong.' }
+          return next
+        })
+        return
+      }
+
+      // Stream tokens into the last (placeholder) bubble
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let fullReply = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const chunk = decoder.decode(value, { stream: true })
+        fullReply += chunk
+        setMessages(prev => {
+          const next = [...prev]
+          next[next.length - 1] = { role: 'assistant', content: fullReply }
+          return next
+        })
+      }
+
+      // Store completed turn in history for next request
+      setHistory(prev => [
+        ...prev,
+        { role: 'user', text: msg },
+        { role: 'model', text: fullReply },
+      ])
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Service temporarily unavailable.' }])
+      setMessages(prev => {
+        const next = [...prev]
+        next[next.length - 1] = { role: 'assistant', content: 'Service temporarily unavailable.' }
+        return next
+      })
     } finally {
       setLoading(false)
     }
@@ -116,12 +169,33 @@ export default function ChatWidget() {
           }}>
             <div style={{
               width: '8px', height: '8px', borderRadius: '50%',
-              background: 'var(--color-gold)',
-              boxShadow: '0 0 8px var(--color-gold)',
+              background: loading ? 'var(--color-gold)' : 'var(--color-gold)',
+              boxShadow: loading ? '0 0 12px var(--color-gold)' : '0 0 8px var(--color-gold)',
+              transition: 'box-shadow 0.3s ease',
+              animation: loading ? 'pulse 1.2s ease-in-out infinite' : 'none',
             }} aria-hidden="true" />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: '0.1em', color: 'var(--color-gold)' }}>
-              Ask about Mian
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: '0.1em', color: 'var(--color-gold)', flex: 1 }}>
+              {loading ? 'Gemini is writing…' : 'Ask about Mian'}
             </span>
+            {messages.length > 1 && (
+              <button
+                onClick={clearChat}
+                aria-label="Clear conversation"
+                title="Clear conversation"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'rgba(255,255,255,0.3)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.08em',
+                  cursor: 'pointer',
+                  padding: '2px 6px',
+                }}
+              >
+                clear
+              </button>
+            )}
           </div>
 
           {/* Messages */}
@@ -150,9 +224,9 @@ export default function ChatWidget() {
                 {m.content}
               </div>
             ))}
-            {loading && (
-              <div style={{ alignSelf: 'flex-start', color: 'var(--color-gold)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.1em' }}>
-                thinking…
+            {loading && messages[messages.length - 1]?.content === '' && (
+              <div style={{ alignSelf: 'flex-start', color: 'var(--color-gold)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.1em', opacity: 0.7 }}>
+                ▍
               </div>
             )}
             <div ref={bottomRef} />

@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useRef } from 'react'
 
-// Vintage round gold clock — PKT (UTC+5), canvas-drawn.
-// Dark enamel face, gold bezel, roman numerals at quarters, smooth-sweep second hand.
+// Minimalist luxury clock — white dial, gold accents, PKT (UTC+5)
+// Original design: open skeleton with sunray guilloche face
 
 export default function VintageClock({ size = 46 }: { size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -25,7 +25,7 @@ export default function VintageClock({ size = 46 }: { size?: number }) {
     const r  = size / 2 - 2.5
 
     function draw() {
-      // ── PKT time (UTC+5) ──
+      // PKT time (UTC+5)
       const now = new Date()
       const pkt = new Date(now.getTime() + (now.getTimezoneOffset() + 300) * 60000)
       const h   = pkt.getHours() % 12
@@ -35,68 +35,47 @@ export default function VintageClock({ size = 46 }: { size?: number }) {
 
       ctx.clearRect(0, 0, size, size)
 
-      // ── Outer shadow ring ──
-      ctx.beginPath()
-      ctx.arc(cx, cy, r + 2, 0, Math.PI * 2)
-      ctx.shadowColor = 'rgba(200,169,110,0.18)'
-      ctx.shadowBlur  = 10
-      ctx.strokeStyle = 'transparent'
-      ctx.stroke()
-      ctx.shadowBlur = 0
-
-      // ── Bezel gradient ring ──
-      const bezel = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r)
-      bezel.addColorStop(0,    '#7a5e34')
-      bezel.addColorStop(0.2,  '#c8a96e')
-      bezel.addColorStop(0.5,  '#eed9a4')
-      bezel.addColorStop(0.8,  '#c8a96e')
-      bezel.addColorStop(1,    '#7a5e34')
-      ctx.beginPath()
-      ctx.arc(cx, cy, r + 1.5, 0, Math.PI * 2)
-      ctx.lineWidth   = 3.5
-      ctx.strokeStyle = bezel
-      ctx.stroke()
-
-      // ── Face — dark radial gradient ──
-      const face = ctx.createRadialGradient(cx - r * 0.15, cy - r * 0.25, r * 0.05, cx, cy, r)
-      face.addColorStop(0,   '#221e18')
-      face.addColorStop(0.5, '#120f0a')
-      face.addColorStop(1,   '#080604')
+      // ── Outer deep gold/bronze rim ──
+      const rim = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r)
+      rim.addColorStop(0,    '#c8a96e')
+      rim.addColorStop(0.3,  '#7a5e34')
+      rim.addColorStop(0.7,  '#eed9a4')
+      rim.addColorStop(1,    '#8b6f42')
       ctx.beginPath()
       ctx.arc(cx, cy, r, 0, Math.PI * 2)
-      ctx.fillStyle = face
-      ctx.fill()
-
-      // ── Inner track ring ──
-      ctx.beginPath()
-      ctx.arc(cx, cy, r - 3.5, 0, Math.PI * 2)
-      ctx.lineWidth   = 0.6
-      ctx.strokeStyle = 'rgba(200,169,110,0.18)'
+      ctx.lineWidth   = 1.5
+      ctx.strokeStyle = rim
       ctx.stroke()
 
-      // ── Hour tick marks (12) ──
-      for (let i = 0; i < 12; i++) {
-        const angle     = (i / 12) * Math.PI * 2 - Math.PI / 2
-        const isQuarter = i % 3 === 0
-        const outer = r - 3.5
-        const inner = isQuarter ? r - 9.5 : r - 6.5
-        ctx.beginPath()
-        ctx.moveTo(cx + Math.cos(angle) * outer, cy + Math.sin(angle) * outer)
-        ctx.lineTo(cx + Math.cos(angle) * inner, cy + Math.sin(angle) * inner)
-        ctx.lineWidth   = isQuarter ? 1.6 : 0.8
-        ctx.strokeStyle = isQuarter ? 'rgba(200,169,110,0.95)' : 'rgba(200,169,110,0.45)'
-        ctx.stroke()
-      }
+      // ── Inner track ──
+      ctx.beginPath()
+      ctx.arc(cx, cy, r - 3.5, 0, Math.PI * 2)
+      ctx.lineWidth   = 0.5
+      ctx.strokeStyle = 'rgba(200,169,110,0.15)'
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.arc(cx, cy, r - 5.5, 0, Math.PI * 2)
+      ctx.strokeStyle = 'rgba(200,169,110,0.1)'
+      ctx.stroke()
 
       // ── Minute ticks (60) ──
       for (let i = 0; i < 60; i++) {
-        if (i % 5 === 0) continue
         const angle = (i / 60) * Math.PI * 2 - Math.PI / 2
+        const isQuarter = i % 15 === 0
+        const isHour = i % 5 === 0
+
         ctx.beginPath()
         ctx.moveTo(cx + Math.cos(angle) * (r - 3.5), cy + Math.sin(angle) * (r - 3.5))
-        ctx.lineTo(cx + Math.cos(angle) * (r - 5.5), cy + Math.sin(angle) * (r - 5.5))
-        ctx.lineWidth   = 0.5
-        ctx.strokeStyle = 'rgba(200,169,110,0.22)'
+        
+        if (isQuarter || isHour) {
+          ctx.lineTo(cx + Math.cos(angle) * (r - 7.5), cy + Math.sin(angle) * (r - 7.5))
+          ctx.lineWidth = isQuarter ? 1.5 : 1
+          ctx.strokeStyle = isQuarter ? 'rgba(200,169,110,0.95)' : 'rgba(200,169,110,0.45)'
+        } else {
+          ctx.lineTo(cx + Math.cos(angle) * (r - 5.5), cy + Math.sin(angle) * (r - 5.5))
+          ctx.lineWidth = 0.5
+          ctx.strokeStyle = 'rgba(200,169,110,0.22)'
+        }
         ctx.stroke()
       }
 

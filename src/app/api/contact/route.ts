@@ -45,15 +45,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Message is required (max 3000 chars)' }, { status: 422 })
   }
 
-  // Log to server console / Vercel logs
-  console.log('[contact]', JSON.stringify({
-    name: nameStr,
-    email: emailStr,
-    type: typeStr || '—',
-    message: messageStr,
-    ts: new Date().toISOString(),
-  }))
-
   // Send email via Resend (active when RESEND_API_KEY is set)
   if (resend) {
     try {
@@ -65,8 +56,8 @@ export async function POST(req: NextRequest) {
         text: `Name: ${nameStr}\nEmail: ${emailStr}\nEngagement: ${typeStr || '—'}\n\n${messageStr}`,
       })
     } catch (emailErr) {
-      // Email failure should not block the user — log and continue
       console.error('[contact] email send failed:', emailErr)
+      return NextResponse.json({ error: 'Failed to send message. Please try again.' }, { status: 500 })
     }
   }
 

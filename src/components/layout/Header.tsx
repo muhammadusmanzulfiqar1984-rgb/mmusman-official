@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 const VintageClock = dynamic(() => import('@/components/effects/VintageClock'), { ssr: false })
@@ -14,7 +15,8 @@ const navLinks = [
   { label: 'Addresses',   href: '#talks' },
   { label: 'Skillscape',  href: '#skillscape' },
   { label: 'Conversations', href: '#media' },
-  { label: 'Dispatches',  href: '#truth' },
+  { label: 'Truth Lens',  href: '#truth' },
+  { label: 'Contact',     href: '#contact' },
 ]
 
 const MILESTONES = [25, 50, 75, 100]
@@ -24,6 +26,7 @@ export default function Header() {
   const [progress, setProgress]   = useState(0)
   const [active, setActive]       = useState('hero')
   const [classic, setClassic]     = useState(false)
+  const [lightMode, setLightMode] = useState(false)
   const [underline, setUnderline] = useState({ left: 0, width: 0 })
   const [menuOpen, setMenuOpen]   = useState(false)
 
@@ -37,6 +40,14 @@ export default function Header() {
     const stored = localStorage.getItem('mian_classic') === 'true'
     setClassic(stored)
     if (stored) document.documentElement.classList.add('classic-view')
+  }, [])
+
+  const toggleLightMode = useCallback(() => {
+    setLightMode(prev => {
+      const next = !prev
+      document.documentElement.classList.toggle('light-mode', next)
+      return next
+    })
   }, [])
 
   const toggleClassic = useCallback(() => {
@@ -143,25 +154,32 @@ export default function Header() {
             border: '1px solid var(--color-gold-dim)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             overflow: 'hidden',
+            position: 'relative'
           }}>
-            <img
+            <Image
               src="/images/hero.jpeg"
-              alt=""
+              alt="Mian Muhammad Usman"
               aria-hidden="true"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(0.3)' }}
+              fill
+              style={{ objectFit: 'cover', filter: 'grayscale(0.3)' }}
               onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
             />
           </div>
-          <div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            textAlign: 'left'
+          }}>
             <div style={{
               fontFamily: 'var(--font-body)',
-              fontSize: '0.75rem',
+              fontSize: '0.85rem',
               fontWeight: 500,
               color: 'var(--color-text-secondary)',
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
             }}>
-              Mian Muhammad<br />Usman
+              Mian Muhammad Usman
             </div>
 
           </div>
@@ -173,12 +191,14 @@ export default function Header() {
             ref={navRef}
             style={{
               display: 'flex',
-              gap: 'var(--space-5)',
+              gap: 'var(--space-4)',
               listStyle: 'none',
-              overflow: 'hidden',
+              overflow: 'auto',
               flexWrap: 'nowrap',
               position: 'relative',
               paddingBottom: '3px',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
             }}
           >
             {navLinks.map(l => {
@@ -222,6 +242,30 @@ export default function Header() {
             />
           </ul>
         </nav>
+
+        {/* Light / Dark toggle */}
+        <button
+          onClick={toggleLightMode}
+          aria-pressed={lightMode}
+          aria-label={lightMode ? 'Switch to dark mode' : 'Switch to light mode'}
+          style={{
+            flexShrink: 0,
+            background: 'transparent',
+            border: `1px solid ${lightMode ? 'var(--color-gold-dim)' : 'var(--color-border)'}`,
+            borderRadius: 'var(--radius-sm)',
+            padding: '5px 10px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.9rem',
+            lineHeight: 1,
+            color: lightMode ? 'var(--color-gold)' : 'var(--color-text-muted)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {lightMode ? '☀︎' : '◐'}
+        </button>
 
         {/* Classic View toggle */}
         <button

@@ -1,8 +1,10 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { getParticleCount } from '@/lib/deviceTier'
 
 // Sparse slow-floating gold dust motes — 30–40 particles max.
 // Paused under prefers-reduced-motion and tab hidden.
+// Optimized for mobile: particle count adapts based on device capability.
 
 interface Mote {
   x: number; y: number
@@ -18,8 +20,16 @@ const COUNT_BASE = 18  // sparse at 60fps; auto-tunes down
 
 export default function GoldDust() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
+    // Lazy activation: wait 2 seconds before starting animation
+    const activationTimer = setTimeout(() => setActive(true), 2000)
+    return () => clearTimeout(activationTimer)
+  }, [])
+
+  useEffect(() => {
+    if (!active) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const canvas = canvasRef.current
@@ -42,7 +52,9 @@ export default function GoldDust() {
       maxLife: Math.random() * 400 + 300,
     })
 
-    const motes: Mote[] = Array.from({ length: COUNT_BASE }, () => {
+    // Adjust particle count based on device capability
+    const particleCount = getParticleCount(COUNT_BASE)
+    const motes: Mote[] = Array.from({ length: particleCount }, () => {
       const m = spawn(); m.y = Math.random() * canvas.height; m.life = Math.random() * m.maxLife; return m
     })
 

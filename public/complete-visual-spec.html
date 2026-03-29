@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Visual Specification - Mian Muhammad Usman</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#0d080a;--color-gold:#e8b84b;--color-text-primary:#f5ede8;--color-text-secondary:#e8ddd8;--color-text-muted:#a89890}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--color-bg);color:var(--color-text-primary);font-family:Inter,sans-serif;padding:0;margin:0}
+.section{margin:0 auto 80px;padding:60px 40px;max-width:1200px;background:linear-gradient(135deg,rgba(58,42,10,.3),rgba(13,8,10,.8));border:1px solid rgba(232,184,75,.15);border-radius:8px}
+.hero-section{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;background:linear-gradient(rgba(13,8,10,.8),rgba(13,8,10,.9)),url('/images/hero.jpeg');background-size:cover;background-position:center;padding:60px 40px}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--color-gold);margin-bottom:12px;font-weight:500}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1.1;margin-bottom:24px}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);margin-bottom:20px}
+p{line-height:1.75;color:var(--color-text-secondary);margin-bottom:20px;max-width:70ch}
+.subheading{font-size:1.125rem;color:var(--color-text-muted);margin-bottom:32px;max-width:65ch}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:40px}
+.card{background:rgba(58,42,10,.4);border:1px solid rgba(232,184,75,.2);padding:32px;border-radius:6px;transition:all .3s}
+.card:hover{background:rgba(58,42,10,.6);border-color:var(--color-gold);transform:translateY(-2px)}
+.card-tag{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--color-gold);margin-bottom:12px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:12px;line-height:1.3}
+.card-body{font-size:.95rem;color:var(--color-text-muted);line-height:1.6}
+.btn{padding:11px 28px;border-radius:4px;text-decoration:none;font-weight:500;display:inline-block;margin:var(--space-4) var(--space-4) 0 0;font-size:.8rem;letter-spacing:.04em}
+.btn-primary{background:var(--color-gold);color:#0d080a;border:1px solid var(--color-gold)}.btn-secondary{background:transparent;border:1px solid var(--color-gold);color:var(--color-gold)}
+.pill{display:inline-block;padding:6px 16px;background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);border-radius:50px;font-size:var(--text-xs);color:var(--color-gold);margin:var(--space-6) 0;letter-spacing:.08em;font-weight:400}
+.stats{display:flex;gap:var(--space-8);margin-top:var(--space-6);padding-top:var(--space-6);border-top:1px solid rgba(232,184,75,.15);flex-wrap:wrap}
+.stat{text-align:left}
+.stat-value{font-family:Inter,sans-serif;font-size:1.6rem;color:var(--color-text-primary);display:block;margin-bottom:6px;font-weight:300;letter-spacing:-.03em;line-height:1}
+.stat-label{font-size:var(--text-xs);color:var(--color-gold);text-transform:uppercase;letter-spacing:.1em;font-weight:300}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:40px}
+.media-item{position:relative;border-radius:8px;overflow:hidden;background:rgba(58,42,10,.4);border:1px solid rgba(232,184,75,.2)}
+.media-item img{width:100%;height:auto;display:block}
+.media-caption{padding:16px;background:rgba(13,8,10,.9)}
+.media-title{font-size:1rem;color:var(--color-text-primary);margin-bottom:4px}
+.media-subtitle{font-size:.85rem;color:var(--color-gold)}
+.video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+.video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+ul.topics{list-style:none;margin:24px 0}
+ul.topics li{padding-left:24px;margin-bottom:12px;position:relative;color:var(--color-text-secondary)}
+ul.topics li:before{content:"—";position:absolute;left:0;color:var(--color-gold)}
+.quote{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;color:var(--color-gold);padding:40px;margin:40px 0;border-left:3px solid var(--color-gold);background:rgba(232,184,75,.05)}
+.skillscape-placeholder{min-height:500px;background:rgba(58,42,10,.2);border:2px dashed rgba(232,184,75,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:40px;text-align:center}
+.skillscape-note{color:var(--color-gold);font-size:1.2rem;margin-bottom:16px}
+.skillscape-desc{color:var(--color-text-muted);max-width:50ch}
+.contact-form{max-width:600px;margin-top:40px}
+.form-group{margin-bottom:24px}
+.form-label{display:block;margin-bottom:8px;color:var(--color-text-secondary);font-size:.9rem}
+.form-input{width:100%;padding:12px 16px;background:rgba(58,42,10,.4);border:1px solid rgba(232,184,75,.2);border-radius:4px;color:var(--color-text-primary);font-family:inherit;font-size:1rem}
+.form-input:focus{outline:none;border-color:var(--color-gold)}
+textarea.form-input{min-height:120px;resize:vertical}
+.contact-info{display:flex;gap:24px;margin:32px 0;flex-wrap:wrap}
+.contact-method{flex:1;min-width:200px;padding:20px;background:rgba(232,184,75,.05);border:1px solid rgba(232,184,75,.15);border-radius:6px}
+.contact-icon{color:var(--color-gold);margin-bottom:8px;font-size:1.2rem}
+.container{max-width:1400px;margin:0 auto;padding:0 20px}
+</style>
+</head>
+<body>
+
+<!-- HERO SECTION with Background Image -->
+<div class="hero-section">
+<div style="max-width:900px;text-align:left">
+<div class="eyebrow">Lawyer · Trader · System Builder</div>
+<h1>Mian Muhammad Usman —<br>built for the problems no one else will touch.</h1>
+<p style="font-size:1.125rem;max-width:none">Trained as a lawyer. Sharpened in capital markets. Tested across retail empires, oil fields, fashion runways and political corridors.</p>
+<a href="#work" class="btn btn-primary">See the work</a>
+<a href="#contact" class="btn btn-secondary">Start a conversation</a>
+<div class="pill">One mind. Every industry.</div>
+</div>
+<div style="position:absolute;top:20px;left:20px;width:80px;height:80px;border:2px dashed var(--color-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--color-gold);font-size:.8rem">GLOBE<br>ANIMATION</div>
+</div>
+
+<!-- ABOUT -->
+<div class="container">
+<div class="section">
+<div class="eyebrow">Background</div>
+<h2>Mian Muhammad Usman</h2>
+<p>Trained in law, tested in capital markets, forged across retail empires, oil fields, fashion runways and political corridors. One of the rare minds that has operated at depth across radically different industries.</p>
+<p>His value isn't perspective — it's scar tissue. Every engagement draws on fifteen years of hands-on architecture: enterprise operating systems built from nothing, runway productions directed at scale, political strategy navigated at the highest levels.</p>
+<blockquote class="quote">"Every industry runs on a system. Most people inherit it. I design it from the ground up."</blockquote>
+<p>From the trading floor to the cabinet room. From runway production to oil field operations. The discipline never changes.</p>
+</div>
+
+<!-- WORK -->
+<div class="section">
+<div class="eyebrow">Six Industries</div>
+<h2>Work with Mian Muhammad Usman</h2>
+<p class="subheading">Hands-on architecture of the system itself — across six industries, fifteen years.</p>
+<div class="card-grid">
+<div class="card"><div class="card-tag">Retail</div><div class="card-title">Building retail operations that scale</div></div>
+<div class="card"><div class="card-tag">Oil & Gas</div><div class="card-title">Operational strategy and systems design</div></div>
+<div class="card"><div class="card-tag">Fashion</div><div class="card-title">Directing high-profile runway productions</div></div>
+<div class="card"><div class="card-tag">Political</div><div class="card-title">Senior-level lobbying and positioning</div></div>
+<div class="card"><div class="card-tag">Trading</div><div class="card-title">Active trading and financial architecture</div></div>
+<div class="card"><div class="card-tag">Legal</div><div class="card-title">Legal structuring for cross-border operations</div></div>
+</div>
+<div class="stats">
+<div class="stat"><span class="stat-value">50+</span><span class="stat-label">Conferences</span></div>
+<div class="stat"><span class="stat-value">15+</span><span class="stat-label">Years operating</span></div>
+<div class="stat"><span class="stat-value">6</span><span class="stat-label">Industries</span></div>
+<div class="stat"><span class="stat-value">25+</span><span class="stat-label">Organizations</span></div>
+</div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="section">
+<div class="eyebrow">Featured Insights</div>
+<h2>Observations</h2>
+<p class="subheading">Convictions formed in boardrooms, trading floors, political offices and production stages.</p>
+<div class="card-grid">
+<div class="card"><div class="card-tag">Systems</div><div class="card-title">The system is the strategy</div><div class="card-body">Most leaders confuse having a plan with having a system. A plan tells you what to do next. A system tells you what to do when the plan collapses.</div></div>
+<div class="card"><div class="card-tag">Leadership</div><div class="card-title">You cannot lead what you have never built</div><div class="card-body">There is a specific kind of judgment that only comes from having built something under pressure — made it work without resources, and watched it break.</div></div>
+<div class="card"><div class="card-tag">Markets</div><div class="card-title">Markets reward discipline over intelligence</div><div class="card-body">Every intelligent person thinks they can trade. Very few understand that the edge is never in the analysis — it's in the ruthless execution of a system.</div></div>
+<div class="card"><div class="card-tag">Cross-Industry</div><div class="card-title">Patterns repeat across industries</div><div class="card-body">Once you have run retail at scale, operated on an energy field, and navigated political strategy — you see the same three problems everywhere.</div></div>
+</div>
+</div>
+
+<!-- SPEAKING -->
+<div class="section">
+<div class="eyebrow">Speaking & Advisory</div>
+<h2>Conference talks and advisory sessions</h2>
+<p class="subheading">Speaking on what has been personally operated — not trends read about, but systems built and rebuilt.</p>
+<div class="card-grid">
+<div class="card"><div class="card-tag">Systems Design</div><div class="card-title">Building the architecture behind organizations that don't collapse</div></div>
+<div class="card"><div class="card-tag">Cross-Industry</div><div class="card-title">What retail taught about oil fields — and what both taught about people</div></div>
+<div class="card"><div class="card-tag">Leadership</div><div class="card-title">The operator's discipline — how founders think when managers freeze</div></div>
+<div class="card"><div class="card-tag">Power & Strategy</div><div class="card-title">How decisions actually get made — markets, law and political capital</div></div>
+</div>
+</div>
+
+<!-- TRAINING -->
+<div class="section">
+<div class="eyebrow">Corporate Training</div>
+<h2>Training and programs</h2>
+<p>Built for senior teams who are tired of generic frameworks. For people who want to think through real problems with someone who has actually solved them.</p>
+<p>Every program is built around your organization's actual situation. No pre-packaged slides. No theory without scar tissue behind it.</p>
+<ul class="topics">
+<li>How to design an operating system for a complex organization</li>
+<li>Strategic thinking that works across industries — retail, energy, markets, law</li>
+<li>Leading under commercial and political pressure simultaneously</li>
+<li>Building decision-making frameworks that survive contact with reality</li>
+<li>How to see your business the way a founder does — not a manager</li>
+<li>AI and technology as operational tools, not buzzwords</li>
+</ul>
+<a href="#contact" class="btn btn-primary">Discuss a program</a>
+</div>
+
+<!-- TALKS -->
+<div class="section">
+<div class="eyebrow">Talks & Keynotes</div>
+<h2>Conference keynotes</h2>
+<p class="subheading">Talks that leave a room thinking differently — not because the slides were polished, but because every word came from somewhere real.</p>
+<div class="card-grid">
+<div class="card"><div class="card-tag">Systems</div><div class="card-title">Design the system or the system will design you</div><div class="card-body">How the most durable organizations — from retail chains to energy companies — are built on invisible architecture that most leaders never think to design intentionally.</div></div>
+<div class="card"><div class="card-tag">Multi-Industry</div><div class="card-title">What one person operating across six industries teaches you</div><div class="card-body">The patterns that emerge when you have personally run retail, oil & gas, fashion, trading, law and political strategy.</div></div>
+<div class="card"><div class="card-tag">Power</div><div class="card-title">The room where the real decision was already made</div><div class="card-body">A frank account of how commercial, legal and political power interact — and why leaders who understand all three always have more room to move.</div></div>
+</div>
+</div>
+
+<!-- SKILLSCAPE - Interactive Visualization -->
+<div class="section">
+<div class="eyebrow">Interactive Map</div>
+<h2>Six industries. One mind.</h2>
+<p class="subheading">Navigate Mian's world — hover any node to explore the domain.</p>
+<div class="skillscape-placeholder">
+<div class="skillscape-note">⬢ INTERACTIVE VISUALIZATION ⬢</div>
+<div class="skillscape-desc">6 interconnected nodes showing: Law · Capital Markets · Retail · Oil & Gas · Fashion & Runway · Political Strategy<br><br>Each node shows label + subtitle on hover<br>Nodes are connected with animated lines<br>Color-coded by industry (#c8a96e, #d4b87a, etc.)</div>
+</div>
+</div>
+
+<!-- MEDIA SECTION - VIDEO + GALLERY -->
+<div class="section">
+<div class="eyebrow">Media & Conversations</div>
+<h2>In conversation on record</h2>
+<p class="subheading">Podcasts, interviews and addresses — in conversation on systems, leadership and markets.</p>
+<div class="media-grid">
+<div class="media-item" style="grid-column:span 2">
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<div class="media-caption">
+<div class="media-title">Many industries. One mission.</div>
+<div class="media-subtitle">Signature talk</div>
+</div>
+</div>
+<div class="media-item">
+<img src="/images/gallery-1.png" alt="Leadership summit keynote">
+<div class="media-caption">
+<div class="media-title">Leadership summit keynote</div>
+<div class="media-subtitle">Conference address</div>
+</div>
+</div>
+<div class="media-item">
+<img src="/images/gallery-2.png" alt="Industry roundtable">
+<div class="media-caption">
+<div class="media-title">Industry roundtable</div>
+<div class="media-subtitle">Panel discussion</div>
+</div>
+</div>
+<div class="media-item">
+<img src="/images/gallery-3.png" alt="Advisory engagement">
+<div class="media-caption">
+<div class="media-title">Advisory engagement</div>
+<div class="media-subtitle">Private briefing</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TRUTH/VERIFICATION -->
+<div class="section">
+<div class="eyebrow">Verification</div>
+<h2>Every claim is verifiable</h2>
+<p class="subheading">Hover or tap any highlighted figure to see its basis. No inflated numbers, no marketing copy — just what actually happened.</p>
+<div class="stats">
+<div class="stat">
+<span class="stat-value">50+</span>
+<span class="stat-label">Conferences</span>
+<p style="font-size:.85rem;color:var(--color-text-muted);margin-top:12px">Speaker and panelist at global business, retail, and leadership conferences across Asia, Europe and the Middle East.</p>
+</div>
+<div class="stat">
+<span class="stat-value">15+</span>
+<span class="stat-label">Years operating</span>
+<p style="font-size:.85rem;color:var(--color-text-muted);margin-top:12px">Active since 2009 across law, capital markets, retail, oil & gas, fashion and political consulting.</p>
+</div>
+<div class="stat">
+<span class="stat-value">6</span>
+<span class="stat-label">Industries</span>
+<p style="font-size:.85rem;color:var(--color-text-muted);margin-top:12px">Law · Capital Markets · Retail · Oil & Gas · Fashion & Runway · Political Strategy — all with direct operational involvement.</p>
+</div>
+<div class="stat">
+<span class="stat-value">25+</span>
+<span class="stat-label">Organizations</span>
+<p style="font-size:.85rem;color:var(--color-text-muted);margin-top:12px">Direct engagement across corporations, government bodies, retail chains, commodity firms, fashion houses and political entities.</p>
+</div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<div class="section">
+<h2>Start a conversation</h2>
+<p class="subheading">For speaking, advisory or collaboration. You will receive a personal response.</p>
+<div class="contact-info">
+<div class="contact-method">
+<div class="contact-icon">📧</div>
+<div style="font-size:.9rem;color:var(--color-text-muted);margin-bottom:4px">Email</div>
+<div style="color:var(--color-gold)">Info@mmusman.com</div>
+</div>
+<div class="contact-method">
+<div class="contact-icon">📱</div>
+<div style="font-size:.9rem;color:var(--color-text-muted);margin-bottom:4px">Phone</div>
+<div style="color:var(--color-gold)">+44 7830 755932</div>
+</div>
+<div class="contact-method">
+<div class="contact-icon">💬</div>
+<div style="font-size:.9rem;color:var(--color-text-muted);margin-bottom:4px">WhatsApp</div>
+<div style="color:var(--color-gold)">Direct message</div>
+</div>
+</div>
+<form class="contact-form">
+<div class="form-group">
+<label class="form-label">Name</label>
+<input type="text" class="form-input" placeholder="Your name">
+</div>
+<div class="form-group">
+<label class="form-label">Email</label>
+<input type="email" class="form-input" placeholder="your@email.com">
+</div>
+<div class="form-group">
+<label class="form-label">Engagement type</label>
+<select class="form-input">
+<option>Keynote</option>
+<option>Advisory</option>
+<option>Leadership program</option>
+<option>Private session</option>
+<option>Urgent</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Message</label>
+<textarea class="form-input" placeholder="Tell us about your situation..."></textarea>
+</div>
+<button type="submit" class="btn btn-primary">Send message</button>
+</form>
+</div>
+</div>
+
+<div style="padding:40px 20px;text-align:center;color:var(--color-text-muted)">
+<p style="font-size:.9rem">This is the complete visual specification showing all sections, interactive elements, media embeds, and forms.</p>
+<a href="http://localhost:9000/" class="btn btn-secondary" style="margin-top:20px">View actual site</a>
+</div>
+
+</body>
+</html>

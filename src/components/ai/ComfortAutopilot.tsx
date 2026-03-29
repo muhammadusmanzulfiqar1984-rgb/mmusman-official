@@ -12,6 +12,7 @@ export default function ComfortAutopilot() {
   const [active, setActive]   = useState(false)
   const [visible, setVisible] = useState(false)
   const announced             = useRef(false)
+  const monitoringEnabled     = useRef(false)
   const clicks                = useRef<number[]>([])
   const lastScrollY           = useRef(0)
   const reversals             = useRef<number[]>([])
@@ -25,7 +26,13 @@ export default function ComfortAutopilot() {
       activate()
     }
 
+    // Add 15-second delay before monitoring starts
+    const delayTimer = setTimeout(() => {
+      monitoringEnabled.current = true
+    }, 15000)
+
     const onClick = () => {
+      if (!monitoringEnabled.current) return
       const now = Date.now()
       clicks.current.push(now)
       clicks.current = clicks.current.filter(t => now - t < 1000)
@@ -33,6 +40,7 @@ export default function ComfortAutopilot() {
     }
 
     const onScroll = () => {
+      if (!monitoringEnabled.current) return
       const y = window.scrollY
       const dir = y > lastScrollY.current ? 1 : -1
       if (dir !== lastDir.current) {
@@ -48,6 +56,7 @@ export default function ComfortAutopilot() {
     window.addEventListener('click',  onClick)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
+      clearTimeout(delayTimer)
       window.removeEventListener('click',  onClick)
       window.removeEventListener('scroll', onScroll)
     }

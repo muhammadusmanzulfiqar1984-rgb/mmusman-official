@@ -66,7 +66,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
     <div
       ref={ref}
       className="card reveal"
-      style={{ textAlign: 'center', padding: 'var(--space-8) var(--space-4)' }}
+      style={{ textAlign: 'left', padding: 'var(--space-8) var(--space-4)' }}
     >
       <div style={{
         fontFamily: "'Inter', -apple-system, sans-serif",
@@ -77,7 +77,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
         letterSpacing: '-0.02em',
         display: 'flex',
         alignItems: 'flex-end',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         gap: 0,
       }}>
         {digits.map((d, i) => <Digit key={i} d={d} />)}
@@ -90,26 +90,32 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 
 export default function WorkSection({ data }: { data: WorkData }) {
   return (
-    <section id="work" aria-label="Work and highlights" className="section" style={{ position: 'relative', height: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', overflow: 'hidden', padding: 'clamp(20px, 3vw, 40px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)' }}>
+    <section id="work" aria-label="Work and highlights" className="section" style={{ position: 'relative', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}>
       <TokenStream />
       <p className="section-label">Work</p>
 
-      <div style={{ marginBottom: 'var(--space-12)' }}>
-        <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>{data.heading}</h2>
-        <p className="body reveal" style={{ maxWidth: '600px' }}>{data.subheading}</p>
+      <div className="col2-grid" style={{ marginBottom: 'var(--space-12)', alignItems: 'center' }}>
+        <div>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>{data.heading}</h2>
+          <p className="body reveal" style={{ maxWidth: '600px' }}>{data.subheading}</p>
+        </div>
+        <div className="reveal" style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--color-gold-dim)' }}>
+          <img src="/images/work.png" alt="Working with Mian Muhammad Usman" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.85) contrast(1.1)' }} onError={(e) => { e.currentTarget.src = '/images/Retails1.png'; e.currentTarget.onerror = null; }} />
+        </div>
       </div>
 
       {/* Work cards — shimmer on reveal */}
-      <div className="grid-3 reveal" style={{ marginBottom: 'var(--space-12)' }}>
+      <div className="grid-2 reveal-stagger reveal" style={{ marginBottom: 'var(--space-12)' }}>
         {data.cards.map((card, i) => (
+          <div key={i} className="spin-border">
           <HoloCard
-            key={i}
             className="card card-bevel card-elevate card-reveal-shimmer"
             style={{
-              background: 'var(--color-bg-card)',
-              border: '1px solid var(--color-border)',
+              background: 'linear-gradient(135deg, #1a1200 0%, #3d2c00 45%, #1a1200 100%)',
+              border: '2px solid var(--color-gold)',
               borderRadius: 'var(--radius-md)',
               padding: 'var(--space-6)',
+              boxShadow: '0 0 12px rgba(232,184,75,0.35), 0 0 1px rgba(232,184,75,0.8)',
             }}
           >
             <article aria-label={card.tag}>
@@ -134,6 +140,7 @@ export default function WorkSection({ data }: { data: WorkData }) {
               </h3>
             </article>
           </HoloCard>
+          </div>
         ))}
       </div>
 
@@ -143,7 +150,9 @@ export default function WorkSection({ data }: { data: WorkData }) {
         aria-label="Key statistics"
       >
         {data.stats.map((s, i) => (
-          <CounterBadge key={i} value={s.value} label={s.label} />
+          <div key={i} className="spin-border">
+            <CounterBadge value={s.value} label={s.label} />
+          </div>
         ))}
       </div>
     </section>

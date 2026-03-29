@@ -8,28 +8,11 @@ interface Claim {
   type: 'fact' | 'credential' | 'stat'
 }
 
-const CLAIMS: Claim[] = [
-  {
-    text: '50+ conferences',
-    basis: 'Speaker and panelist at global business, retail, and leadership conferences across Asia, Europe and the Middle East.',
-    type: 'stat',
-  },
-  {
-    text: '15+ years operating',
-    basis: 'Active since 2009 across law, capital markets, retail, oil & gas, fashion and political consulting.',
-    type: 'fact',
-  },
-  {
-    text: '6 industries',
-    basis: 'Law · Capital Markets · Retail · Oil & Gas · Fashion & Runway · Political Strategy — all with direct operational involvement, not advisory from the outside.',
-    type: 'fact',
-  },
-  {
-    text: '25+ organizations',
-    basis: 'Direct engagement across corporations, government bodies, retail chains, commodity firms, fashion houses and political entities.',
-    type: 'stat',
-  },
-]
+interface TruthData {
+  heading: string
+  subheading: string
+  claims: Claim[]
+}
 
 function TruthPill({ claim }: { claim: Claim }) {
   const [open, setOpen] = useState(false)
@@ -109,30 +92,62 @@ function TruthPill({ claim }: { claim: Claim }) {
   )
 }
 
-export default function TruthLens() {
+export default function TruthLens({ data }: { data: TruthData }) {
+  const headingParts = data.heading.split('\n')
   return (
     <section
       id="truth"
       aria-label="Verified claims"
       className="section"
-      style={{ background: 'rgba(200,169,110,0.015)', borderLeft: '3px solid rgba(200,169,110,0.15)', height: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box', overflow: 'hidden', padding: 'clamp(20px, 3vw, 40px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)' }}
+      style={{ background: 'rgba(200,169,110,0.015)', borderLeft: '3px solid rgba(200,169,110,0.15)', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}
     >
       <p className="section-label">Truth Lens</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-16)', alignItems: 'start' }}>
+      <div className="col2-grid" style={{ alignItems: 'start' }}>
         <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>
-            Every claim<br />is verifiable.
-          </h2>
+          {/* Heading + portrait side by side */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-6)', marginBottom: 'var(--space-5)' }}>
+            {/* HEADING HIDDEN TEMPORARILY
+            <h2 className="h2 reveal" style={{ flex: 1, margin: 0 }}>
+              {headingParts[0]}{headingParts[1] && <><br />{headingParts[1]}</>}
+            </h2>
+            */}
+            {/* Editorial portrait */}
+            <div style={{
+              width: '260px',
+              height: '345px',
+              flexShrink: 0,
+              borderRadius: '10px',
+              overflow: 'hidden',
+              border: '1px solid rgba(200,169,110,0.4)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              marginTop: '80px',
+            }}>
+              <img
+                src="/images/Retails1.png"
+                alt="Mian Muhammad Usman — retail"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'top center',
+                  filter: 'brightness(0.85) contrast(1.12) sepia(0.08)',
+                  display: 'block',
+                }}
+              />
+            </div>
+          </div>
+          {/* SUBHEADING HIDDEN TEMPORARILY
           <p className="body reveal" style={{ maxWidth: '420px' }}>
-            Hover or tap any highlighted figure below to see its basis. No inflated numbers, no marketing copy — just what actually happened.
+            {data.subheading}
           </p>
+          */}
         </div>
 
         <div className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
-          {CLAIMS.map((claim, i) => (
+          {data.claims.map((claim, i) => (
+            <div key={i} className="spin-border">
             <div
-              key={i}
               className="glass"
               style={{ padding: 'var(--space-5) var(--space-6)', display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}
             >
@@ -157,8 +172,7 @@ export default function TruthLens() {
                   {claim.text.replace(/^\d+[+]?\s*/, '')}
                 </p>
               </div>
-            </div>
-          ))}
+            </div>            </div>          ))}
         </div>
       </div>
     </section>
