@@ -25,7 +25,10 @@ export default function Header() {
   const [scrolled, setScrolled]   = useState(false)
   const [progress, setProgress]   = useState(0)
   const [active, setActive]       = useState('hero')
-  const [classic, setClassic]     = useState(false)
+  const [classic, setClassic]     = useState(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('mian_classic') === 'true'
+  })
   const [lightMode, setLightMode] = useState(false)
   const [underline, setUnderline] = useState({ left: 0, width: 0 })
   const [menuOpen, setMenuOpen]   = useState(false)
@@ -35,12 +38,9 @@ export default function Header() {
   const linkRefs         = useRef<Record<string, HTMLAnchorElement | null>>({})
   const navRef           = useRef<HTMLUListElement>(null)
 
-  // Classic View persistence
   useEffect(() => {
-    const stored = localStorage.getItem('mian_classic') === 'true'
-    setClassic(stored)
-    if (stored) document.documentElement.classList.add('classic-view')
-  }, [])
+    document.documentElement.classList.toggle('classic-view', classic)
+  }, [classic])
 
   const toggleLightMode = useCallback(() => {
     setLightMode(prev => {
@@ -161,6 +161,7 @@ export default function Header() {
               alt="Mian Muhammad Usman"
               aria-hidden="true"
               fill
+              sizes="56px"
               style={{ objectFit: 'cover', filter: 'grayscale(0.3)' }}
               onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
             />

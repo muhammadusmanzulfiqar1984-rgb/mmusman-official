@@ -15,26 +15,22 @@ const SIGNALS = {
 export function useCognitiveLoadBalancer() {
   const [mode, setMode] = useState<Mode>('normal')
   const [triggered, setTriggered] = useState(false)
-  const [monitoringActive, setMonitoringActive] = useState(false)
-  const monitoringActiveRef = useRef(false)
+  const monitoringActive = useRef(false)
   const scrollEvents = useRef<number[]>([])
-  const lastClick = useRef<number>(Date.now())
+  const lastClick = useRef<number>(0)
   const rageClicks = useRef<number[]>([])
 
-  // Sync ref with state for event handlers
   useEffect(() => {
-    monitoringActiveRef.current = monitoringActive
-  }, [monitoringActive])
+    lastClick.current = Date.now()
 
-  useEffect(() => {
     // Add 10-second delay before monitoring starts
     const monitoringDelay = setTimeout(() => {
-      setMonitoringActive(true)
+      monitoringActive.current = true
     }, 10000)
 
     // Rapid scroll detection
     const onScroll = () => {
-      if (!monitoringActiveRef.current) return
+      if (!monitoringActive.current) return
       const now = Date.now()
       scrollEvents.current.push(now)
       scrollEvents.current = scrollEvents.current.filter(t => now - t < 1000)
@@ -47,7 +43,7 @@ export function useCognitiveLoadBalancer() {
     const onClick = () => {
       const now = Date.now()
       lastClick.current = now
-      if (!monitoringActiveRef.current) return
+      if (!monitoringActive.current) return
       rageClicks.current.push(now)
       rageClicks.current = rageClicks.current.filter(t => now - t < 1000)
       if (rageClicks.current.length >= SIGNALS.rageClickThreshold) {
@@ -57,7 +53,7 @@ export function useCognitiveLoadBalancer() {
 
     // Dwell without interaction
     const dwellTimer = setInterval(() => {
-      if (!monitoringActiveRef.current) return
+      if (!monitoringActive.current) return
       const inactive = (Date.now() - lastClick.current) / 1000
       if (inactive > SIGNALS.dwellWithoutInteraction) {
         setTriggered(true)
@@ -68,6 +64,7 @@ export function useCognitiveLoadBalancer() {
     window.addEventListener('click', onClick)
 
     return () => {
+      monitoringActive.current = false
       clearTimeout(monitoringDelay)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('click', onClick)

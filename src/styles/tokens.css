@@ -12,12 +12,12 @@
   --color-border-soft: #3a2028;
 
   /* ── Colour — Gold ── */
-  --color-gold:         #f0c040;
-  --color-gold-bright:  #ffe066;
-  --color-gold-deep:    #c8920a;
-  --color-gold-dim:     rgba(240, 192, 64, 0.45);
-  --color-gold-glow:    rgba(240, 192, 64, 0.18);
-  --color-gold-shimmer: rgba(255, 224, 102, 0.55);
+  --color-gold:         #b38b59;
+  --color-gold-bright:  #d9af7a;
+  --color-gold-deep:    #8b653a;
+  --color-gold-dim:     rgba(179, 139, 89, 0.45);
+  --color-gold-glow:    rgba(179, 139, 89, 0.18);
+  --color-gold-shimmer: rgba(217, 175, 122, 0.55);
 
   /* ── Colour — Text ── */
   --color-text-primary:   #f5ede8;
@@ -57,9 +57,9 @@
   --leading-loose:  1.75;
 
   /* Tracking — Apple uses tight on display, slightly open on small */
-  --tracking-tightest: -0.04em;
-  --tracking-tight:    -0.025em;
-  --tracking-normal:   -0.005em;
+  --tracking-tightest: -0.015em;
+  --tracking-tight:    -0.01em;
+  --tracking-normal:   0em;
   --tracking-wide:      0.04em;
   --tracking-wider:     0.08em;
   --tracking-widest:    0.14em;
@@ -87,10 +87,12 @@
   --radius-full: 9999px;
 
   /* ── Shadows ── */
-  --shadow-gold:  0 0 32px rgba(200, 169, 110, 0.12);
-  --shadow-gold-strong: 0 0 60px rgba(200, 169, 110, 0.2);
-  --shadow-card:  0 4px 32px rgba(0, 0, 0, 0.4);
-  --shadow-deep:  0 8px 64px rgba(0, 0, 0, 0.6);
+  --shadow-gold:        0 0 32px rgba(179, 139, 89, 0.18), 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-gold-strong: 0 0 60px rgba(179, 139, 89, 0.3),  0 4px 24px rgba(0,0,0,0.6);
+  --shadow-card:        0 4px 16px rgba(0,0,0,0.5), 0 12px 40px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+  --shadow-deep:        0 8px 32px rgba(0,0,0,0.7), 0 24px 64px rgba(0,0,0,0.5), 0 1px 0 rgba(179, 139, 89, 0.08) inset;
+  --shadow-float:       0 20px 60px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4), 0 0 1px rgba(179, 139, 89, 0.3);
+  --shadow-section:     0 -1px 0 rgba(179, 139, 89, 0.12), 0 1px 40px rgba(0,0,0,0.5);
 
   /* ── Motion ── */
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
@@ -114,8 +116,8 @@
   /* ── Shadows — focus aura ── */
   --shadow-focus-aura:
     0 0 0 2px #0a0a0a,
-    0 0 0 4px rgba(200, 169, 110, 0.45),
-    0 0 16px 4px rgba(200, 169, 110, 0.15);
+    0 0 0 4px rgba(179, 139, 89, 0.45),
+    0 0 16px 4px rgba(179, 139, 89, 0.15);
 
   /* ── Layout ── */
   --container-max:    1280px;
@@ -153,10 +155,10 @@ html.light-mode {
   --color-border:      #d4cec4;
   --color-border-soft: #ddd8ce;
 
-  --color-gold:        #9a7440;
-  --color-gold-dim:    rgba(154, 116, 64, 0.3);
-  --color-gold-glow:   rgba(154, 116, 64, 0.1);
-  --color-gold-shimmer:rgba(154, 116, 64, 0.2);
+  --color-gold:        #8b653a;
+  --color-gold-dim:    rgba(139, 101, 58, 0.3);
+  --color-gold-glow:   rgba(139, 101, 58, 0.1);
+  --color-gold-shimmer:rgba(139, 101, 58, 0.2);
 
   --color-text-primary:   #1a1612;
   --color-text-secondary: #2a2420;
@@ -168,13 +170,13 @@ html.light-mode {
   --glass-bg-hover:    rgba(0, 0, 0, 0.06);
   --glass-border:      rgba(0, 0, 0, 0.1);
 
-  --shadow-gold:        0 0 32px rgba(154, 116, 64, 0.15);
-  --shadow-gold-strong: 0 0 60px rgba(154, 116, 64, 0.25);
+  --shadow-gold:        0 0 32px rgba(139, 101, 58, 0.15);
+  --shadow-gold-strong: 0 0 60px rgba(139, 101, 58, 0.25);
   --shadow-card:        0 4px 32px rgba(0, 0, 0, 0.1);
   --shadow-deep:        0 8px 64px rgba(0, 0, 0, 0.15);
 
   --shadow-focus-aura:
     0 0 0 2px #f5f0e8,
-    0 0 0 4px rgba(154, 116, 64, 0.5),
-    0 0 16px 4px rgba(154, 116, 64, 0.18);
+    0 0 0 4px rgba(139, 101, 58, 0.5),
+    0 0 16px 4px rgba(139, 101, 58, 0.18);
 }

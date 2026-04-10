@@ -1,6 +1,6 @@
 'use client'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useGlassPhobic, useInertialHover } from './GlassPhobic'
 import { shouldEnableHeavyEffects } from '@/lib/deviceTier'
 
@@ -20,12 +20,7 @@ const ComfortAutopilot      = dynamic(() => import('../ai/ComfortAutopilot'),   
 const ReadingPaceDetector   = dynamic(() => import('../ai/ReadingPaceDetector'),      { ssr: false })
 
 export default function EffectsLayer() {
-  const [enableHeavy, setEnableHeavy] = useState(true)
-
-  useEffect(() => {
-    // Check device capability on mount
-    setEnableHeavy(shouldEnableHeavyEffects())
-  }, [])
+  const [enableHeavy] = useState(() => typeof window === 'undefined' ? true : shouldEnableHeavyEffects())
 
   useGlassPhobic()
   useInertialHover()

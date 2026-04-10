@@ -56,6 +56,12 @@ export function useWebGLBackground(canvasRef: React.RefObject<HTMLCanvasElement 
       observer.disconnect()
       window.removeEventListener('resize',resize);
       window.removeEventListener('mousemove',onMove)
+      
+      // Cleanup WebGL resources
+      gl.deleteProgram(prog);
+      gl.deleteBuffer(buf);
+      const shaders = gl.getAttachedShaders(prog);
+      if (shaders) shaders.forEach(sh => gl.deleteShader(sh));
     }
   }, [canvasRef])
 }

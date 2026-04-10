@@ -45,20 +45,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Message is required (max 3000 chars)' }, { status: 422 })
   }
 
+  if (!resend) {
+    return NextResponse.json(
+      { error: 'Contact service is temporarily unavailable. Please use direct email or WhatsApp for now.' },
+      { status: 503 }
+    )
+  }
+
   // Send email via Resend (active when RESEND_API_KEY is set)
-  if (resend) {
-    try {
-      await resend.emails.send({
-        from: 'contact@mmusman.com',
-        to: 'Info@mmusman.com',
-        replyTo: emailStr,
-        subject: `Contact from ${nameStr}${typeStr ? ` — ${typeStr}` : ''}`,
-        text: `Name: ${nameStr}\nEmail: ${emailStr}\nEngagement: ${typeStr || '—'}\n\n${messageStr}`,
-      })
-    } catch (emailErr) {
-      console.error('[contact] email send failed:', emailErr)
-      return NextResponse.json({ error: 'Failed to send message. Please try again.' }, { status: 500 })
-    }
+  try {
+    await resend.emails.send({
+      from: 'contact@mmusman.com',
+      to: 'Info@mmusman.com',
+      replyTo: emailStr,
+      subject: `Contact from ${nameStr}${typeStr ? ` — ${typeStr}` : ''}`,
+      text: `Name: ${nameStr}\nEmail: ${emailStr}\nEngagement: ${typeStr || '—'}\n\n${messageStr}`,
+    })
+  } catch (emailErr) {
+    console.error('[contact] email send failed:', emailErr)
+    return NextResponse.json({ error: 'Failed to send message. Please try again.' }, { status: 500 })
   }
 
   return NextResponse.json({ ok: true })

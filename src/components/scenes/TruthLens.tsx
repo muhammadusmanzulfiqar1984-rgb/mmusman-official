@@ -1,5 +1,6 @@
 'use client'
 import { useRef, useState } from 'react'
+import Image from 'next/image'
 
 // Truth Lens — hover any verified claim to see its basis
 interface Claim {
@@ -18,7 +19,7 @@ function TruthPill({ claim }: { claim: Claim }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLSpanElement>(null)
 
-  const color = claim.type === 'stat'       ? '#c8a96e'
+  const color = claim.type === 'stat'       ? 'var(--color-gold)'
               : claim.type === 'credential' ? '#a0c8a0'
               : '#8ab4c8'
 
@@ -99,49 +100,35 @@ export default function TruthLens({ data }: { data: TruthData }) {
       id="truth"
       aria-label="Verified claims"
       className="section"
-      style={{ background: 'rgba(200,169,110,0.015)', borderLeft: '3px solid rgba(200,169,110,0.15)', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}
+      style={{ background: 'var(--color-bg-alt)', borderLeft: '3px solid var(--color-gold-dim)', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}
     >
       <p className="section-label">Truth Lens</p>
 
       <div className="col2-grid" style={{ alignItems: 'start' }}>
         <div>
-          {/* Heading + portrait side by side */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-6)', marginBottom: 'var(--space-5)' }}>
-            {/* HEADING HIDDEN TEMPORARILY
-            <h2 className="h2 reveal" style={{ flex: 1, margin: 0 }}>
-              {headingParts[0]}{headingParts[1] && <><br />{headingParts[1]}</>}
-            </h2>
-            */}
-            {/* Editorial portrait */}
-            <div style={{
-              width: '260px',
-              height: '345px',
-              flexShrink: 0,
-              borderRadius: '10px',
-              overflow: 'hidden',
-              border: '1px solid rgba(200,169,110,0.4)',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
-              marginTop: '80px',
-            }}>
-              <img
-                src="/images/Retails1.png"
-                alt="Mian Muhammad Usman — retail"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'top center',
-                  filter: 'brightness(0.85) contrast(1.12) sepia(0.08)',
-                  display: 'block',
-                }}
-              />
-            </div>
-          </div>
-          {/* SUBHEADING HIDDEN TEMPORARILY
-          <p className="body reveal" style={{ maxWidth: '420px' }}>
+          <h2 className="h2 reveal" style={{ margin: '0 0 var(--space-4) 0' }}>
+            {headingParts[0]}{headingParts[1] && <><br />{headingParts[1]}</>}
+          </h2>
+          <p className="body reveal" style={{ maxWidth: '420px', marginBottom: 'var(--space-6)' }}>
             {data.subheading}
           </p>
-          */}
+          <div style={{
+            width: '260px',
+            height: '345px',
+            borderRadius: '10px',
+            overflow: 'hidden',
+            border: '1px solid var(--color-gold-dim)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            position: 'relative',
+          }}>
+            <Image
+              src="/images/Retails1.png"
+              alt="Mian Muhammad Usman — retail"
+              fill
+              sizes="260px"
+              style={{ objectFit: 'cover', objectPosition: 'top center', filter: 'brightness(0.85) contrast(1.12) sepia(0.08)' }}
+            />
+          </div>
         </div>
 
         <div className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>

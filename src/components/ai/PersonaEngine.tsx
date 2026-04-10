@@ -4,24 +4,30 @@ import { inferPersona, trackDwell, type PersonaDecision } from '@/lib/policyEngi
 import { eventBus, EVENTS } from '@/lib/eventBus'
 import { record, initScrollTracking, initSectionTracking, initRageClickTracking } from '@/lib/telemetry'
 
-const DEFAULT_ORDER = ['hero','about','work','insights','speaking','training','talks','skillscape','media','truth','contact']
-
 export function usePersonaEngine() {
-  const [decision, setDecision] = useState<PersonaDecision | null>(null)
-  const [sectionOrder, setSectionOrder] = useState<string[]>(DEFAULT_ORDER)
+  const [engineState, setEngineState] = useState(() => {
+    const initialDecision = inferPersona()
+    return {
+      decision: initialDecision,
+      sectionOrder: initialDecision.sectionOrder,
+    }
+  })
 
   const refresh = useCallback(() => {
     const d = inferPersona()
-    setDecision(d)
-    setSectionOrder(d.sectionOrder)
+    setEngineState({ decision: d, sectionOrder: d.sectionOrder })
     if (d.persona !== 'default') {
       eventBus.emit(EVENTS.SCENE_REORDER, { order: d.sectionOrder, persona: d.persona })
     }
   }, [])
 
   useEffect(() => {
-    // Initial inference
-    refresh()
+    if (engineState.decision.persona !== 'default') {
+      eventBus.emit(EVENTS.SCENE_REORDER, {
+        order: engineState.sectionOrder,
+        persona: engineState.decision.persona,
+      })
+    }
 
     // Record page view
     record(EVENTS.PAGE_VIEW, {
@@ -49,9 +55,9 @@ export function usePersonaEngine() {
       cleanRage?.()
       offDwell()
     }
-  }, [refresh])
+  }, [engineState.decision.persona, engineState.sectionOrder, refresh])
 
-  return { decision, sectionOrder }
+  return { decision: engineState.decision, sectionOrder: engineState.sectionOrder }
 }
 
 // ── Explainability badge ──────────────────────────────────────────────────────

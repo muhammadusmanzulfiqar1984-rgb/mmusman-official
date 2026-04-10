@@ -1,5 +1,5 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import MagneticButton from '@/components/effects/MagneticButton'
 import { useWebGLBackground, useMicroParallax } from '@/lib/hooks/useHeroAnimations'
@@ -17,6 +17,7 @@ interface HeroData {
 export default function HeroSection({ data }: { data: HeroData }) {
   const canvasRef    = useRef<HTMLCanvasElement>(null)
   const contentRef   = useRef<HTMLDivElement>(null)
+  const [imgError, setImgError] = useState(false)
 
   // ── WebGL ambient background ──────────────────────────────────────────────
   useWebGLBackground(canvasRef)
@@ -59,7 +60,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
           {data.eyebrow && (
             <p className="eyebrow reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.eyebrow}</p>
           )}
-          <h1 className="h2 headline-shimmer reveal" style={{
+          <h1 className="h2 headline-shimmer reveal lens-resolve" style={{
             marginBottom: 'var(--space-6)',
           }}>
             {lines[0]}<br />
@@ -73,9 +74,8 @@ export default function HeroSection({ data }: { data: HeroData }) {
             {data.buttons.map(b => (
               <MagneticButton key={b.href} className="hero-btn-wrap">
                 <a href={b.href} className="btn btn-primary" style={{
-                  fontSize:'0.8rem',
                   padding: '11px 28px',
-                  letterSpacing: '0.04em',
+                  letterSpacing: 'var(--tracking-wide)',
                 }}>{b.label}</a>
               </MagneticButton>
             ))}
@@ -84,8 +84,8 @@ export default function HeroSection({ data }: { data: HeroData }) {
           <div className="reveal" style={{ display:'flex', gap:'var(--space-8)', paddingTop:'var(--space-6)', borderTop:'1px solid var(--color-border-soft)' }}>
             {([['50+','Conferences'],['15+','Years'],['6','Industries'],['25+','Organisations']] as [string,string][]).map(([v,l]) => (
               <div key={l}>
-                <div style={{ fontFamily:'var(--font-body)', fontSize:'1.6rem', color:'var(--color-text-primary)', lineHeight:'var(--leading-tight)', fontWeight:300 }}>{v}</div>
-                <div style={{ fontFamily:'var(--font-body)', fontSize:'0.65rem', color:'var(--color-gold)', letterSpacing:'0.1em', textTransform:'uppercase', marginTop:'6px', fontWeight:300 }}>{l}</div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-2xl)', color:'var(--color-text-primary)', lineHeight:'var(--leading-tight)', fontWeight:300 }}>{v}</div>
+                <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-gold)', letterSpacing:'var(--tracking-wider)', textTransform:'uppercase', marginTop:'6px', fontWeight:300 }}>{l}</div>
               </div>
             ))}
           </div>
@@ -93,17 +93,20 @@ export default function HeroSection({ data }: { data: HeroData }) {
 
         {/* RIGHT — photo */}
         <div className="reveal" style={{ position:'relative' }}>
-          <div style={{ borderRadius:'24px', overflow:'hidden', background:'var(--color-bg-card)', border:'1px solid var(--color-gold-dim)', aspectRatio:'3/4', position:'relative', maxHeight:'520px' }}>
-            <Image
-              src="/images/hero.jpeg"
-              alt="Mian Muhammad Usman"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority
-              style={{ objectFit:'cover', objectPosition:'top center', filter:'contrast(1.05) brightness(0.92)' }}
-              onError={e => { const el=e.target as HTMLImageElement; const ph=el.parentElement!; el.style.display='none'; ph.style.background='linear-gradient(135deg,#1a1510,#0d0d0d)'; ph.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:serif;font-size:2rem;color:rgba(200,169,110,0.3)">MMU</div>' }}
-            />
-
+          <div style={{ borderRadius:'24px', overflow:'hidden', background: imgError ? 'linear-gradient(135deg,#1a1510,#0d0d0d)' : 'var(--color-bg-card)', border:'1px solid var(--color-gold-dim)', aspectRatio:'3/4', position:'relative', maxHeight:'520px' }}>
+            {!imgError ? (
+              <Image
+                src="/images/hero.jpeg"
+                alt="Mian Muhammad Usman"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+                style={{ objectFit:'cover', objectPosition:'top center', filter:'contrast(1.05) brightness(0.92)' }}
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',fontFamily:'serif',fontSize:'2rem',color:'rgba(200,169,110,0.3)'}}>MMU</div>
+            )}
           </div>
 
           {/* Floating quote card */}
@@ -118,17 +121,17 @@ export default function HeroSection({ data }: { data: HeroData }) {
             <span style={{
               display:'inline-block',
               fontFamily:'var(--font-mono)',
-              fontSize:'0.52rem',
-              letterSpacing:'0.14em',
+              fontSize:'var(--text-xs)',
+              letterSpacing:'var(--tracking-widest)',
               textTransform:'uppercase',
               color:'var(--color-gold)',
               marginBottom:'var(--space-3)',
             }}>{data.pill}</span>
-            <blockquote style={{ fontFamily:'var(--font-display)', fontSize:'0.88rem', fontStyle:'italic', color:'var(--color-gold)', lineHeight:1.55, fontWeight:300, borderLeft:'2px solid var(--color-gold)', paddingLeft:'var(--space-4)', margin:0, letterSpacing:'-0.01em' }}>
+            <blockquote style={{ fontFamily:'var(--font-display)', fontSize:'var(--text-base)', fontStyle:'italic', color:'var(--color-gold)', lineHeight:1.55, fontWeight:300, borderLeft:'2px solid var(--color-gold)', paddingLeft:'var(--space-4)', margin:0, letterSpacing:'var(--tracking-tight)' }}>
               &ldquo;{data.quote}&rdquo;
             </blockquote>
             {data.quoteSupport && (
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'0.65rem', color:'var(--color-text-ghost)', lineHeight:1.6, marginTop:'var(--space-3)', fontWeight:300, fontStyle:'normal' }}>{data.quoteSupport}</p>
+              <p style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-text-ghost)', lineHeight:1.6, marginTop:'var(--space-3)', fontWeight:300, fontStyle:'normal' }}>{data.quoteSupport}</p>
             )}
           </div>
         </div>

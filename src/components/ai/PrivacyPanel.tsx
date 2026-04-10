@@ -102,7 +102,7 @@ export default function PrivacyPanel() {
             </h2>
 
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: 1.7, fontWeight: 300, marginBottom: 'var(--space-8)' }}>
-              This site uses <strong style={{ color: 'var(--color-text-secondary)' }}>local-only analytics</strong> — events are stored in your browser's localStorage only. Nothing is sent to any external server. No cookies. No third-party trackers.
+              This site uses <strong style={{ color: 'var(--color-text-secondary)' }}>local-only analytics</strong> — events are stored in your browser local storage only. Nothing is sent to any external server. No cookies. No third-party trackers.
             </p>
 
             {/* Consent toggle */}

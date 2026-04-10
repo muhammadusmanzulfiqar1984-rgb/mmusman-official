@@ -10,6 +10,27 @@
 
 export type DeviceTier = 'high' | 'medium' | 'low'
 
+interface BatteryManagerLike {
+  level: number
+  charging: boolean
+}
+
+interface ConnectionLike {
+  effectiveType?: string
+}
+
+interface NavigatorWithDeviceHints extends Navigator {
+  deviceMemory?: number
+  connection?: ConnectionLike
+  mozConnection?: ConnectionLike
+  webkitConnection?: ConnectionLike
+  getBattery?: () => Promise<BatteryManagerLike>
+}
+
+interface WebGLDebugRendererInfoLike {
+  UNMASKED_RENDERER_WEBGL: number
+}
+
 let cachedTier: DeviceTier | null = null
 
 export function getDeviceTier(): DeviceTier {
@@ -46,7 +67,8 @@ export function getDeviceTier(): DeviceTier {
   else if (cores >= 4) score += 1
 
   // 2. Memory (if available)
-  const memory = (navigator as any).deviceMemory
+  const enhancedNavigator = navigator as NavigatorWithDeviceHints
+  const memory = enhancedNavigator.deviceMemory
   if (memory) {
     if (memory >= 8) score += 3
     else if (memory >= 4) score += 2
@@ -56,11 +78,11 @@ export function getDeviceTier(): DeviceTier {
   // 3. GPU capability via canvas performance test
   try {
     const canvas = document.createElement('canvas')
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    const gl = canvas.getContext('webgl') as WebGLRenderingContext | null
     if (gl) {
-      const debugInfo = (gl as any).getExtension('WEBGL_debug_renderer_info')
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info') as WebGLDebugRendererInfoLike | null
       if (debugInfo) {
-        const renderer = (gl as any).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        const renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) ?? '')
         // High-end GPU indicators
         if (renderer && (
           renderer.includes('Apple') ||
@@ -78,7 +100,7 @@ export function getDeviceTier(): DeviceTier {
   }
 
   // 4. Connection speed (faster = likely better device)
-  const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection
+  const connection = enhancedNavigator.connection || enhancedNavigator.mozConnection || enhancedNavigator.webkitConnection
   if (connection) {
     const effectiveType = connection.effectiveType
     if (effectiveType === '4g') score += 1
@@ -86,11 +108,9 @@ export function getDeviceTier(): DeviceTier {
 
   // 5. Battery status (low battery = reduce effects to save power)
   // Note: Battery API is deprecated but still check if available
-  let lowPower = false
-  if ('getBattery' in navigator) {
-    ;(navigator as any).getBattery?.().then((battery: any) => {
+  if (typeof enhancedNavigator.getBattery === 'function') {
+    enhancedNavigator.getBattery().then((battery) => {
       if (battery.level < 0.2 && !battery.charging) {
-        lowPower = true
         // Force low tier if battery critical
         if (cachedTier === 'medium' || cachedTier === 'high') {
           cachedTier = 'low'

@@ -20,7 +20,7 @@ export default function MagneticButton({ children, strength = 8, className, styl
   const currentRef = useRef({ x: 0, y: 0 })
   const hovered   = useRef(false)
 
-  const animate = useCallback(() => {
+  function animate() {
     const tx = targetRef.current.x
     const ty = targetRef.current.y
     const cx = currentRef.current.x
@@ -41,12 +41,12 @@ export default function MagneticButton({ children, strength = 8, className, styl
     }
 
     rafRef.current = requestAnimationFrame(animate)
-  }, [])
+  }
 
   const startRAF = useCallback(() => {
     if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current)
     rafRef.current = requestAnimationFrame(animate)
-  }, [animate])
+  }, [])
 
   const onMouseEnter = useCallback(() => {
     hovered.current = true

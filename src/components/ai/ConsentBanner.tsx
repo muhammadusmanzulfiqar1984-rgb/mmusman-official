@@ -1,13 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { getConsent, setConsent } from '@/lib/telemetry'
 
 export default function ConsentBanner() {
-  const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    if (getConsent() === 'none') setShow(true)
-  }, [])
+  const [show, setShow] = useState(() => typeof window !== 'undefined' && getConsent() === 'none')
 
   if (!show) return null
 

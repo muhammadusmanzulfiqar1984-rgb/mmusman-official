@@ -61,20 +61,20 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'var(--space-4)', textAlign: 'left' }}>
         <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-1)', fontSize: 'clamp(1.4rem, 2vw, 2rem)' }}>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-1)' }}>
             {data?.heading ?? 'In conversation on record.'}
           </h2>
-          <p className="body reveal" style={{ maxWidth: '560px', fontSize: '0.82rem', opacity: 0.7, margin: 0 }}>
+          <p className="body reveal" style={{ maxWidth: '560px', opacity: 0.7, margin: 0 }}>
             {data?.subheading ?? 'Podcasts, interviews and addresses.'}
           </p>
         </div>
         <span className="pill reveal">Immersive media room</span>
       </div>
 
-      {/* Cinema screen — 60% of section height */}
+      {/* Cinema screen */}
       <div className="reveal" style={{
-        flex: '1 1 0',
-        minHeight: 0,
+        flex: '1 1 auto',
+        minHeight: 'clamp(220px, 40vh, 520px)',
         borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
         border: '1px solid var(--color-gold-dim)',
@@ -87,6 +87,7 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
             src={getThumb(current)!}
             alt={current.title}
             fill
+            sizes="(max-width: 768px) 100vw, 80vw"
             style={{ objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)' }}
             onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
           />
@@ -99,10 +100,10 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
           display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
           padding: 'var(--space-8)',
         }}>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-2)' }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-2)' }}>
             {current.subtitle}
           </p>
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2, margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-2xl)', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2, margin: 0 }}>
             {current.title}
           </p>
         </div>
@@ -159,15 +160,16 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
                 src={getThumb(item)!}
                 alt={item.title}
                 fill
+                sizes="(max-width: 768px) 65vw, 25vw"
                 style={{ objectFit: 'cover', objectPosition: 'center top', filter: active === i ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter var(--duration-base) var(--ease-out)' }}
                 onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
               />
             )}
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '8px 10px', background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 100%)' }}>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: active === i ? 'var(--color-gold)' : 'rgba(255,255,255,0.5)', margin: 0 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: active === i ? 'var(--color-gold)' : 'rgba(255,255,255,0.5)', margin: 0 }}>
                 {item.subtitle}
               </p>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.62rem', color: active === i ? '#f0e8d8' : 'rgba(255,255,255,0.35)', margin: '2px 0 0', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: active === i ? '#f0e8d8' : 'rgba(255,255,255,0.35)', margin: '2px 0 0', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {item.title}
               </p>
             </div>

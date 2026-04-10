@@ -1,6 +1,34 @@
 'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
 
+type SpeechRecognitionResultLike = Array<{ transcript: string }>
+
+interface SpeechRecognitionEventLike {
+  results: SpeechRecognitionResultLike[]
+}
+
+interface SpeechRecognitionErrorEventLike {
+  error: string
+}
+
+interface SpeechRecognitionLike {
+  continuous: boolean
+  interimResults: boolean
+  lang: string
+  onstart: (() => void) | null
+  onresult: ((event: SpeechRecognitionEventLike) => void) | null
+  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null
+  onend: (() => void) | null
+  start: () => void
+}
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionLike
+
+type SpeechWindow = Window & {
+  SpeechRecognition?: SpeechRecognitionConstructor
+  webkitSpeechRecognition?: SpeechRecognitionConstructor
+}
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
@@ -31,6 +59,18 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  // Web Speech API states
+  const [isListening, setIsListening] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const speechWindow = window as SpeechWindow
+      setSpeechSupported(Boolean(speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition))
+    }
+  }, [])
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, open])
@@ -39,7 +79,55 @@ export default function ChatWidget() {
     setMessages([{ role: 'assistant', content: WELCOME }])
     setHistory([])
     setInput('')
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel()
+    }
   }, [])
+
+  const startListening = () => {
+    if (!speechSupported) return
+    const speechWindow = window as SpeechWindow
+    const SpeechRecognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition
+    if (!SpeechRecognition) return
+
+    const recognition = new SpeechRecognition()
+    recognition.continuous = false
+    recognition.interimResults = false
+    recognition.lang = 'en-US'
+
+    recognition.onstart = () => {
+      setIsListening(true)
+      setVoiceEnabled(true) // Enable voice replies if they use voice input
+    }
+    recognition.onresult = (event) => {
+      const transcript = event.results[0]?.[0]?.transcript ?? ''
+      send(transcript) // auto-send when they finish speaking
+    }
+    recognition.onerror = (event) => {
+      setIsListening(false)
+      console.error('Speech recognition error:', event.error)
+      if (event.error === 'not-allowed') {
+        alert("Please allow microphone access in your browser settings to use the voice bot.")
+      } else if (event.error === 'no-speech') {
+        alert("No speech was detected. Please try again.")
+      } else {
+        alert(`Microphone error: ${event.error}`)
+      }
+    }
+    recognition.onend = () => setIsListening(false)
+
+    recognition.start()
+  }
+
+  const speak = (text: string) => {
+    if (!voiceEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return
+    window.speechSynthesis.cancel() // Stop current speaking
+    const cleanText = text.replace(/[*#]/g, '') // Strip basic markdown
+    const utterance = new SpeechSynthesisUtterance(cleanText)
+    utterance.lang = 'en-US'
+    utterance.rate = 1.05
+    window.speechSynthesis.speak(utterance)
+  }
 
   const send = async (text: string) => {
     const msg = text.trim()
@@ -67,6 +155,7 @@ export default function ChatWidget() {
           next[next.length - 1] = { role: 'assistant', content: err.error ?? 'Something went wrong.' }
           return next
         })
+        if (voiceEnabled) speak(err.error ?? 'Something went wrong.')
         return
       }
 
@@ -87,6 +176,9 @@ export default function ChatWidget() {
         })
       }
 
+      // Speak the final reply
+      speak(fullReply)
+
       // Store completed turn in history for next request
       setHistory(prev => [
         ...prev,
@@ -99,6 +191,7 @@ export default function ChatWidget() {
         next[next.length - 1] = { role: 'assistant', content: 'Service temporarily unavailable.' }
         return next
       })
+      if (voiceEnabled) speak('Service temporarily unavailable.')
     } finally {
       setLoading(false)
     }
@@ -172,11 +265,33 @@ export default function ChatWidget() {
               background: loading ? 'var(--color-gold)' : 'var(--color-gold)',
               boxShadow: loading ? '0 0 12px var(--color-gold)' : '0 0 8px var(--color-gold)',
               transition: 'box-shadow 0.3s ease',
-              animation: loading ? 'pulse 1.2s ease-in-out infinite' : 'none',
+              animation: loading || isListening ? 'pulse 1.2s ease-in-out infinite' : 'none',
             }} aria-hidden="true" />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: '0.1em', color: 'var(--color-gold)', flex: 1 }}>
-              {loading ? 'Gemini is writing…' : 'Ask about Mian'}
+              {isListening ? 'Listening…' : loading ? 'Gemini is writing…' : 'Ask about Mian'}
             </span>
+            <button
+              onClick={() => {
+                setVoiceEnabled(!voiceEnabled)
+                if (voiceEnabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                  window.speechSynthesis.cancel()
+                }
+              }}
+              aria-label={voiceEnabled ? 'Mute AI Voice' : 'Enable AI Voice'}
+              title="Toggle AI Voice"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: voiceEnabled ? 'var(--color-gold)' : 'rgba(255,255,255,0.3)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                padding: '2px',
+                marginRight: '6px',
+              }}
+            >
+              {voiceEnabled ? '🔊' : '🔇'}
+            </button>
             {messages.length > 1 && (
               <button
                 onClick={clearChat}
@@ -263,13 +378,37 @@ export default function ChatWidget() {
             borderTop: '1px solid var(--color-border)',
             display: 'flex',
             gap: 'var(--space-3)',
+            alignItems: 'center',
           }}>
+            {speechSupported && (
+              <button
+                onClick={startListening}
+                disabled={isListening || loading}
+                aria-label="Voice input"
+                style={{
+                  background: isListening ? 'var(--color-gold)' : 'transparent',
+                  border: 'none',
+                  color: isListening ? '#0a0a0a' : 'var(--color-gold)',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: (isListening || loading) ? 'default' : 'pointer',
+                  fontSize: '1rem',
+                  transition: 'all 0.2s',
+                }}
+              >
+                🎙️
+              </button>
+            )}
             <input
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && send(input)}
-              placeholder="Ask anything…"
+              placeholder={isListening ? 'Listening...' : "Ask anything…"}
               aria-label="Message input"
               maxLength={500}
               style={{

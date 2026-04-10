@@ -24,33 +24,13 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
         {data.cards.map((card, i) => (
           <div key={i} className="spin-border">
           <HoloCard className="card shimmer-wrap">
-            <p style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-xs)',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--color-gold)',
-              marginBottom: 'var(--space-3)',
-            }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-3)' }}>
               {card.tag}
             </p>
-            <h3 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.98rem',
-              color: 'var(--color-text-secondary)',
-              lineHeight: 1.5,
-              fontWeight: 300,
-              marginBottom: 'var(--space-3)',
-            }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', color: 'var(--color-text-secondary)', lineHeight: 1.5, fontWeight: 300, marginBottom: 'var(--space-3)' }}>
               {card.title}
             </h3>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.8rem',
-              color: 'var(--color-text-dim)',
-              lineHeight: 1.7,
-              fontWeight: 300,
-            }}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', color: 'var(--color-text-dim)', lineHeight: 1.7, fontWeight: 300 }}>
               {card.body}
             </p>
           </HoloCard>

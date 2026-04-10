@@ -96,6 +96,23 @@
       { "tag": "Leadership", "title": "The operator's discipline — how founders think when managers freeze", "icon": "users" },
       { "tag": "Power & Strategy", "title": "How decisions actually get made — markets, law and political capital", "icon": "strategy" }
     ],
+    "keynotes": [
+      {
+        "tag": "Systems & Architecture",
+        "title": "Design the system or the system will design you",
+        "body": "How the most durable organizations — from retail chains to energy companies — are built on invisible architecture that most leaders never think to design intentionally."
+      },
+      {
+        "tag": "Multi-Industry Mind",
+        "title": "What one person operating across six industries actually teaches you",
+        "body": "The patterns that emerge when you have personally run retail, oil & gas, fashion, trading, law and political strategy — and what they reveal about how all organizations really work."
+      },
+      {
+        "tag": "Power & Decision-Making",
+        "title": "The room where the real decision was already made",
+        "body": "A frank account of how commercial, legal and political power interact — and why leaders who understand all three always have more room to move than those who only understand one."
+      }
+    ],
     "priority": 5,
     "tags": ["speaking", "forum"],
     "audience": ["conference", "corporate"]
@@ -124,8 +141,8 @@
   {
     "id": "talks",
     "type": "talks",
-    "heading": "Talks & keynotes",
-    "subheading": "Talks that leave a room thinking differently — not because the slides were polished, but because every word came from somewhere real.",
+    "heading": "Talks & Keynotes",
+    "subheading": "Three addresses built from direct experience — not research. Each one designed for rooms where real decisions are made.",
     "cards": [
       {
         "tag": "Systems & Architecture",
@@ -144,8 +161,8 @@
       }
     ],
     "priority": 7,
-    "tags": ["talks", "addresses"],
-    "audience": ["conference", "corporate", "executive"]
+    "tags": ["talks", "keynotes"],
+    "audience": ["conference", "executive", "all"]
   },
   {
     "id": "skillscape",

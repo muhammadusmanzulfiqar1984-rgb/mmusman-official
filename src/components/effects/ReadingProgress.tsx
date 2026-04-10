@@ -14,21 +14,24 @@ export default function ReadingProgress() {
   const rafRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
-    // Calculate total reading time
-    let totalWords = 0
-    SECTIONS_TO_ANALYZE.forEach(id => {
-      const section = document.getElementById(id)
-      if (section) {
-        const text = section.innerText || ''
-        const words = text.trim().split(/\s+/).length
-        totalWords += words
-      }
-    })
-    const minutes = Math.ceil(totalWords / WORDS_PER_MINUTE)
-    setReadingTime(minutes)
+    let hasCalculatedReadingTime = false
 
     // Track scroll progress with RAF for smoothness
     const updateProgress = () => {
+      if (!hasCalculatedReadingTime) {
+        let totalWords = 0
+        SECTIONS_TO_ANALYZE.forEach(id => {
+          const section = document.getElementById(id)
+          if (!section) return
+
+          const text = section.innerText || ''
+          const words = text.trim().split(/\s+/).filter(Boolean).length
+          totalWords += words
+        })
+        hasCalculatedReadingTime = true
+        setReadingTime(Math.max(1, Math.ceil(totalWords / WORDS_PER_MINUTE)))
+      }
+
       const windowHeight = window.innerHeight
       const documentHeight = document.documentElement.scrollHeight - windowHeight
       const scrolled = window.scrollY

@@ -62,6 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <div className="letterbox-top" aria-hidden="true"></div>
+        <div className="letterbox-bottom" aria-hidden="true"></div>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <EffectsLayer />
         {children}
@@ -69,7 +71,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ChatWidget />
         <ConsentBanner />
         <Analytics />
-        <DevOverlayLoader />
       </body>
     </html>
   )

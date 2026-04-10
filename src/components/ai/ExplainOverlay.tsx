@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 // Explain Overlay — "Why this order?" badge that opens a log of
 // all adaptations made (persona, performance mode, motion state).

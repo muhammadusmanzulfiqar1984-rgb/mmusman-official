@@ -36,45 +36,58 @@ function Digit({ d }: { d: string }) {
 function CounterBadge({ value, label }: { value: string; label: string }) {
   const { numeric, suffix } = parseStatValue(value)
   const [count, setCount]   = useState(0)
-  const ref                 = useRef<HTMLDivElement>(null)
-  const started             = useRef(false)
+  const rafRef              = useRef<number>(0)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(entries => {
-      if (!entries[0].isIntersecting || started.current) return
-      started.current = true
-      observer.disconnect()
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setCount(numeric); return }
-      const duration = Math.min(900, numeric * 22)
-      const start = performance.now()
-      const tick = (now: number) => {
-        const p = Math.min((now - start) / duration, 1)
-        setCount(Math.round((1 - Math.pow(1 - p, 3)) * numeric))
-        if (p < 1) requestAnimationFrame(tick)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rafRef.current = requestAnimationFrame(() => setCount(numeric))
+      return () => cancelAnimationFrame(rafRef.current)
+    }
+    const cycleDuration = Math.max(2000, numeric * 80) // full 0→N cycle duration ms
+    const pauseDuration = 1200                          // pause at target before restarting
+    let startTime: number | null = null
+    let pausing = false
+    let pauseStart = 0
+
+    const tick = (now: number) => {
+      if (pausing) {
+        if (now - pauseStart >= pauseDuration) {
+          pausing = false
+          startTime = now
+        }
+        rafRef.current = requestAnimationFrame(tick)
+        return
       }
-      requestAnimationFrame(tick)
-    }, { threshold: 0.5 })
-    observer.observe(el)
-    return () => observer.disconnect()
+      if (startTime === null) startTime = now
+      const elapsed = now - startTime
+      const p = Math.min(elapsed / cycleDuration, 1)
+      setCount(Math.round((1 - Math.pow(1 - p, 3)) * numeric))
+      if (p < 1) {
+        rafRef.current = requestAnimationFrame(tick)
+      } else {
+        pausing = true
+        pauseStart = now
+        rafRef.current = requestAnimationFrame(tick)
+      }
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
   }, [numeric])
 
   const digits = String(count).split('')
 
   return (
     <div
-      ref={ref}
       className="card reveal"
       style={{ textAlign: 'left', padding: 'var(--space-8) var(--space-4)' }}
     >
       <div style={{
-        fontFamily: "'Inter', -apple-system, sans-serif",
-        fontSize: 'clamp(2.25rem, 3.5vw, 3.25rem)',
-        fontWeight: 200,
+        fontFamily: 'var(--font-display)',
+        fontSize: 'var(--text-4xl)',
+        fontWeight: 300,
         color: 'var(--color-gold)',
         lineHeight: 1,
-        letterSpacing: '-0.02em',
+        letterSpacing: 'var(--tracking-tightest)',
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'flex-start',
@@ -90,52 +103,27 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 
 export default function WorkSection({ data }: { data: WorkData }) {
   return (
-    <section id="work" aria-label="Work and highlights" className="section" style={{ position: 'relative', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}>
+    <section id="work" aria-label="Work and highlights" className="section relative box-border py-[clamp(64px,8vw,100px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left">
       <TokenStream />
       <p className="section-label">Work</p>
 
-      <div className="col2-grid" style={{ marginBottom: 'var(--space-12)', alignItems: 'center' }}>
-        <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>{data.heading}</h2>
-          <p className="body reveal" style={{ maxWidth: '600px' }}>{data.subheading}</p>
-        </div>
-        <div className="reveal" style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--color-gold-dim)' }}>
-          <img src="/images/work.png" alt="Working with Mian Muhammad Usman" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.85) contrast(1.1)' }} onError={(e) => { e.currentTarget.src = '/images/Retails1.png'; e.currentTarget.onerror = null; }} />
-        </div>
+      <div className="mb-[var(--space-8)]">
+        <h2 className="h2 reveal mb-[var(--space-4)]">{data.heading}</h2>
+        <p className="body reveal" style={{ maxWidth: '640px' }}>{data.subheading}</p>
       </div>
 
-      {/* Work cards — shimmer on reveal */}
-      <div className="grid-2 reveal-stagger reveal" style={{ marginBottom: 'var(--space-12)' }}>
+      {/* Work cards — 3-column grid */}
+      <div className="work-cards-grid reveal-stagger reveal mb-[var(--space-12)]">
         {data.cards.map((card, i) => (
           <div key={i} className="spin-border">
           <HoloCard
-            className="card card-bevel card-elevate card-reveal-shimmer"
-            style={{
-              background: 'linear-gradient(135deg, #1a1200 0%, #3d2c00 45%, #1a1200 100%)',
-              border: '2px solid var(--color-gold)',
-              borderRadius: 'var(--radius-md)',
-              padding: 'var(--space-6)',
-              boxShadow: '0 0 12px rgba(232,184,75,0.35), 0 0 1px rgba(232,184,75,0.8)',
-            }}
+            className="card card-bevel card-elevate card-reveal-shimmer p-[var(--space-5)] rounded-[var(--radius-md)] border-2 border-[var(--color-gold)] shadow-[0_0_12px_var(--color-gold-glow),0_0_1px_var(--color-gold-dim)] bg-gradient-to-br from-[#1a1200] via-[#3d2c00] via-45% to-[#1a1200]"
           >
             <article aria-label={card.tag}>
-              <p style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 'var(--text-xs)',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--color-gold)',
-                marginBottom: 'var(--space-3)',
-              }}>
+              <p className="font-mono text-[var(--text-xs)] tracking-[0.14em] uppercase text-[var(--color-gold)] mb-[var(--space-2)]">
                 {card.tag}
               </p>
-              <h3 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.98rem',
-                color: 'var(--color-text-secondary)',
-                lineHeight: 1.5,
-                fontWeight: 300,
-              }}>
+              <h3 className="font-display text-[var(--text-base)] text-[var(--color-text-secondary)] leading-[1.45] font-light">
                 {card.title}
               </h3>
             </article>
@@ -144,17 +132,17 @@ export default function WorkSection({ data }: { data: WorkData }) {
         ))}
       </div>
 
-      {/* Stats — animated counter badges */}
-      <div
-        className="stats-grid"
-        aria-label="Key statistics"
-      >
-        {data.stats.map((s, i) => (
-          <div key={i} className="spin-border">
-            <CounterBadge value={s.value} label={s.label} />
+      {/* Animated stat counters */}
+      {data.stats && data.stats.length > 0 && (
+        <>
+          <div className="stats-grid reveal">
+            {data.stats.map((stat, i) => (
+              <CounterBadge key={i} value={stat.value} label={stat.label} />
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+
     </section>
   )
 }

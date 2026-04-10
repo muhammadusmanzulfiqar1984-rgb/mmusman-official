@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 // Comfort Autopilot — detects rage clicks and scroll oscillation,
 // then automatically: increases type scale, reduces density, pauses motion.
@@ -9,22 +9,70 @@ const RAGE_CLICK_THRESHOLD = 4    // clicks in 1 second
 const OSCILLATION_THRESHOLD = 6  // direction reversals in 1 second
 
 export default function ComfortAutopilot() {
-  const [active, setActive]   = useState(false)
+  const [active, setActive] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('mian_comfort') === 'on'
+  })
   const [visible, setVisible] = useState(false)
-  const announced             = useRef(false)
-  const monitoringEnabled     = useRef(false)
-  const clicks                = useRef<number[]>([])
-  const lastScrollY           = useRef(0)
-  const reversals             = useRef<number[]>([])
-  const lastDir               = useRef(0)
+  const announced = useRef(false)
+  const monitoringEnabled = useRef(false)
+  const clicks = useRef<number[]>([])
+  const lastScrollY = useRef(0)
+  const reversals = useRef<number[]>([])
+  const lastDir = useRef(0)
+  const hideTimer = useRef<number | null>(null)
+
+  const activate = useCallback(() => {
+    setActive(true)
+  }, [])
+
+  const dismiss = useCallback(() => {
+    setActive(false)
+    setVisible(false)
+    announced.current = false
+
+    if (hideTimer.current !== null) {
+      window.clearTimeout(hideTimer.current)
+      hideTimer.current = null
+    }
+  }, [])
+
+  const trigger = useCallback(() => {
+    if (announced.current) return
+
+    announced.current = true
+    activate()
+    setVisible(true)
+
+    if (hideTimer.current !== null) {
+      window.clearTimeout(hideTimer.current)
+    }
+
+    hideTimer.current = window.setTimeout(() => {
+      setVisible(false)
+      hideTimer.current = null
+    }, 6000)
+  }, [activate])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Restore from session
-    if (sessionStorage.getItem('mian_comfort') === 'on') {
-      activate()
+    document.documentElement.toggleAttribute('data-comfort', active)
+
+    if (active) {
+      sessionStorage.setItem('mian_comfort', 'on')
+    } else {
+      sessionStorage.removeItem('mian_comfort')
     }
+
+    document.querySelectorAll<HTMLCanvasElement>('#gold-wave-canvas, #gold-dust-canvas').forEach((canvas) => {
+      canvas.style.opacity = active ? '0' : ''
+    })
+  }, [active])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    lastScrollY.current = window.scrollY
 
     // Add 15-second delay before monitoring starts
     const delayTimer = setTimeout(() => {
@@ -53,43 +101,24 @@ export default function ComfortAutopilot() {
       lastScrollY.current = y
     }
 
-    window.addEventListener('click',  onClick)
+    window.addEventListener('click', onClick)
     window.addEventListener('scroll', onScroll, { passive: true })
+
     return () => {
+      monitoringEnabled.current = false
       clearTimeout(delayTimer)
-      window.removeEventListener('click',  onClick)
+      window.removeEventListener('click', onClick)
       window.removeEventListener('scroll', onScroll)
     }
-  }, [active])
+  }, [active, trigger])
 
-  function trigger() {
-    if (announced.current) return
-    announced.current = true
-    activate()
-    setVisible(true)
-    setTimeout(() => setVisible(false), 6000)
-  }
-
-  function activate() {
-    setActive(true)
-    document.documentElement.setAttribute('data-comfort', 'on')
-    sessionStorage.setItem('mian_comfort', 'on')
-    // Pause canvas-heavy effects for comfort
-    document.querySelectorAll<HTMLCanvasElement>('#gold-wave-canvas, #gold-dust-canvas').forEach(c => {
-      c.style.opacity = '0'
-    })
-  }
-
-  function dismiss() {
-    setActive(false)
-    setVisible(false)
-    document.documentElement.removeAttribute('data-comfort')
-    sessionStorage.removeItem('mian_comfort')
-    announced.current = false
-    document.querySelectorAll<HTMLCanvasElement>('#gold-wave-canvas, #gold-dust-canvas').forEach(c => {
-      c.style.opacity = ''
-    })
-  }
+  useEffect(() => {
+    return () => {
+      if (hideTimer.current !== null) {
+        window.clearTimeout(hideTimer.current)
+      }
+    }
+  }, [])
 
   if (!visible && !active) return null
 

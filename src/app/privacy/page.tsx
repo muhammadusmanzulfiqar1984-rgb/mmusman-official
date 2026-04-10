@@ -1,59 +1,89 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import LegalPage from '@/components/layout/LegalPage'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Mian Muhammad Usman',
+  description: 'Privacy policy for mmusman.com covering contact submissions, local analytics, AI assistant usage, and data handling.',
 }
 
 export default function PrivacyPage() {
   return (
-    <main style={{
-      maxWidth: '720px',
-      margin: '0 auto',
-      padding: '120px 32px 80px',
-      fontFamily: 'var(--font-body)',
-      color: 'var(--color-text-muted)',
-      fontWeight: 300,
-      lineHeight: 1.8,
-    }}>
-      <Link href="/" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.1em', color: 'var(--color-gold)', textDecoration: 'none', textTransform: 'uppercase' }}>
-        ← Back
-      </Link>
-
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: 300, color: 'var(--color-text-primary)', marginTop: '40px', marginBottom: '32px', fontStyle: 'italic' }}>
-        Privacy Policy
-      </h1>
-
-      <p style={{ marginBottom: '16px', fontSize: '0.8rem', color: 'var(--color-text-ghost)' }}>Last updated: March 2026</p>
-
-      <Section title="Information we collect">
-        When you use the contact form on this site, we collect the name, email address, and message you voluntarily provide. We do not collect any information automatically beyond standard server logs.
-      </Section>
-
-      <Section title="How we use your information">
-        Information submitted via the contact form is used solely to respond to your enquiry. We do not sell, share, or distribute your personal data to third parties.
-      </Section>
-
-      <Section title="Cookies">
-        This site uses no tracking cookies. Anonymous analytics may be collected via Vercel Analytics, which does not use cookies and is privacy-first by design.
-      </Section>
-
-      <Section title="Data retention">
-        Contact form submissions are retained only as long as necessary to respond to your enquiry. You may request deletion at any time by emailing Info@mmusman.com.
-      </Section>
-
-      <Section title="Contact">
-        For any privacy-related enquiries, contact: <a href="mailto:Info@mmusman.com" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>Info@mmusman.com</a>
-      </Section>
-    </main>
-  )
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div style={{ marginBottom: '32px' }}>
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 300, color: 'var(--color-text-secondary)', marginBottom: '10px' }}>{title}</h2>
-      <p style={{ fontSize: '0.9rem' }}>{children}</p>
-    </div>
+    <LegalPage
+      eyebrow="Privacy"
+      title="Privacy Policy"
+      summary="This site is designed to be direct, low-noise, and privacy-conscious. The only information collected is what a visitor actively submits or explicitly allows for local-only experience features."
+      updated="March 30, 2026"
+      relatedLinks={[
+        { href: '/terms', label: 'Terms of service' },
+        { href: '/#contact', label: 'Contact' },
+      ]}
+      sections={[
+        {
+          title: 'Information provided by you',
+          body: (
+            <p>
+              When you use the contact form or signal list form, this site may collect the name, email address,
+              engagement type, and message you choose to provide. That information is used only to review the enquiry
+              and respond directly. It is not sold, rented, or disclosed for advertising purposes.
+            </p>
+          ),
+        },
+        {
+          title: 'Local analytics and on-device signals',
+          body: (
+            <p>
+              This site includes local-only analytics and adaptive interface features. When enabled, interaction data is
+              stored in your browser to improve the experience on this device. It is not transmitted to a third-party
+              analytics platform by that local telemetry layer. Separate platform-level hosting logs may still exist for
+              security and operational purposes.
+            </p>
+          ),
+        },
+        {
+          title: 'AI assistant and voice features',
+          body: (
+            <p>
+              Questions submitted through the AI assistant are processed to generate a response about Mian Muhammad
+              Usman&apos;s background, speaking, advisory work, and contact routes. If you use microphone features, audio
+              permissions are requested by your browser and controlled by you. Avoid submitting confidential or sensitive
+              information through the assistant.
+            </p>
+          ),
+        },
+        {
+          title: 'Cookies and storage',
+          body: (
+            <p>
+              This site does not rely on tracking cookies for advertising. It may use browser storage such as
+              localStorage or sessionStorage for consent preferences, adaptive experience settings, and local-only
+              telemetry. You can clear that information from your browser at any time.
+            </p>
+          ),
+        },
+        {
+          title: 'Retention and protection',
+          body: (
+            <p>
+              Submitted messages are retained only for as long as reasonably necessary to review, respond, and maintain a
+              record of legitimate business enquiries. Reasonable technical and operational measures are used to protect
+              submitted information, but no internet transmission or storage system can be guaranteed as completely secure.
+            </p>
+          ),
+        },
+        {
+          title: 'Your choices and contact',
+          body: (
+            <p>
+              For privacy-related requests, including deletion enquiries, contact{' '}
+              <Link href="mailto:Info@mmusman.com" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                Info@mmusman.com
+              </Link>
+              . If you do not agree with this policy, do not use the contact or assistant features.
+            </p>
+          ),
+        },
+      ]}
+    />
   )
 }

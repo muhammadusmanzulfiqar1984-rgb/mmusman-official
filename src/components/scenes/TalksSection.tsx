@@ -12,43 +12,23 @@ interface TalksData {
 
 export default function TalksSection({ data }: { data: TalksData }) {
   return (
-    <section id="talks" aria-label="Talks and keynotes" className="section" style={{ boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}>
+    <section id="talks" aria-label="Talks and keynotes" className="section relative py-[clamp(64px,8vw,100px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left box-border">
       <p className="section-label">Talks & Keynotes</p>
 
-      <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
-      <p className="body reveal" style={{ maxWidth: '600px', marginBottom: 'var(--space-10)' }}>{data.subheading}</p>
+      <h2 className="h2 reveal mb-[var(--space-4)]">{data.heading}</h2>
+      <p className="body reveal max-w-[600px] mb-[var(--space-10)]">{data.subheading}</p>
 
       <div className="grid-3">
         {data.cards.map((card, i) => (
           <div key={i} className="spin-border">
           <article className="card shimmer-wrap" aria-label={card.tag}>
-            <p style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-xs)',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--color-gold)',
-              marginBottom: 'var(--space-3)',
-            }}>
+            <p className="font-mono text-[var(--text-xs)] tracking-[0.14em] uppercase text-[var(--color-gold)] mb-[var(--space-3)]">
               {card.tag}
             </p>
-            <h3 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '0.98rem',
-              color: 'var(--color-text-secondary)',
-              lineHeight: 1.5,
-              fontWeight: 300,
-              marginBottom: 'var(--space-3)',
-            }}>
+            <h3 className="font-display text-[var(--text-lg)] text-[var(--color-text-secondary)] leading-[1.5] font-light mb-[var(--space-3)]">
               {card.title}
             </h3>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.8rem',
-              color: 'var(--color-text-dim)',
-              lineHeight: 1.7,
-              fontWeight: 300,
-            }}>
+            <p className="font-body text-[var(--text-sm)] text-[var(--color-text-dim)] leading-[1.7] font-light">
               {card.body}
             </p>
           </article>

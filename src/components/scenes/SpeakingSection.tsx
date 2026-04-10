@@ -6,10 +6,17 @@ interface SpeakingCard {
   icon?: string
 }
 
+interface KeynoteCard {
+  tag: string
+  title: string
+  body: string
+}
+
 interface SpeakingData {
   heading: string
   subheading: string
   cards: SpeakingCard[]
+  keynotes?: KeynoteCard[]
 }
 
 // SVG icons keyed by semantic name (matches sections.json icon field)
@@ -30,27 +37,21 @@ export default function SpeakingSection({ data }: { data: SpeakingData }) {
   return (
     <section id="speaking" aria-label="Speaking and advisory" className="section" style={{ boxSizing: 'border-box', padding: '0 0 clamp(48px, 6vw, 80px) 0', borderBottom: '2px solid var(--color-gold)' }}>
 
-      {/* ── 16:4 cinematic banner ── */}
-      <div aria-hidden="true" style={{ width: '100%', aspectRatio: '16 / 4', position: 'relative', overflow: 'hidden', marginBottom: 'clamp(28px, 4vw, 48px)' }}>
+      {/* ── Full-width banner ── */}
+      <div aria-hidden="true" style={{ width: '100%', aspectRatio: '16 / 6', position: 'relative', overflow: 'hidden', marginBottom: 0 }}>
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: 'url(/images/Corporate%20training1.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 30%',
-          filter: 'contrast(1.08) brightness(0.78)',
+          backgroundPosition: 'center 20%',
+          filter: 'contrast(1.05) brightness(1.2)',
         }} />
-        {/* dark vignette — sides */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(10,5,8,0.82) 0%, rgba(10,5,8,0.15) 35%, rgba(10,5,8,0.15) 65%, rgba(10,5,8,0.7) 100%)' }} />
-        {/* bottom fade */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, transparent, rgba(10,5,8,0.96))' }} />
-        {/* gold top rule */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold-bright) 50%, var(--color-gold) 70%, transparent)' }} />
       </div>
 
-      <div style={{ padding: '0 var(--section-pad-x)' }}>
-        <p className="section-label">Forum</p>
-        <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-3)', fontSize: 'clamp(1.3rem, 2.2vw, 1.9rem)' }}>{data.heading}</h2>
-        <p className="body reveal" style={{ maxWidth: '560px', marginBottom: 'var(--space-8)', fontSize: 'var(--text-sm)' }}>{data.subheading}</p>
+      <div style={{ padding: 'clamp(28px, 4vw, 48px) var(--section-pad-x) 0' }}>
+        <p className="section-label">Speaking</p>
+        <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-3)' }}>{data.heading}</h2>
+        <p className="body reveal" style={{ maxWidth: '560px', marginBottom: 'var(--space-8)' }}>{data.subheading}</p>
 
         <div className="grid-4 reveal-stagger reveal" style={{ gap: 'var(--space-4)' }}>
           {data.cards.map((card, i) => (
@@ -67,10 +68,10 @@ export default function SpeakingSection({ data }: { data: SpeakingData }) {
               }}>
                 {(card.icon && ICON_MAP[card.icon.toLowerCase()]) ?? ICON_FALLBACK[i % ICON_FALLBACK.length]}
               </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-gold)' }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase', color: 'var(--color-gold)' }}>
                 {card.tag}
               </p>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.4, fontWeight: 300, letterSpacing: '-0.01em' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)', lineHeight: 1.4, fontWeight: 300, letterSpacing: 'var(--tracking-tight)' }}>
                 {card.title}
               </h3>
             </HoloCard>
