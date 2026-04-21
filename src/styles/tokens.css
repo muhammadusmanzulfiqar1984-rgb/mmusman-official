@@ -34,10 +34,10 @@
 
   /* ── Colour — Text ── */
   --color-text-primary:   #f5ede8;
-  --color-text-secondary: #e8ddd8;
-  --color-text-muted:     #a89890;
-  --color-text-dim:       #8a7a7a;
-  --color-text-ghost:     #968686;
+  --color-text-secondary: #ede6e0;
+  --color-text-muted:     #c0b0a8;
+  --color-text-dim:       #9a8a82;
+  --color-text-ghost:     #a09090;
 
   /* ── Colour — Glassmorphism ── */
   --glass-bg:          rgba(255, 240, 240, 0.05);

@@ -19,7 +19,7 @@ export default function TrainingSection({ data }: { data: TrainingData }) {
         padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)',
         borderBottom: '1px solid var(--color-border-soft)',
         background: `
-          linear-gradient(105deg, rgba(8,3,6,0.88) 0%, rgba(8,3,6,0.72) 38%, rgba(8,3,6,0.45) 65%, rgba(8,3,6,0.18) 100%),
+          linear-gradient(105deg, rgba(6,2,4,0.96) 0%, rgba(6,2,4,0.88) 42%, rgba(6,2,4,0.58) 68%, rgba(6,2,4,0.18) 100%),
           url('/images/Corporate training1.jpg') center 40% / cover no-repeat,
           #0a0408
         `,
