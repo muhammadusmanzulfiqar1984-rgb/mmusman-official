@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { LangProvider } from '@/lib/langContext'
+import EffectsLayerLoader from '@/components/effects/EffectsLayerLoader'
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="letterbox-bottom" aria-hidden="true"></div>
           <a href="#main-content" className="skip-link">Skip to main content</a>
           {children}
+          <EffectsLayerLoader />
           <Analytics />
         </LangProvider>
       </body>
