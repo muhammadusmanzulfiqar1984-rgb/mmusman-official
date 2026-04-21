@@ -15,9 +15,8 @@ const HarvicsSection = dynamic(() => import('@/components/scenes/HarvicsSection'
 const IntelligenceSection = dynamic(() => import('@/components/scenes/IntelligenceSection'))
 const ContactSection = dynamic(() => import('@/components/scenes/ContactSection'))
 
-import { usePersonaEngine, PersonaBadge } from '@/components/ai/PersonaEngine'
-import { useCognitiveLoadBalancer, CognitiveLoadPrompt, SimplifiedModeBanner } from '@/components/ai/CognitiveLoadBalancer'
-import KeyboardShortcuts from '@/components/effects/KeyboardShortcuts'
+import { usePersonaEngine } from '@/components/ai/PersonaEngine'
+import { useCognitiveLoadBalancer } from '@/components/ai/CognitiveLoadBalancer'
 import ReadingProgress from '@/components/effects/ReadingProgress'
 
 function getSection(id: string) {
@@ -107,9 +106,6 @@ export default function Home() {
     <>
       <Header />
 
-      {mode === 'simplified' && <SimplifiedModeBanner onRestore={restore} />}
-      <CognitiveLoadPrompt triggered={triggered} onSimplify={simplify} onDismiss={dismiss} />
-
       <main id="main-content" tabIndex={-1}>
         {sectionOrder.map(id => {
           const Standalone = STANDALONE_MAP[id]
@@ -122,40 +118,7 @@ export default function Home() {
         })}
       </main>
 
-      <PersonaBadge decision={decision} />
-      <KeyboardShortcuts />
       <ReadingProgress />
-
-      {/* Site tour button */}
-      <button
-        onClick={runTour}
-        aria-label="Start guided site tour"
-        style={{
-          position: 'fixed',
-          bottom: '92px',
-          right: '28px',
-          zIndex: 250,
-          background: 'rgba(10,10,10,0.92)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-full)',
-          padding: '8px 16px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
-          letterSpacing: '0.08em',
-          color: 'var(--color-text-ghost)',
-          cursor: 'pointer',
-          backdropFilter: 'blur(12px)',
-          transition: 'border-color var(--duration-base), color var(--duration-base)',
-        }}
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-gold-dim)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-gold)' }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-ghost)' }}
-      >
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Site tour
-      </button>
     </>
   )
 }

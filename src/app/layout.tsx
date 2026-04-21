@@ -1,11 +1,6 @@
 import type { Metadata } from 'next'
 import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
-import VoiceOrb from '@/components/effects/VoiceOrb'
-import ChatWidget from '@/components/ai/ChatWidget'
-import ConsentBanner from '@/components/ai/ConsentBanner'
-import EffectsLayer from '@/components/effects/EffectsLayer'
-import DevOverlayLoader from '@/components/effects/DevOverlayLoader'
 import { LangProvider } from '@/lib/langContext'
 
 export const metadata: Metadata = {
@@ -67,11 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="letterbox-top" aria-hidden="true"></div>
           <div className="letterbox-bottom" aria-hidden="true"></div>
           <a href="#main-content" className="skip-link">Skip to main content</a>
-          <EffectsLayer />
           {children}
-          <VoiceOrb />
-          <ChatWidget />
-          <ConsentBanner />
           <Analytics />
         </LangProvider>
       </body>
