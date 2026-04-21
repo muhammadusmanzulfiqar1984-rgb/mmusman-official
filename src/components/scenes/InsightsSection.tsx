@@ -19,6 +19,7 @@ const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI']
 
 export default function InsightsSection({ data }: { data: InsightsData }) {
   const [active, setActive] = useState<number | null>(null)
+  const [hoveredEntry, setHoveredEntry] = useState<number | null>(null)
 
   const toggle = (i: number) => setActive(prev => (prev === i ? null : i))
 
@@ -124,6 +125,8 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
                 {/* Entry row */}
                 <button
                   onClick={() => toggle(i)}
+                  onMouseEnter={() => setHoveredEntry(i)}
+                  onMouseLeave={() => setHoveredEntry(null)}
                   aria-expanded={isOpen}
                   style={{
                     display: 'grid',
@@ -131,12 +134,13 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
                     alignItems: 'baseline',
                     gap: 'var(--space-4)',
                     width: '100%',
-                    background: 'transparent',
+                    background: (!isOpen && hoveredEntry === i) ? 'rgba(200,169,110,0.025)' : 'transparent',
                     border: 'none',
                     cursor: 'pointer',
                     padding: 'var(--space-5) 0',
                     textAlign: 'left',
                     position: 'relative',
+                    transition: 'background 180ms ease',
                   }}
                 >
                   {/* Active indicator strip */}
@@ -156,8 +160,10 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.55rem',
                     letterSpacing: '0.14em',
-                    color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.28)',
-                    transition: 'color 220ms ease',
+                    color: isOpen ? 'var(--color-gold)'
+                         : hoveredEntry === i ? 'rgba(200,169,110,0.55)'
+                         : 'rgba(200,169,110,0.28)',
+                    transition: 'color 180ms ease',
                     userSelect: 'none',
                     paddingTop: '2px',
                   }}>
@@ -197,7 +203,7 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
                     fontSize: '0.55rem',
                     color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.2)',
                     transition: 'color 220ms ease, transform 220ms ease',
-                    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transform: isOpen ? 'rotate(180deg)' : hoveredEntry === i ? 'translateY(2px)' : 'rotate(0deg)',
                     display: 'inline-block',
                     lineHeight: 1,
                     alignSelf: 'center',

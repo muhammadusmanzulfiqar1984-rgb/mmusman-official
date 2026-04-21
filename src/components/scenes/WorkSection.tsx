@@ -71,7 +71,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
         fontSize: '0.55rem',
         letterSpacing: '0.18em',
         textTransform: 'uppercase',
-        color: 'rgba(200,169,110,0.45)',
+        color: 'var(--color-text-muted)',
         marginTop: '8px',
       }}>{label}</div>
     </div>
@@ -80,6 +80,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 
 export default function WorkSection({ data }: { data: WorkData }) {
   const [active, setActive] = useState<number | null>(null)
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null)
 
   return (
     <section
@@ -137,12 +138,15 @@ export default function WorkSection({ data }: { data: WorkData }) {
         style={{ borderTop: '1px solid var(--color-border-soft)' }}
       >
         {data.cards.map((card, i) => {
-          const isOpen = active === i
+          const isOpen   = active === i
+          const isHover  = hoveredRow === i && !isOpen
           return (
             <div
               key={i}
               role="listitem"
               onClick={() => setActive(isOpen ? null : i)}
+              onMouseEnter={() => setHoveredRow(i)}
+              onMouseLeave={() => setHoveredRow(null)}
               style={{
                 display: 'grid',
                 gridTemplateColumns: '120px 1fr 24px',
@@ -151,21 +155,33 @@ export default function WorkSection({ data }: { data: WorkData }) {
                 padding: 'clamp(14px, 2vw, 22px) 0',
                 borderBottom: '1px solid var(--color-border-soft)',
                 cursor: 'pointer',
-                transition: 'background 200ms ease',
+                position: 'relative',
+                background: (isOpen || isHover) ? 'rgba(200,169,110,0.025)' : 'transparent',
+                transition: 'background 180ms ease',
               }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(200,169,110,0.02)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
+              {/* Left-edge gold strip on hover/open */}
+              <span aria-hidden="true" style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0,
+                width: '1px',
+                background: 'var(--color-gold)',
+                opacity: (isOpen || isHover) ? 1 : 0,
+                transition: 'opacity 180ms ease',
+              }} />
+
               {/* Domain tag */}
               <span style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.6rem',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.4)',
-                transition: 'color 200ms ease',
+                color: isOpen ? 'var(--color-gold)'
+                     : isHover ? 'rgba(200,169,110,0.75)'
+                     : 'rgba(200,169,110,0.4)',
+                transition: 'color 180ms ease',
                 paddingTop: '2px',
                 whiteSpace: 'nowrap',
+                paddingLeft: '8px',
               }}>
                 {card.tag}
               </span>
@@ -176,10 +192,12 @@ export default function WorkSection({ data }: { data: WorkData }) {
                   fontFamily: 'var(--font-body)',
                   fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)',
                   fontWeight: 300,
-                  color: isOpen ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                  color: isOpen ? 'var(--color-text-primary)'
+                       : isHover ? 'var(--color-text-secondary)'
+                       : 'var(--color-text-secondary)',
                   lineHeight: 1.5,
                   letterSpacing: '0.01em',
-                  transition: 'color 200ms ease',
+                  transition: 'color 180ms ease',
                 }}>
                   {card.title}
                 </p>
@@ -189,8 +207,10 @@ export default function WorkSection({ data }: { data: WorkData }) {
               <span style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.65rem',
-                color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.25)',
-                transition: 'color 200ms ease, transform 200ms ease',
+                color: isOpen ? 'var(--color-gold)'
+                     : isHover ? 'rgba(200,169,110,0.55)'
+                     : 'rgba(200,169,110,0.25)',
+                transition: 'color 180ms ease, transform 220ms ease',
                 display: 'block',
                 transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
                 paddingTop: '2px',

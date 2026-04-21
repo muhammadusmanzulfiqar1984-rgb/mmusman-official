@@ -11,6 +11,7 @@ interface IntelligenceData {
 
 export default function IntelligenceSection({ data }: { data: IntelligenceData }) {
   const [active, setActive] = useState(0)
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const [transitioning, setTransitioning] = useState(false)
 
   const select = (i: number) => {
@@ -71,14 +72,19 @@ export default function IntelligenceSection({ data }: { data: IntelligenceData }
         <div className="intel-right">
           <nav aria-label="Intelligence pillars" className="intel-tabs">
             {data.pillars.map((p, i) => {
-              const isActive = i === active
+              const isActive  = i === active
+              const isHovered = i === hoveredIdx && !isActive
               return (
                 <button key={i} onClick={() => select(i)} aria-selected={isActive}
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 'var(--space-4)',
-                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    background: isHovered ? 'rgba(200,169,110,0.035)' : 'transparent',
+                    border: 'none', cursor: 'pointer',
                     padding: 'var(--space-3) var(--space-5)', textAlign: 'left',
                     position: 'relative', width: '100%',
+                    transition: 'background 180ms ease',
                   }}
                 >
                   <span style={{
@@ -89,17 +95,29 @@ export default function IntelligenceSection({ data }: { data: IntelligenceData }
                   }} />
                   <span style={{
                     fontFamily: 'var(--font-mono)', fontSize: '0.5rem', letterSpacing: '0.1em',
-                    color: isActive ? 'var(--color-gold)' : 'rgba(200,169,110,0.22)',
-                    transition: 'color 200ms ease', minWidth: '18px',
+                    color: isActive ? 'var(--color-gold)'
+                         : isHovered ? 'rgba(200,169,110,0.55)'
+                         : 'rgba(200,169,110,0.22)',
+                    transition: 'color 180ms ease', minWidth: '18px',
                   }}>
                     {['I','II','III','IV'][i]}
                   </span>
-                  <span style={{
-                    fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 300,
-                    color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-ghost)',
-                    letterSpacing: '0.04em', transition: 'color 200ms ease',
-                  }}>
-                    {p.tag}
+                  <span style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                    <span style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 300,
+                      color: isActive ? 'var(--color-text-primary)'
+                           : isHovered ? 'var(--color-text-secondary)'
+                           : 'var(--color-text-ghost)',
+                      letterSpacing: '0.04em', transition: 'color 180ms ease',
+                    }}>
+                      {p.tag}
+                    </span>
+                    <span style={{
+                      display: 'block', height: '1px',
+                      width: isHovered ? '24px' : '0px',
+                      background: 'var(--color-gold-dim)',
+                      transition: 'width 220ms ease',
+                    }} />
                   </span>
                 </button>
               )
