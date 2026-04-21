@@ -404,16 +404,16 @@ export default function ContactSection({ data }: { data: ContactData }) {
 
 const labelStyle: React.CSSProperties = {
   fontFamily: 'var(--font-mono)',
-  fontSize: 'var(--text-xs)',
-  letterSpacing: '0.1em',
+  fontSize: '0.58rem',
+  letterSpacing: '0.14em',
   textTransform: 'uppercase',
-  color: 'var(--color-text-ghost)',
+  color: 'var(--color-text-muted)',
 }
 
 const inputStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.06)',
-  border: '1px solid var(--color-gold-dim)',
-  borderRadius: 'var(--radius-sm)',
+  background: 'rgba(10, 6, 3, 0.75)',
+  border: '1px solid rgba(200,169,110,0.18)',
+  borderRadius: '1px',
   padding: 'var(--space-3) var(--space-4)',
   color: 'var(--color-text-primary)',
   fontFamily: 'var(--font-body)',
@@ -421,5 +421,5 @@ const inputStyle: React.CSSProperties = {
   fontWeight: 300,
   width: '100%',
   outline: 'none',
-  transition: 'border-color var(--duration-base) var(--ease-out)',
+  transition: 'border-color 200ms ease, box-shadow 200ms ease, background 200ms ease',
 }

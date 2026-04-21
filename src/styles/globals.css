@@ -1417,3 +1417,139 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
   .lang-switcher { display: none; }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   VISIBILITY & INTERACTION SYSTEM
+   Museum lighting — reveals through focus, not brightness.
+   3 layers: base (quiet) → focus (entered) → interaction (active)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── LAYER 1 : Base — section-label lift ── */
+/* Labels are the first thing the eye catches entering a section */
+.section-label {
+  color: rgba(200, 169, 110, 0.65) !important;
+  letter-spacing: 0.24em !important;
+  font-size: 0.58rem !important;
+}
+
+/* ── Dividers — from near-invisible to readable hairlines ── */
+.harvics-divider,
+.intel-divider {
+  background: linear-gradient(
+    to bottom,
+    transparent   0%,
+    rgba(200,169,110,0.22) 12%,
+    rgba(200,169,110,0.22) 88%,
+    transparent 100%
+  ) !important;
+}
+.harvics-tabs,
+.intel-tabs {
+  border-left-color: rgba(200,169,110,0.14) !important;
+}
+
+/* ── Stat labels — always readable, never ghost ── */
+.stat-label { color: var(--color-text-muted) !important; }
+
+/* ── LAYER 2 : Focus — dark reading plate behind content areas ── */
+/* Subtle darkening behind right-column detail panes (Harvics / Intelligence)
+   so content floats on a slightly deeper field than the section surface */
+.harvics-right [aria-live],
+.intel-right   [aria-live] {
+  background: rgba(4, 2, 1, 0.42);
+  border: 1px solid rgba(200,169,110,0.07);
+  border-radius: 2px;
+  padding: var(--space-6);
+  transition: background 240ms ease;
+}
+
+/* ── LAYER 3 : Interaction — contact form editorial control panel ── */
+
+/* Form container glass panel — cleaner, darker */
+#contact .glass {
+  background: rgba(7, 4, 2, 0.88) !important;
+  border: 1px solid rgba(200,169,110,0.2) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Input / textarea / select — base state */
+#contact input,
+#contact textarea,
+#contact select {
+  background: rgba(10, 6, 3, 0.75) !important;
+  border: 1px solid rgba(200,169,110,0.18) !important;
+  border-radius: 1px !important;
+  color: var(--color-text-primary) !important;
+  transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease !important;
+}
+
+/* Focus state — thin gold edge, deepen the well */
+#contact input:focus,
+#contact textarea:focus,
+#contact select:focus {
+  border-color: rgba(200,169,110,0.65) !important;
+  background: rgba(6, 3, 1, 0.92) !important;
+  box-shadow:
+    0 0 0 1px rgba(200,169,110,0.06),
+    inset 0 2px 6px rgba(0,0,0,0.4) !important;
+  outline: none !important;
+}
+
+/* Placeholder — slightly warmer, more visible */
+#contact input::placeholder,
+#contact textarea::placeholder {
+  color: rgba(160, 140, 118, 0.42) !important;
+}
+
+/* Form labels — lift from ghost to muted */
+#contact label > span {
+  color: var(--color-text-muted) !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.14em !important;
+}
+
+/* Select — custom arrow, no UA styling */
+#contact select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(200%2C169%2C110%2C0.45)'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  padding-right: 36px !important;
+}
+#contact select option {
+  background: #0d080a;
+  color: var(--color-text-secondary);
+}
+
+/* ── Work domain rows — active row plate ── */
+/* When row is open, background deepens slightly — handled inline,
+   but reinforce here so CSS specificity wins */
+#work [role="listitem"]:focus-within,
+#work [role="listitem"][aria-expanded="true"] {
+  background: rgba(200,169,110,0.03) !important;
+}
+
+/* ── Thought accordion — expanded pane plate ── */
+/* Slightly deepen the background behind the expanded body paragraph */
+#insights button[aria-expanded="true"] ~ div {
+  background: rgba(4, 2, 1, 0.35);
+  border-left: 1px solid rgba(200,169,110,0.1);
+  padding-left: calc(44px + 8px);
+  margin-left: -8px;
+  border-radius: 0 0 1px 1px;
+}
+
+/* ── Section border-bottom — stronger on key sections ── */
+#work    { border-bottom: 1px solid rgba(200,169,110,0.25) !important; }
+#record  { border-bottom: 1px solid rgba(200,169,110,0.25) !important; }
+#contact { border-bottom: none !important; }
+
+/* ── Reduced-motion override ── */
+@media (prefers-reduced-motion: reduce) {
+  .harvics-right [aria-live],
+  .intel-right   [aria-live] {
+    transition: none !important;
+  }
+}
+
