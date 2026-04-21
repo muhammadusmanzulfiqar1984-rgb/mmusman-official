@@ -6,6 +6,7 @@ import ChatWidget from '@/components/ai/ChatWidget'
 import ConsentBanner from '@/components/ai/ConsentBanner'
 import EffectsLayer from '@/components/effects/EffectsLayer'
 import DevOverlayLoader from '@/components/effects/DevOverlayLoader'
+import { LangProvider } from '@/lib/langContext'
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
@@ -57,20 +58,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&family=Noto+Naskh+Arabic:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
       <body>
-        <div className="letterbox-top" aria-hidden="true"></div>
-        <div className="letterbox-bottom" aria-hidden="true"></div>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        <EffectsLayer />
-        {children}
-        <VoiceOrb />
-        <ChatWidget />
-        <ConsentBanner />
-        <Analytics />
+        <LangProvider>
+          <div className="letterbox-top" aria-hidden="true"></div>
+          <div className="letterbox-bottom" aria-hidden="true"></div>
+          <a href="#main-content" className="skip-link">Skip to main content</a>
+          <EffectsLayer />
+          {children}
+          <VoiceOrb />
+          <ChatWidget />
+          <ConsentBanner />
+          <Analytics />
+        </LangProvider>
       </body>
     </html>
   )

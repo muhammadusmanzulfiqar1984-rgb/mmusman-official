@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import Image from 'next/image'
 import MagneticButton from '@/components/effects/MagneticButton'
 import { useWebGLBackground, useMicroParallax } from '@/lib/hooks/useHeroAnimations'
+import { useLang } from '@/lib/langContext'
 
 interface HeroData {
   eyebrow: string
@@ -15,6 +16,7 @@ interface HeroData {
 }
 
 export default function HeroSection({ data }: { data: HeroData }) {
+  const { t } = useLang()
   const canvasRef    = useRef<HTMLCanvasElement>(null)
   const contentRef   = useRef<HTMLDivElement>(null)
   const [imgError, setImgError] = useState(false)
@@ -25,7 +27,17 @@ export default function HeroSection({ data }: { data: HeroData }) {
   // ── Ludic Micro-Parallax (±6px pointer nudge, spring return) ──────────────
   useMicroParallax(contentRef)
 
-  const lines  = data.heading.split('\n')
+  // Use translated content when available, fall back to data prop
+  const eyebrow      = t.hero.eyebrow      || data.eyebrow
+  const heading      = t.hero.heading      || data.heading
+  const body         = t.hero.body         || data.body
+  const cta1         = t.hero.cta1         || data.buttons[0]?.label
+  const cta2         = t.hero.cta2         || data.buttons[1]?.label
+  const pill         = t.hero.pill         || data.pill
+  const quote        = t.hero.quote        || data.quote
+  const quoteSupport = t.hero.quoteSupport || data.quoteSupport
+
+  const lines  = heading.split('\n')
   const words2 = (lines[1] ?? '').split(' ')
   const pivot  = Math.ceil(words2.length * 0.55)
 
@@ -57,8 +69,8 @@ export default function HeroSection({ data }: { data: HeroData }) {
       >
         {/* LEFT */}
         <div style={{ textAlign: 'left' }}>
-          {data.eyebrow && (
-            <p className="eyebrow reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.eyebrow}</p>
+          {eyebrow && (
+            <p className="eyebrow reveal" style={{ marginBottom: 'var(--space-4)' }}>{eyebrow}</p>
           )}
           <h1 className="h2 headline-shimmer reveal lens-resolve" style={{
             marginBottom: 'var(--space-6)',
@@ -68,17 +80,15 @@ export default function HeroSection({ data }: { data: HeroData }) {
             <span style={{ color: 'var(--color-gold)' }}>{words2.slice(pivot).join(' ')}</span>
           </h1>
 
-          <p className="body reveal" style={{ maxWidth:'520px', marginBottom:'var(--space-8)' }}>{data.body}</p>
+          <p className="body reveal" style={{ maxWidth:'520px', marginBottom:'var(--space-8)', whiteSpace: 'pre-line', fontStyle: 'italic', lineHeight: 1.75 }}>{body}</p>
 
           <div className="reveal" style={{ display:'flex', gap:'var(--space-3)', flexWrap:'wrap', marginBottom:'var(--space-10)' }}>
-            {data.buttons.map(b => (
-              <MagneticButton key={b.href} className="hero-btn-wrap">
-                <a href={b.href} className="btn btn-primary" style={{
-                  padding: '11px 28px',
-                  letterSpacing: 'var(--tracking-wide)',
-                }}>{b.label}</a>
-              </MagneticButton>
-            ))}
+            <MagneticButton className="hero-btn-wrap">
+              <a href={data.buttons[0]?.href ?? '#work'} className="btn btn-primary" style={{ padding: '11px 28px', letterSpacing: 'var(--tracking-wide)' }}>{cta1}</a>
+            </MagneticButton>
+            <MagneticButton className="hero-btn-wrap">
+              <a href={data.buttons[1]?.href ?? '#contact'} className="btn btn-primary" style={{ padding: '11px 28px', letterSpacing: 'var(--tracking-wide)' }}>{cta2}</a>
+            </MagneticButton>
           </div>
 
           <div className="reveal" style={{ display:'flex', gap:'var(--space-8)', paddingTop:'var(--space-6)', borderTop:'1px solid var(--color-border-soft)' }}>
@@ -96,7 +106,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
           <div style={{ borderRadius:'24px', overflow:'hidden', background: imgError ? 'linear-gradient(135deg,#1a1510,#0d0d0d)' : 'var(--color-bg-card)', border:'1px solid var(--color-gold-dim)', aspectRatio:'3/4', position:'relative', maxHeight:'520px' }}>
             {!imgError ? (
               <Image
-                src="/images/hero.jpeg"
+                src="/images/hero.webp"
                 alt="Mian Muhammad Usman"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -126,12 +136,12 @@ export default function HeroSection({ data }: { data: HeroData }) {
               textTransform:'uppercase',
               color:'var(--color-gold)',
               marginBottom:'var(--space-3)',
-            }}>{data.pill}</span>
+            }}>{pill}</span>
             <blockquote style={{ fontFamily:'var(--font-display)', fontSize:'var(--text-base)', fontStyle:'italic', color:'var(--color-gold)', lineHeight:1.55, fontWeight:300, borderLeft:'2px solid var(--color-gold)', paddingLeft:'var(--space-4)', margin:0, letterSpacing:'var(--tracking-tight)' }}>
-              &ldquo;{data.quote}&rdquo;
+              &ldquo;{quote}&rdquo;
             </blockquote>
-            {data.quoteSupport && (
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-text-ghost)', lineHeight:1.6, marginTop:'var(--space-3)', fontWeight:300, fontStyle:'normal' }}>{data.quoteSupport}</p>
+            {quoteSupport && (
+              <p style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-text-ghost)', lineHeight:1.6, marginTop:'var(--space-3)', fontWeight:300, fontStyle:'normal' }}>{quoteSupport}</p>
             )}
           </div>
         </div>

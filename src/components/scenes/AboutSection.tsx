@@ -22,7 +22,7 @@ export default function AboutSection({ data }: { data: AboutData }) {
         <div className="reveal relative">
           <div className={`relative rounded-[20px] overflow-hidden border border-[var(--color-gold-dim)] bg-[var(--color-bg-card)] aspect-[3/4] max-h-[min(520px,calc(100dvh-var(--header-h)-clamp(80px,10vw,144px)))] ${imgError ? 'hidden' : 'block'}`}>
             <Image
-              src="/images/Usman%20Research.jpeg"
+              src="/images/Usman%20Research.webp"
               alt="Mian Muhammad Usman at his research desk"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -38,7 +38,7 @@ export default function AboutSection({ data }: { data: AboutData }) {
         {/* RIGHT — content */}
         <div className="text-left">
           <p className="eyebrow reveal mb-[var(--space-3)] text-[var(--color-gold-deep)] font-semibold">{data.eyebrow || data.label}</p>
-          <h2 className="h2 reveal mb-[var(--space-6)] text-[var(--color-text-primary)]">{data.heading}</h2>
+          <h2 className="h2 reveal mb-[var(--space-6)] text-[var(--color-text-primary)]" style={{ whiteSpace: 'pre-line' }}>{data.heading}</h2>
           <div className="flex flex-col gap-[var(--space-5)]">
             {data.paragraphs.map((p, i) => <p key={i} className="body reveal text-[var(--color-text-secondary)]">{p}</p>)}
           </div>

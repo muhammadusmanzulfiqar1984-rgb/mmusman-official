@@ -112,7 +112,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/images/privacy.jpg)',
+          backgroundImage: 'url(/images/privacy.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 30%',
           backgroundRepeat: 'no-repeat',

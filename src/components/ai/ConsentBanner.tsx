@@ -3,12 +3,17 @@ import { useState } from 'react'
 import { getConsent, setConsent } from '@/lib/telemetry'
 
 export default function ConsentBanner() {
-  const [show, setShow] = useState(() => typeof window !== 'undefined' && getConsent() === 'none')
+  const [show, setShow] = useState(() => {
+    if (typeof window === 'undefined') return false
+    const consent = getConsent()
+    // Only show if truly never set (not on every visit)
+    return consent === 'none' && !localStorage.getItem('mian_consent_seen')
+  })
 
   if (!show) return null
 
-  const accept = () => { setConsent('local'); setShow(false) }
-  const decline = () => { setConsent('none'); setShow(false) }
+  const accept = () => { setConsent('local'); localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
+  const decline = () => { setConsent('none'); localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
 
   return (
     <div

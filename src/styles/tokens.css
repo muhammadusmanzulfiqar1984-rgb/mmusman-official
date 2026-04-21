@@ -3,6 +3,19 @@
    Single source of truth for all design values
    ═══════════════════════════════════════════════════════ */
 
+/* ── RTL language support ── */
+[dir="rtl"] {
+  --font-body:    'Noto Naskh Arabic', 'Inter', serif;
+  text-align: right;
+}
+[dir="rtl"] .section-label,
+[dir="rtl"] .eyebrow,
+[dir="rtl"] .h1,
+[dir="rtl"] .h2,
+[dir="rtl"] .body {
+  letter-spacing: 0;
+}
+
 :root {
   /* ── Colour — Base ── */
   --color-bg:          #0d080a;

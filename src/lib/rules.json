@@ -3,16 +3,12 @@
     "id": "recruiter",
     "label": "Recruiter",
     "when": [
-      { "key": "referrer", "op": "contains", "value": "linkedin" },
-      { "key": "referrer", "op": "contains", "value": "jobs" },
-      { "key": "referrer", "op": "contains", "value": "hiring" },
-      { "key": "searchTerm", "op": "contains", "value": "cv" },
-      { "key": "searchTerm", "op": "contains", "value": "hire" },
-      { "key": "searchTerm", "op": "contains", "value": "resume" }
+      { "key": "referrer",   "op": "contains", "value": "linkedin" },
+      { "key": "searchTerm", "op": "contains", "value": "hire" }
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero", "work", "about", "talks", "insights", "speaking", "training", "skillscape", "media", "truth", "contact"],
+      "sectionOrder": ["hero","work","about","insights","record","training","harvics","intelligence","contact"],
       "heroCta": "See the work",
       "heroCtaHref": "#work"
     }
@@ -21,32 +17,28 @@
     "id": "conference",
     "label": "Conference Organizer",
     "when": [
-      { "key": "referrer", "op": "contains", "value": "eventbrite" },
-      { "key": "referrer", "op": "contains", "value": "conference" },
-      { "key": "searchTerm", "op": "contains", "value": "speaker" },
-      { "key": "searchTerm", "op": "contains", "value": "keynote" },
-      { "key": "dwellSection", "op": "equals", "value": "speaking" },
-      { "key": "dwellSection", "op": "equals", "value": "talks" }
+      { "key": "searchTerm",   "op": "contains", "value": "speaker" },
+      { "key": "searchTerm",   "op": "contains", "value": "keynote" },
+      { "key": "dwellSection", "op": "equals",   "value": "record" }
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero", "speaking", "talks", "about", "work", "insights", "training", "skillscape", "media", "truth", "contact"],
-      "heroCta": "View speaking topics",
-      "heroCtaHref": "#speaking"
+      "sectionOrder": ["hero","record","about","work","insights","training","harvics","intelligence","contact"],
+      "heroCta": "View addresses",
+      "heroCtaHref": "#record"
     }
   },
   {
     "id": "corporate",
     "label": "Corporate Client",
     "when": [
-      { "key": "dwellSection", "op": "equals", "value": "training" },
-      { "key": "searchTerm", "op": "contains", "value": "advisory" },
-      { "key": "searchTerm", "op": "contains", "value": "consulting" },
-      { "key": "searchTerm", "op": "contains", "value": "training" }
+      { "key": "dwellSection", "op": "equals",   "value": "training" },
+      { "key": "searchTerm",   "op": "contains", "value": "advisory" },
+      { "key": "searchTerm",   "op": "contains", "value": "training" }
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero", "training", "work", "about", "talks", "speaking", "insights", "skillscape", "media", "truth", "contact"],
+      "sectionOrder": ["hero","training","work","about","insights","record","harvics","intelligence","contact"],
       "heroCta": "Discuss a program",
       "heroCtaHref": "#training"
     }
@@ -57,7 +49,7 @@
     "when": [],
     "matchAny": false,
     "then": {
-      "sectionOrder": ["hero", "about", "work", "insights", "speaking", "training", "talks", "skillscape", "media", "truth", "contact"],
+      "sectionOrder": ["hero","about","work","insights","record","training","harvics","intelligence","contact"],
       "heroCta": "See the work",
       "heroCtaHref": "#work"
     }

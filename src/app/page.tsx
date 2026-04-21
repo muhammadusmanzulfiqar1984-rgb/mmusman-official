@@ -9,13 +9,11 @@ const HeroSection = dynamic(() => import('@/components/scenes/HeroSection'), { s
 const AboutSection = dynamic(() => import('@/components/scenes/AboutSection'))
 const WorkSection = dynamic(() => import('@/components/scenes/WorkSection'))
 const InsightsSection = dynamic(() => import('@/components/scenes/InsightsSection'))
-const SpeakingSection = dynamic(() => import('@/components/scenes/SpeakingSection'))
 const TrainingSection = dynamic(() => import('@/components/scenes/TrainingSection'))
+const RecordSection = dynamic(() => import('@/components/scenes/RecordSection'))
+const HarvicsSection = dynamic(() => import('@/components/scenes/HarvicsSection'))
+const IntelligenceSection = dynamic(() => import('@/components/scenes/IntelligenceSection'))
 const ContactSection = dynamic(() => import('@/components/scenes/ContactSection'))
-const SkillscapeSection = dynamic(() => import('@/components/scenes/SkillscapeSection'))
-const TruthLens = dynamic(() => import('@/components/scenes/TruthLens'))
-const ConversationsSection = dynamic(() => import('@/components/scenes/ConversationsSection'))
-const TalksSection = dynamic(() => import('@/components/scenes/TalksSection'))
 
 import { usePersonaEngine, PersonaBadge } from '@/components/ai/PersonaEngine'
 import { useCognitiveLoadBalancer, CognitiveLoadPrompt, SimplifiedModeBanner } from '@/components/ai/CognitiveLoadBalancer'
@@ -57,22 +55,20 @@ function getRenderData(id: string, data: SectionData, decision: ReturnType<typeo
 }
 
 const DATA_SECTION_MAP: Record<string, unknown> = {
-  hero:       HeroSection,
-  about:      AboutSection,
-  work:       WorkSection,
-  insights:   InsightsSection,
-  speaking:   SpeakingSection,
-  training:   TrainingSection,
-  talks:      TalksSection,
-  skillscape: SkillscapeSection,
-  media:      ConversationsSection,
-  truth:      TruthLens,
-  contact:    ContactSection,
+  hero:         HeroSection,
+  about:        AboutSection,
+  work:         WorkSection,
+  insights:     InsightsSection,
+  record:       RecordSection,
+  training:     TrainingSection,
+  harvics:      HarvicsSection,
+  intelligence: IntelligenceSection,
+  contact:      ContactSection,
 }
 
 const STANDALONE_MAP: Record<string, React.FC> = {}
 
-const TOUR_STEPS = ['hero','about','work','insights','speaking','training','talks','skillscape','media','truth','contact']
+const TOUR_STEPS = ['hero','about','work','insights','record','training','harvics','intelligence','contact']
 
 export default function Home() {
   const { decision, sectionOrder } = usePersonaEngine()

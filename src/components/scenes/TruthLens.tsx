@@ -122,7 +122,7 @@ export default function TruthLens({ data }: { data: TruthData }) {
             position: 'relative',
           }}>
             <Image
-              src="/images/Retails1.png"
+              src="/images/Retails1.webp"
               alt="Mian Muhammad Usman — retail"
               fill
               sizes="260px"

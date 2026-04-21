@@ -2,16 +2,16 @@
   {
     "id": "hero",
     "type": "hero",
-    "eyebrow": "Lawyer · Trader · System Builder · Strategist",
-    "heading": "Mian Muhammad Usman —\nbuilt for the problems no one else will touch.",
-    "body": "Trained as a lawyer. Sharpened in capital markets. Tested across retail empires, oil fields, fashion runways and political corridors. Usman doesn't theorise about complexity — he has lived inside it, designed systems around it, and built organizations that outlast it.",
+    "eyebrow": "Lawyer · Trader · Architect · Strategist",
+    "heading": "Mian Muhammad Usman.",
+    "body": "The law disciplined the reason.\nThe markets disciplined the nerve.\nThe rest was left to consequence.",
     "buttons": [
-      { "label": "See the work", "href": "#work", "variant": "primary" },
-      { "label": "Start a conversation", "href": "#contact", "variant": "secondary" }
+      { "label": "The record", "href": "#work", "variant": "primary" },
+      { "label": "Open a conversation", "href": "#contact", "variant": "secondary" }
     ],
-    "pill": "One mind. Every industry.",
-    "quote": "Every industry runs on a system. Most people inherit it. I design it from the ground up.",
-    "quoteSupport": "From the trading floor to the cabinet room. From runway production to oil field operations. The discipline never changes — see the whole system, find what's broken, build what lasts.",
+    "pill": "One formation. Every domain.",
+    "quote": "The law disciplined the reason. The markets disciplined the nerve. The rest was left to consequence.",
+    "quoteSupport": "Fifteen years. Six domains. One governing temperament.",
     "priority": 1,
     "tags": ["identity"],
     "audience": ["all"]
@@ -19,12 +19,12 @@
   {
     "id": "about",
     "type": "about",
-    "eyebrow": "Lawyer · Trader · Founder · Strategist",
-    "label": "About",
-    "heading": "Mian Muhammad Usman",
+    "eyebrow": "Formation",
+    "label": "Origins",
+    "heading": "Formed in law.\nHardened in markets.\nDeployed where it was required.",
     "paragraphs": [
-      "He didn't read about complex systems — he built them. Trained in law, tested in capital markets, forged across retail empires, oil fields, fashion runways and political corridors, Mian Muhammad Usman is one of the rare minds that has operated at depth across radically different industries and made each one work.",
-      "His value isn't perspective — it's scar tissue. Every engagement draws on fifteen years of hands-on architecture: enterprise operating systems built from nothing, runway productions directed at scale, political strategy navigated at the highest levels, and markets traded with real capital on the line."
+      "Law was not a profession. It was the first instrument of formation — a discipline in reading obligation, consequence, and power before others had named the question. Capital markets completed the education: every illusion was priced, every error was cleared, and what could not survive contact with reality did not survive.",
+      "What followed — across retail operations, energy fields, political corridors, fashion production, and institutional advisory — was not accumulation. It was application. The same disposition, tested in every register of commerce and consequence. The pattern did not vary. The formation held."
     ],
     "displayTags": ["Lawyer", "Trader", "Founder", "Strategist"],
     "priority": 2,
@@ -34,193 +34,167 @@
   {
     "id": "work",
     "type": "work",
-    "heading": "Work with Mian Muhammad Usman",
-    "subheading": "Not surface-level advisory. Hands-on architecture of the system itself — across six industries, fifteen years, zero shortcuts.",
+    "heading": "The fields of application.",
+    "subheading": "Where the formation was deployed — with direct authority, not observation from a distance.",
     "cards": [
-      { "tag": "Retail", "title": "Building retail operations that scale without losing their soul" },
-      { "tag": "Oil & Gas", "title": "Operational strategy and systems design in the energy sector" },
-      { "tag": "Fashion & Runway", "title": "Directing high-profile ramp productions and brand experiences" },
-      { "tag": "Political Strategy", "title": "Senior-level lobbying and political positioning for organizations and individuals" },
-      { "tag": "Capital Markets", "title": "Active trading, financial architecture and market strategy" },
-      { "tag": "Law", "title": "Legal structuring for complex, cross-border operations" }
+      { "tag": "Law",               "title": "Legal architecture, cross-border structuring, high-stakes counsel and transactional discipline" },
+      { "tag": "Capital Markets",   "title": "Active trading, market structure, financial architecture and position management" },
+      { "tag": "Retail",            "title": "Enterprise operating systems, supply chain command, institutional retail at scale" },
+      { "tag": "Oil & Gas",         "title": "Field-level operational strategy, energy sector positioning and commercial structure" },
+      { "tag": "Fashion & Runway",  "title": "High-consequence production direction, brand architecture and public-facing execution" },
+      { "tag": "Political Strategy","title": "Senior lobbying, governmental access, political capital and corridor positioning" }
     ],
     "stats": [
       { "value": "50+", "label": "Conferences" },
-      { "value": "15+", "label": "Years operating" },
-      { "value": "6",   "label": "Industries" },
-      { "value": "25+", "label": "Organizations" }
+      { "value": "15+", "label": "Years" },
+      { "value": "6",   "label": "Domains" },
+      { "value": "25+", "label": "Organisations" }
     ],
     "priority": 3,
-    "tags": ["work", "proof"],
+    "tags": ["work"],
     "audience": ["all"]
   },
   {
     "id": "insights",
     "type": "insights",
-    "heading": "Featured insights",
-    "subheading": "Not commentary. Convictions — formed in boardrooms, trading floors, political offices and on production stages.",
+    "heading": "The Chamber of Consequence.",
+    "subheading": "Not principles derived from study. Dispositions extracted under pressure — from law, markets, retail power, political corridors, and the long discipline of consequence.",
+    "intro": "Every position held here was formed in a system that punished imprecision. The market does not accept approximations. The law does not accept sentiment. What survives both is not optimism — it is structure.",
+    "closing": "These are not arguments. They are the residue of formation.",
     "cards": [
       {
-        "tag": "Systems",
-        "title": "The system is the strategy. Everything else is noise.",
-        "body": "Most leaders confuse having a plan with having a system. A plan tells you what to do next. A system tells you what to do when the plan collapses — and it always collapses."
+        "tag": "Trade Architecture",
+        "title": "The market is not a price.\nIt is a settled arrangement\nwaiting to be unsettled.",
+        "body": "Every market structure is a negotiated position — between capital formations, regulatory ordinance, incumbent power, and the sequence in which access was originally granted. To operate inside a market with any sophistication is to understand whose settlement you are working within, and whether the terms of that settlement remain open."
       },
       {
-        "tag": "Leadership",
-        "title": "You cannot lead what you have never built.",
-        "body": "There is a specific kind of judgment that only comes from having built something under pressure — made it work without resources, and watched it break when you made the wrong call. No classroom produces that."
+        "tag": "Political Strategy",
+        "title": "The corridor precedes the chamber.\nThe chamber precedes the record.\nThe record precedes the outcome.",
+        "body": "Political consequence is not produced in session. It is produced in the sequence of private dispositions that determine what arrives at the table already concluded. To position in political economy is to understand not proximity to power, but the architecture of obligation — who is owed, who controls the sequence, and what the consequence of avoidance costs."
       },
       {
-        "tag": "Capital Markets",
-        "title": "The market does not reward intelligence. It rewards discipline.",
-        "body": "Every intelligent person thinks they can trade. Very few understand that the edge is never in the analysis — it's in the ruthless execution of a system when everything in you is screaming to deviate from it."
+        "tag": "Retail Power",
+        "title": "At institutional scale,\nretail is not commerce.\nIt is a territorial claim.",
+        "body": "An enterprise retail operation is a system of distributed obligations — to capital, to municipalities, to supply chains, to labour arrangements, and to the expectation that was engineered into the model. The discipline is not logistics. It is the command architecture beneath the logistics: who holds leverage at each node, and what the system does when any obligation is called."
       },
       {
-        "tag": "Cross-Industry",
-        "title": "The pattern you see in one industry is the blueprint for every other.",
-        "body": "Once you have run retail at scale, operated on an energy field, and navigated political strategy — you start to see the same three problems everywhere. Power, information asymmetry, and the gap between what people say and what they actually do."
+        "tag": "Corridor Negotiation",
+        "title": "Position determines the outcome.\nArgument determines\nonly the record of it.",
+        "body": "Negotiation at institutional weight operates through prepared position, not presented argument. The result is determined before the room. It is shaped by the approach taken, the calibration of what is offered, the patience of what is withheld, and the consequence made visible at each interval. Eloquence is the surface. Architecture is the thing beneath."
       }
     ],
     "priority": 4,
-    "tags": ["thought", "insights"],
-    "audience": ["founder", "executive", "recruiter"]
+    "tags": ["doctrine"],
+    "audience": ["all"]
   },
   {
-    "id": "speaking",
-    "type": "speaking",
-    "heading": "Speaking & advisory",
-    "subheading": "Usman speaks on what he has personally operated — not trends he has read about, but systems he has built, broken and rebuilt. Conferences, leadership summits, private executive sessions.",
-    "cards": [
-      { "tag": "Systems Design", "title": "Building the architecture behind organizations that don't collapse under pressure", "icon": "systems" },
-      { "tag": "Cross-Industry", "title": "What retail taught me about oil fields — and what both taught me about people", "icon": "globe" },
-      { "tag": "Leadership", "title": "The operator's discipline — how founders think when managers freeze", "icon": "users" },
-      { "tag": "Power & Strategy", "title": "How decisions actually get made — markets, law and political capital", "icon": "strategy" }
-    ],
-    "keynotes": [
+    "id": "record",
+    "type": "record",
+    "heading": "On the Public Record.",
+    "subheading": "Keynote addresses, conference appearances, executive forums and recorded conversations — available on invitation, entered without ceremony.",
+    "addresses": [
       {
-        "tag": "Systems & Architecture",
-        "title": "Design the system or the system will design you",
-        "body": "How the most durable organizations — from retail chains to energy companies — are built on invisible architecture that most leaders never think to design intentionally."
+        "tag": "Address I",
+        "title": "Design the system\nor the system will\ndesign you",
+        "body": "On the invisible architecture that determines whether an institution endures or is gradually consumed by the arrangement it failed to design. Delivered at executive strategy forums and leadership summits."
       },
       {
-        "tag": "Multi-Industry Mind",
-        "title": "What one person operating across six industries actually teaches you",
-        "body": "The patterns that emerge when you have personally run retail, oil & gas, fashion, trading, law and political strategy — and what they reveal about how all organizations really work."
+        "tag": "Address II",
+        "title": "The room where\nthe real decision\nwas already made",
+        "body": "A frank account of how legal, commercial, and political power converge in practice — and why those who understand all three always carry more room to move than those who understand only one."
       },
       {
-        "tag": "Power & Decision-Making",
-        "title": "The room where the real decision was already made",
-        "body": "A frank account of how commercial, legal and political power interact — and why leaders who understand all three always have more room to move than those who only understand one."
+        "tag": "Address III",
+        "title": "The constant that repeats\nacross every industry\nyou have never compared",
+        "body": "On the structural invariants that only become legible once genuine authority has been held across enough different domains — and what they reveal about every commercial and institutional arrangement."
+      },
+      {
+        "tag": "Private Advisory",
+        "title": "Conducted under discretion.\nFor principals who require\ncounsel, not commentary.",
+        "body": "Private sessions for senior principals, family offices, institutional leadership and governments requiring independent counsel at the intersection of trade, legal structure, political economy and commercial consequence."
       }
     ],
+    "proof": [
+      { "value": "50+", "label": "Conferences addressed" },
+      { "value": "15+", "label": "Years in direct operation" },
+      { "value": "6",   "label": "Domains with direct authority" },
+      { "value": "25+", "label": "Organisations engaged" }
+    ],
+    "media": [
+      { "type": "video", "title": "Many industries. One formation.", "subtitle": "Signature address",  "poster": "/images/speaking.webp" },
+      { "type": "image", "title": "Leadership summit address",       "subtitle": "Conference address", "src": "/images/gallery-1.webp" },
+      { "type": "image", "title": "Executive roundtable",            "subtitle": "Private forum",      "src": "/images/gallery-2.webp" },
+      { "type": "image", "title": "Strategic advisory session",      "subtitle": "Closed engagement",  "src": "/images/gallery-3.webp" }
+    ],
     "priority": 5,
-    "tags": ["speaking", "forum"],
-    "audience": ["conference", "corporate"]
+    "tags": ["record"],
+    "audience": ["all"]
   },
   {
     "id": "training",
     "type": "training",
-    "heading": "Corporate training and programs",
+    "heading": "The Academy.",
+    "subheading": "Private instruction. Executive sessions. Closed-door strategic briefings.",
     "paragraphs": [
-      "Built for senior teams who are tired of generic frameworks. For people who want to think through real problems with someone who has actually solved them — across trading desks, energy operations, retail floors and political environments.",
-      "Every program is built around your organization's actual situation. No pre-packaged slides. No theory without scar tissue behind it."
+      "Each engagement is structured around the actual condition of the organisation — not a curriculum borrowed from another context, not a framework designed for a different problem.",
+      "The outcome is not motivation. It is a sharper operating model, a more precise decision architecture, or a leadership that has learned to distinguish between urgency and consequence."
     ],
     "topics": [
-      "How to design an operating system for a complex organization",
-      "Strategic thinking that works across industries — retail, energy, markets, law",
-      "Leading under commercial and political pressure simultaneously",
-      "Building decision-making frameworks that survive contact with reality",
-      "How to see your business the way a founder does — not a manager",
-      "AI and technology as operational tools, not buzzwords"
+      "Designing an operating architecture for conditions of institutional complexity",
+      "Strategic reasoning when the terrain is political, commercial, and legal simultaneously",
+      "Decision frameworks built for contact with reality — not with ideal conditions",
+      "Reading market and institutional power as a practitioner, not as an observer",
+      "The disposition of the founder — applied inside established and legacy organisations",
+      "Governing applied intelligence and AI systems as operational instruments of consequence"
     ],
-    "cta": { "label": "Discuss a program", "href": "#contact" },
+    "cta": { "label": "Request an engagement", "href": "#contact" },
     "priority": 6,
-    "tags": ["training", "academy"],
+    "tags": ["academy"],
     "audience": ["corporate", "executive"]
   },
   {
-    "id": "talks",
-    "type": "talks",
-    "heading": "Talks & Keynotes",
-    "subheading": "Three addresses built from direct experience — not research. Each one designed for rooms where real decisions are made.",
-    "cards": [
-      {
-        "tag": "Systems & Architecture",
-        "title": "Design the system or the system will design you",
-        "body": "How the most durable organizations — from retail chains to energy companies — are built on invisible architecture that most leaders never think to design intentionally."
-      },
-      {
-        "tag": "Multi-Industry Mind",
-        "title": "What one person operating across six industries actually teaches you",
-        "body": "The patterns that emerge when you have personally run retail, oil & gas, fashion, trading, law and political strategy — and what they reveal about how all organizations really work."
-      },
-      {
-        "tag": "Power & Decision-Making",
-        "title": "The room where the real decision was already made",
-        "body": "A frank account of how commercial, legal and political power interact — and why leaders who understand all three always have more room to move than those who only understand one."
-      }
+    "id": "harvics",
+    "type": "harvics",
+    "heading": "Harvics.",
+    "subheading": "The institutional expression of the same governing philosophy.",
+    "body": "Where the personal discipline becomes an architecture for others. Harvics operates at the intersection of commercial strategy, market structure, cross-border trade, and institutional positioning — not as a consultancy, but as a structured commercial intelligence operation, governed by the same temperament that produced everything else on this page.",
+    "pillars": [
+      { "tag": "Commercial Architecture", "line": "Operating model design for complex, multi-market and cross-border commercial enterprises" },
+      { "tag": "Market Intelligence",     "line": "Structural reading of markets, institutional arrangements, counterparty position and regulatory disposition" },
+      { "tag": "Trade & Access",          "line": "Cross-border trade architecture, access sequencing, corridor positioning and government interface" },
+      { "tag": "Strategic Execution",     "line": "Implementation of commercial strategy under simultaneous conditions of institutional, political and market complexity" }
     ],
+    "cta": { "label": "Harvics — enter", "href": "https://harvics.com" },
     "priority": 7,
-    "tags": ["talks", "keynotes"],
-    "audience": ["conference", "executive", "all"]
-  },
-  {
-    "id": "skillscape",
-    "type": "skillscape",
-    "heading": "Six industries. One mind.",
-    "subheading": "Navigate Mian's world — hover any node to explore the domain.",
-    "nodes": [
-      { "id": "law",      "label": "Law",               "sub": "Legal architecture & cross-border structuring",             "color": "#c8a96e" },
-      { "id": "trading",  "label": "Capital Markets",    "sub": "Active trading, financial strategy, market design",          "color": "#d4b87a" },
-      { "id": "retail",   "label": "Retail",             "sub": "Enterprise operating systems at scale",                      "color": "#b89658" },
-      { "id": "oil",      "label": "Oil & Gas",          "sub": "Operational strategy in the energy sector",                  "color": "#a08040" },
-      { "id": "fashion",  "label": "Fashion & Runway",   "sub": "High-profile runway production & brand experience",          "color": "#c8a96e" },
-      { "id": "politics", "label": "Political Strategy", "sub": "Senior-level lobbying & political positioning",              "color": "#b08848" }
-    ],
-    "priority": 9,
-    "tags": ["skillscape"],
+    "tags": ["institution"],
     "audience": ["all"]
   },
   {
-    "id": "media",
-    "type": "media",
-    "heading": "In conversation on record.",
-    "subheading": "Podcasts, interviews and addresses — Mian Muhammad Usman in conversation on systems, leadership and markets.",
-    "items": [
-      { "type": "video", "title": "Many industries. One mission.", "subtitle": "Signature talk",      "poster": "/images/speaking.png" },
-      { "type": "image", "title": "Leadership summit keynote",     "subtitle": "Conference address",   "src": "/images/gallery-1.png" },
-      { "type": "image", "title": "Industry roundtable",           "subtitle": "Panel discussion",     "src": "/images/gallery-2.png" },
-      { "type": "image", "title": "Advisory engagement",           "subtitle": "Private briefing",     "src": "/images/gallery-3.png" }
+    "id": "intelligence",
+    "type": "intelligence",
+    "heading": "Applied Intelligence.",
+    "subheading": "The machine layer — governed by the same discipline applied to everything else.",
+    "body": "Intelligence systems are not offered here as a product or a trend. They are the infrastructure through which commercial reasoning, pattern recognition, talent architecture, and institutional analysis are operationalised — with the same precision demanded in law, in markets, and in consequence.",
+    "pillars": [
+      { "tag": "Commercial Reasoning",   "line": "AI-augmented structural analysis of market position, counterparty disposition and institutional arrangement" },
+      { "tag": "Talent Architecture",    "line": "Governed systems for identifying, assessing and placing high-consequence commercial and institutional talent" },
+      { "tag": "Operational Precision",  "line": "Systematic elimination of decision latency and institutional friction across commercial operations" },
+      { "tag": "Intelligence Systems",   "line": "Proprietary infrastructure built for institutional-grade environments where imprecision carries consequence" }
     ],
-    "priority": 10,
-    "tags": ["media", "conversations"],
-    "audience": ["all"]
-  },
-  {
-    "id": "truth",
-    "type": "truth",
-    "heading": "Every claim\nis verifiable.",
-    "subheading": "Hover or tap any highlighted figure below to see its basis. No inflated numbers, no marketing copy — just what actually happened.",
-    "claims": [
-      { "text": "50+ conferences",     "basis": "Speaker and panelist at global business, retail, and leadership conferences across Asia, Europe and the Middle East.",                                                                                                   "type": "stat" },
-      { "text": "15+ years operating", "basis": "Active since 2009 across law, capital markets, retail, oil & gas, fashion and political consulting.",                                                                                                                    "type": "fact" },
-      { "text": "6 industries",        "basis": "Law · Capital Markets · Retail · Oil & Gas · Fashion & Runway · Political Strategy — all with direct operational involvement, not advisory from the outside.",                                                           "type": "fact" },
-      { "text": "25+ organizations",   "basis": "Direct engagement across corporations, government bodies, retail chains, commodity firms, fashion houses and political entities.",                                                                                        "type": "stat" }
-    ],
-    "priority": 11,
-    "tags": ["truth"],
+    "priority": 8,
+    "tags": ["intelligence"],
     "audience": ["all"]
   },
   {
     "id": "contact",
     "type": "contact",
-    "heading": "Start a conversation",
-    "subheading": "For speaking, advisory or collaboration. You will receive a personal response.",
+    "heading": "An invitation.",
+    "subheading": "For those whose work operates at the intersection of trade, law, markets, and institutional consequence. You will receive a personal response.",
     "email": "Info@mmusman.com",
     "phone": "+44 7830 755932",
     "whatsapp": "https://wa.me/447830755932",
-    "engagementTypes": ["Keynote", "Advisory", "Leadership", "Private", "Fast track"],
-    "priority": 8,
+    "engagementTypes": ["Keynote", "Advisory", "Academy", "Harvics", "Private"],
+    "priority": 9,
     "tags": ["contact"],
     "audience": ["all"]
   }

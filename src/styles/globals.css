@@ -83,7 +83,7 @@ body {
       rgba(8,3,6,0.30) 70%,
       rgba(8,3,6,0.10) 100%
     ),
-    url('/images/Public training.png') center center / cover no-repeat,
+    url('/images/Public%20training.webp') center center / cover no-repeat,
     #0a0408 !important;
   backdrop-filter: blur(0px);
   position: relative;
@@ -226,11 +226,6 @@ html.classic-view :focus-visible {
   z-index: 1;
 }
 
-/* Smooth scrolling */
-body {
-  scroll-behavior: smooth;
-}
-
 /* ── Typography ── */
 .font-display { font-family: var(--font-display); }
 .font-mono    { font-family: var(--font-mono); }
@@ -356,33 +351,13 @@ body {
   z-index: 2;
 }
 
-.btn-primary {
-  background: var(--color-gold);
-  color: #0a0a0a;
-}
-.btn-primary:hover {
-  background: #e0c080;
-  box-shadow: var(--shadow-gold-strong);
-  transform: translateY(-2px);
-}
-
+.btn-primary,
 .btn-secondary {
   background: var(--color-gold);
   color: #0a0a0a;
-  border: none;
 }
+.btn-primary:hover,
 .btn-secondary:hover {
-  background: #e0c080;
-  box-shadow: var(--shadow-gold-strong);
-  transform: translateY(-2px);
-}
-
-.btn-ghost {
-  background: var(--color-gold);
-  color: #0a0a0a;
-  border: none;
-}
-.btn-ghost:hover {
   background: #e0c080;
   box-shadow: var(--shadow-gold-strong);
   transform: translateY(-2px);
@@ -997,14 +972,16 @@ html.light-mode #gold-dust-canvas { opacity: 0.2 !important; }
 
 /* ── .btn-ghost ── */
 .btn-ghost {
-  background: transparent;
+  background: transparent !important;
   color: var(--color-text-ghost);
   border: 1px solid rgba(200,169,110,0.15);
 }
 .btn-ghost:hover {
   border-color: var(--color-gold-dim);
   color: var(--color-gold);
-  background: rgba(200,169,110,0.04);
+  background: rgba(200,169,110,0.04) !important;
+  box-shadow: none;
+  transform: translateY(-2px);
 }
 
 /* ── Progress line metallic pulse ── */
@@ -1039,11 +1016,6 @@ html.light-mode #gold-dust-canvas { opacity: 0.2 !important; }
    NEW POLISH — Gold Motion Grammar & Effects Kit
    ═══════════════════════════════════════════════════ */
 
-/* ── Gold Highlight Brush ── */
-::selection {
-  background: rgba(200, 169, 110, 0.22);
-  color: var(--color-text-primary);
-}
 @media (forced-colors: active) {
   ::selection { background: Highlight; color: HighlightText; }
 }
@@ -1354,3 +1326,73 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
     letter-spacing: normal;
   }
 }
+
+/* ═══════════════════════════════════════════════════
+   REFINEMENT — Typography, Hierarchy, Legibility
+   ═══════════════════════════════════════════════════ */
+
+/* Tighter heading rhythm — more precision on large screens */
+@media (min-width: 1200px) {
+  .h1 { font-size: clamp(2.8rem, 3.8vw, 4.2rem); line-height: 1.08; }
+  .h2 { font-size: clamp(2rem,   2.8vw, 3rem);   line-height: 1.12; }
+}
+
+/* Section headings — always slightly brighter than body text */
+.section h2, .section h3 {
+  color: var(--color-text-primary);
+}
+
+/* Card body text — raise contrast from muted to secondary */
+.card .body,
+.card p,
+.card h3 {
+  color: var(--color-text-secondary);
+}
+
+/* Section labels — slightly more visible */
+.section-label {
+  color: rgba(200, 169, 110, 0.55);
+  letter-spacing: 0.2em;
+  font-size: 0.6rem;
+}
+
+/* Subheadings — tighter line height, less padding between label and h2 */
+.section .subheading,
+.section > p.body:first-of-type {
+  max-width: 580px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+/* Dim sections — boost luminance on #insights, #training */
+#insights .card h3,
+#media .card h3,
+#talks .card h3 {
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  line-height: 1.4;
+}
+#insights .card p,
+#media .card p,
+#talks .card p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* Training section — ensure text is legible over the background image */
+#training h2, #training h3, #training p, #training li {
+  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+}
+
+/* Stat values — ensure they hit primary colour, not ghost */
+.stat-value { color: var(--color-gold-bright); }
+.stat-label { color: var(--color-text-ghost); font-size: 0.65rem; }
+
+/* Insight card titles — allow newlines from data */
+.card h3 { white-space: pre-line; }
+
+/* Language switcher — hide on mobile, show in mobile nav instead */
+@media (max-width: 768px) {
+  .lang-switcher { display: none; }
+}
+

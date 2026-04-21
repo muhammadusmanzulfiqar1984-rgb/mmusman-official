@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from 'react'
 type Mode = 'normal' | 'simplified'
 
 const SIGNALS = {
-  rapidScrollThreshold:   5,    // scroll events per second
-  dwellWithoutInteraction: 90,  // seconds on page without any click
-  rageClickThreshold:     3,    // clicks in 1s
+  rapidScrollThreshold:   999,  // effectively disabled
+  dwellWithoutInteraction: 999, // effectively disabled
+  rageClickThreshold:     999,  // effectively disabled
 }
 
 export function useCognitiveLoadBalancer() {

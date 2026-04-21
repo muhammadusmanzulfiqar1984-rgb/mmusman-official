@@ -3,25 +3,24 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
+import { useLang } from '@/lib/langContext'
+import LanguageSwitcher from './LanguageSwitcher'
 const VintageClock = dynamic(() => import('@/components/effects/VintageClock'), { ssr: false })
 
-const navLinks = [
-  { label: 'Proposition', href: '#hero' },
-  { label: 'Origins',     href: '#about' },
-  { label: 'Practice',    href: '#work' },
-  { label: 'Thought',     href: '#insights' },
-  { label: 'Forum',       href: '#speaking' },
-  { label: 'Academy',     href: '#training' },
-  { label: 'Addresses',   href: '#talks' },
-  { label: 'Skillscape',  href: '#skillscape' },
-  { label: 'Conversations', href: '#media' },
-  { label: 'Truth Lens',  href: '#truth' },
-  { label: 'Contact',     href: '#contact' },
-]
-
-const MILESTONES = [25, 50, 75, 100]
-
 export default function Header() {
+  const { t } = useLang()
+
+  const navLinks = [
+    { label: t.nav.proposition,   href: '#hero' },
+    { label: t.nav.origins,       href: '#about' },
+    { label: t.nav.practice,      href: '#work' },
+    { label: t.nav.thought,       href: '#insights' },
+    { label: t.nav.forum,         href: '#record' },
+    { label: t.nav.academy,       href: '#training' },
+    { label: 'Harvics',           href: '#harvics' },
+    { label: 'Intelligence',      href: '#intelligence' },
+    { label: t.nav.contact,       href: '#contact' },
+  ]
   const [scrolled, setScrolled]   = useState(false)
   const [progress, setProgress]   = useState(0)
   const [active, setActive]       = useState('hero')
@@ -32,6 +31,8 @@ export default function Header() {
   const [lightMode, setLightMode] = useState(false)
   const [underline, setUnderline] = useState({ left: 0, width: 0 })
   const [menuOpen, setMenuOpen]   = useState(false)
+
+  const MILESTONES = [25, 50, 75, 100]
 
   const progressAnnounce = useRef<HTMLSpanElement>(null)
   const lastMilestone    = useRef(0)
@@ -157,7 +158,7 @@ export default function Header() {
             position: 'relative'
           }}>
             <Image
-              src="/images/hero.jpeg"
+              src="/images/hero.webp"
               alt="Mian Muhammad Usman"
               aria-hidden="true"
               fill
@@ -304,6 +305,9 @@ export default function Header() {
           Contact
         </a>
 
+        {/* Language Switcher */}
+        <LanguageSwitcher />
+
         {/* Hamburger — visible only on mobile */}
         <button
           className={`header-hamburger${menuOpen ? ' open' : ''}`}
@@ -337,7 +341,7 @@ export default function Header() {
           )
         })}
         <a href="#contact" onClick={() => setMenuOpen(false)} style={{ marginTop: 'var(--space-4)', color: 'var(--color-gold)' }}>
-          Contact
+          {t.nav.contact}
         </a>
       </nav>
 

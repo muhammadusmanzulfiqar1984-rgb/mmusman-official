@@ -1,8 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { HoloCard } from '@/components/effects/HoloCard'
-import TokenStream from '@/components/effects/TokenStream'
 
 interface WorkCard { tag: string; title: string }
 interface Stat     { value: string; label: string }
@@ -13,7 +11,6 @@ function parseStatValue(v: string) {
   return m ? { numeric: parseInt(m[1], 10), suffix: m[2] ?? '' } : { numeric: 0, suffix: v }
 }
 
-// Single digit slot-machine wheel
 function Digit({ d }: { d: string }) {
   return (
     <span style={{ display: 'inline-block', overflow: 'hidden', height: '1.05em', verticalAlign: 'bottom' }}>
@@ -40,110 +37,183 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rafRef.current = requestAnimationFrame(() => setCount(numeric))
-      return () => cancelAnimationFrame(rafRef.current)
+      setCount(numeric); return
     }
-    const cycleDuration = Math.max(2000, numeric * 80) // full 0→N cycle duration ms
-    const pauseDuration = 1200                          // pause at target before restarting
-    let startTime: number | null = null
-    let pausing = false
-    let pauseStart = 0
-
+    const dur = Math.max(1600, numeric * 70)
+    let t0: number | null = null
     const tick = (now: number) => {
-      if (pausing) {
-        if (now - pauseStart >= pauseDuration) {
-          pausing = false
-          startTime = now
-        }
-        rafRef.current = requestAnimationFrame(tick)
-        return
-      }
-      if (startTime === null) startTime = now
-      const elapsed = now - startTime
-      const p = Math.min(elapsed / cycleDuration, 1)
+      if (!t0) t0 = now
+      const p = Math.min((now - t0) / dur, 1)
       setCount(Math.round((1 - Math.pow(1 - p, 3)) * numeric))
-      if (p < 1) {
-        rafRef.current = requestAnimationFrame(tick)
-      } else {
-        pausing = true
-        pauseStart = now
-        rafRef.current = requestAnimationFrame(tick)
-      }
+      if (p < 1) rafRef.current = requestAnimationFrame(tick)
     }
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
   }, [numeric])
 
-  const digits = String(count).split('')
-
   return (
-    <div
-      className="card reveal"
-      style={{ textAlign: 'left', padding: 'var(--space-8) var(--space-4)' }}
-    >
+    <div style={{ textAlign: 'left' }}>
       <div style={{
         fontFamily: 'var(--font-display)',
-        fontSize: 'var(--text-4xl)',
+        fontSize: 'clamp(2rem, 3vw, 2.8rem)',
         fontWeight: 300,
         color: 'var(--color-gold)',
         lineHeight: 1,
-        letterSpacing: 'var(--tracking-tightest)',
+        letterSpacing: '-0.02em',
         display: 'flex',
         alignItems: 'flex-end',
-        justifyContent: 'flex-start',
-        gap: 0,
       }}>
-        {digits.map((d, i) => <Digit key={i} d={d} />)}
-        {suffix && <span style={{ display: 'inline-block' }}>{suffix}</span>}
+        {String(count).split('').map((d, i) => <Digit key={i} d={d} />)}
+        {suffix && <span>{suffix}</span>}
       </div>
-      <div className="stat-label" style={{ marginTop: 'var(--space-2)' }}>{label}</div>
+      <div style={{
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.55rem',
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+        color: 'rgba(200,169,110,0.45)',
+        marginTop: '8px',
+      }}>{label}</div>
     </div>
   )
 }
 
 export default function WorkSection({ data }: { data: WorkData }) {
+  const [active, setActive] = useState<number | null>(null)
+
   return (
-    <section id="work" aria-label="Work and highlights" className="section relative box-border py-[clamp(64px,8vw,100px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left">
-      <TokenStream />
-      <p className="section-label">Work</p>
+    <section
+      id="work"
+      aria-label="Operating record"
+      className="section"
+      style={{
+        boxSizing: 'border-box',
+        padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)',
+        borderBottom: '2px solid var(--color-gold)',
+      }}
+    >
+      <p className="section-label">Practice</p>
 
-      <div className="mb-[var(--space-8)]">
-        <h2 className="h2 reveal mb-[var(--space-4)]">{data.heading}</h2>
-        <p className="body reveal" style={{ maxWidth: '640px' }}>{data.subheading}</p>
+      {/* Two-column: heading left, stats right */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 'clamp(32px, 5vw, 80px)',
+        alignItems: 'end',
+        marginBottom: 'clamp(40px, 6vw, 72px)',
+      }}
+      className="work-header-grid"
+      >
+        <div>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
+          <p className="reveal" style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-sm)',
+            fontWeight: 300,
+            color: 'var(--color-text-muted)',
+            lineHeight: 1.75,
+            maxWidth: '480px',
+          }}>{data.subheading}</p>
+        </div>
+
+        {/* Stats — compact row */}
+        <div style={{
+          display: 'flex',
+          gap: 'clamp(24px, 4vw, 56px)',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+          paddingBottom: '4px',
+        }}
+        className="reveal"
+        >
+          {data.stats.map((s, i) => <CounterBadge key={i} value={s.value} label={s.label} />)}
+        </div>
       </div>
 
-      {/* Work cards — 3-column grid */}
-      <div className="work-cards-grid reveal-stagger reveal mb-[var(--space-12)]">
-        {data.cards.map((card, i) => (
-          <div key={i} className="spin-border">
-          <HoloCard
-            className="card card-bevel card-elevate card-reveal-shimmer p-[var(--space-5)] rounded-[var(--radius-md)] border-2 border-[var(--color-gold)] shadow-[0_0_12px_var(--color-gold-glow),0_0_1px_var(--color-gold-dim)] bg-gradient-to-br from-[#1a1200] via-[#3d2c00] via-45% to-[#1a1200]"
-          >
-            <article aria-label={card.tag}>
-              <p className="font-mono text-[var(--text-xs)] tracking-[0.14em] uppercase text-[var(--color-gold)] mb-[var(--space-2)]">
+      {/* Domain register — vertical list, hover expand */}
+      <div
+        className="reveal"
+        role="list"
+        style={{ borderTop: '1px solid var(--color-border-soft)' }}
+      >
+        {data.cards.map((card, i) => {
+          const isOpen = active === i
+          return (
+            <div
+              key={i}
+              role="listitem"
+              onClick={() => setActive(isOpen ? null : i)}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '120px 1fr 24px',
+                alignItems: 'start',
+                gap: 'clamp(16px, 3vw, 48px)',
+                padding: 'clamp(14px, 2vw, 22px) 0',
+                borderBottom: '1px solid var(--color-border-soft)',
+                cursor: 'pointer',
+                transition: 'background 200ms ease',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(200,169,110,0.02)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              {/* Domain tag */}
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.6rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.4)',
+                transition: 'color 200ms ease',
+                paddingTop: '2px',
+                whiteSpace: 'nowrap',
+              }}>
                 {card.tag}
-              </p>
-              <h3 className="font-display text-[var(--text-base)] text-[var(--color-text-secondary)] leading-[1.45] font-light">
-                {card.title}
-              </h3>
-            </article>
-          </HoloCard>
-          </div>
-        ))}
+              </span>
+
+              {/* Description */}
+              <div>
+                <p style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)',
+                  fontWeight: 300,
+                  color: isOpen ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                  lineHeight: 1.5,
+                  letterSpacing: '0.01em',
+                  transition: 'color 200ms ease',
+                }}>
+                  {card.title}
+                </p>
+              </div>
+
+              {/* Toggle mark */}
+              <span style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.65rem',
+                color: isOpen ? 'var(--color-gold)' : 'rgba(200,169,110,0.25)',
+                transition: 'color 200ms ease, transform 200ms ease',
+                display: 'block',
+                transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                paddingTop: '2px',
+                justifySelf: 'end',
+              }}>
+                +
+              </span>
+            </div>
+          )
+        })}
       </div>
 
-      {/* Animated stat counters */}
-      {data.stats && data.stats.length > 0 && (
-        <>
-          <div className="stats-grid reveal">
-            {data.stats.map((stat, i) => (
-              <CounterBadge key={i} value={stat.value} label={stat.label} />
-            ))}
-          </div>
-        </>
-      )}
-
+      <style>{`
+        @media (max-width: 768px) {
+          .work-header-grid { grid-template-columns: 1fr !important; }
+          .work-header-grid > div:last-child { justify-content: flex-start !important; padding-bottom: 0 !important; flex-wrap: wrap; }
+        }
+        #work [role="listitem"] { grid-template-columns: 90px 1fr 20px !important; }
+        @media (max-width: 480px) {
+          #work [role="listitem"] { grid-template-columns: 1fr !important; gap: 4px !important; }
+          #work [role="listitem"] > span:last-child { display: none !important; }
+        }
+      `}</style>
     </section>
   )
 }
-

@@ -22,11 +22,11 @@ const MEDIA_ITEMS_FALLBACK: MediaItem[] = [
     type: 'video',
     title: 'Many industries. One mission.',
     subtitle: 'Signature talk',
-    poster: '/images/speaking.png',
+    poster: '/images/speaking.webp',
   },
-  { type: 'image', title: 'Leadership summit keynote', subtitle: 'Conference address', src: '/images/gallery-1.png' },
-  { type: 'image', title: 'Industry roundtable', subtitle: 'Panel discussion', src: '/images/gallery-2.png' },
-  { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/gallery-3.png' },
+  { type: 'image', title: 'Leadership summit keynote', subtitle: 'Conference address', src: '/images/gallery-1.webp' },
+  { type: 'image', title: 'Industry roundtable', subtitle: 'Panel discussion', src: '/images/gallery-2.webp' },
+  { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/gallery-3.webp' },
 ]
 
 const getThumb = (item: MediaItem) => item.type === 'video' ? item.poster : item.src

@@ -1,84 +1,229 @@
-import { HoloCard } from '@/components/effects/HoloCard'
+'use client'
+import { useState } from 'react'
 
-interface SpeakingCard {
-  tag: string
-  title: string
-  icon?: string
-}
-
-interface KeynoteCard {
-  tag: string
-  title: string
-  body: string
-}
-
-interface SpeakingData {
+interface ForumCard { tag: string; title: string; body: string }
+interface ForumData {
   heading: string
   subheading: string
-  cards: SpeakingCard[]
-  keynotes?: KeynoteCard[]
+  cards: ForumCard[]
 }
 
-// SVG icons keyed by semantic name (matches sections.json icon field)
-const ICON_MAP: Record<string, React.ReactNode> = {
-  systems: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>,
-  globe:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>,
-  users:   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
-  strategy:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-}
-const ICON_FALLBACK = [
-  ICON_MAP.systems,
-  ICON_MAP.globe,
-  ICON_MAP.users,
-  ICON_MAP.strategy,
-]
+export default function SpeakingSection({ data }: { data: ForumData }) {
+  const [active, setActive] = useState(0)
+  const [transitioning, setTransitioning] = useState(false)
 
-export default function SpeakingSection({ data }: { data: SpeakingData }) {
+  const select = (i: number) => {
+    if (i === active) return
+    setTransitioning(true)
+    setTimeout(() => { setActive(i); setTransitioning(false) }, 200)
+  }
+
+  const item = data.cards[active]
+
   return (
-    <section id="speaking" aria-label="Speaking and advisory" className="section" style={{ boxSizing: 'border-box', padding: '0 0 clamp(48px, 6vw, 80px) 0', borderBottom: '2px solid var(--color-gold)' }}>
+    <section
+      id="speaking"
+      aria-label="The Public Record"
+      className="section"
+      style={{
+        boxSizing: 'border-box',
+        padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)',
+        borderBottom: '1px solid var(--color-border-soft)',
+      }}
+    >
+      <p className="section-label">Forum</p>
 
-      {/* ── Full-width banner ── */}
-      <div aria-hidden="true" style={{ width: '100%', aspectRatio: '16 / 6', position: 'relative', overflow: 'hidden', marginBottom: 0 }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'url(/images/Corporate%20training1.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 20%',
-          filter: 'contrast(1.05) brightness(1.2)',
-        }} />
-      </div>
+      <div className="forum-chamber">
 
-      <div style={{ padding: 'clamp(28px, 4vw, 48px) var(--section-pad-x) 0' }}>
-        <p className="section-label">Speaking</p>
-        <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-3)' }}>{data.heading}</h2>
-        <p className="body reveal" style={{ maxWidth: '560px', marginBottom: 'var(--space-8)' }}>{data.subheading}</p>
+        {/* LEFT */}
+        <div className="forum-left">
+          <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.1 }}>
+            {data.heading}
+          </h2>
+          <p className="reveal" style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-sm)',
+            fontWeight: 300,
+            color: 'var(--color-text-muted)',
+            lineHeight: 1.8,
+            maxWidth: '380px',
+            letterSpacing: '0.01em',
+          }}>
+            {data.subheading}
+          </p>
 
-        <div className="grid-4 reveal-stagger reveal" style={{ gap: 'var(--space-4)' }}>
-          {data.cards.map((card, i) => (
-            <div key={i} className="spin-border">
-            <HoloCard className="card shimmer-wrap" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', padding: 'var(--space-4)' }}>
-              <div style={{
-                width: '32px', height: '32px',
-                borderRadius: 'var(--radius-sm)',
-                background: 'var(--color-gold-glow)',
-                border: '1px solid var(--color-gold-dim)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'var(--color-gold)',
-                flexShrink: 0,
-              }}>
-                {(card.icon && ICON_MAP[card.icon.toLowerCase()]) ?? ICON_FALLBACK[i % ICON_FALLBACK.length]}
-              </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-widest)', textTransform: 'uppercase', color: 'var(--color-gold)' }}>
-                {card.tag}
-              </p>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)', lineHeight: 1.4, fontWeight: 300, letterSpacing: 'var(--tracking-tight)' }}>
-                {card.title}
-              </h3>
-            </HoloCard>
-            </div>
-          ))}
+          {/* Availability note */}
+          <p className="reveal" style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.55rem',
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: 'rgba(200,169,110,0.35)',
+            marginTop: 'var(--space-8)',
+            paddingTop: 'var(--space-6)',
+            borderTop: '1px solid var(--color-border-soft)',
+          }}>
+            Available on invitation · Enquiries via contact
+          </p>
+        </div>
+
+        {/* DIVIDER */}
+        <div className="forum-divider" aria-hidden="true" />
+
+        {/* RIGHT */}
+        <div className="forum-right">
+
+          {/* Tab rail */}
+          <nav aria-label="Forum sections" className="forum-tabs">
+            {data.cards.map((c, i) => {
+              const isActive = i === active
+              return (
+                <button
+                  key={i}
+                  onClick={() => select(i)}
+                  aria-selected={isActive}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 'var(--space-4)',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 'var(--space-3) var(--space-5)',
+                    textAlign: 'left',
+                    position: 'relative',
+                    width: '100%',
+                  }}
+                >
+                  <span style={{
+                    position: 'absolute',
+                    left: '-1px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '1px',
+                    height: isActive ? '100%' : '0%',
+                    background: 'var(--color-gold)',
+                    transition: 'height 300ms cubic-bezier(0.23,1,0.32,1)',
+                  }} />
+                  <span style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.5rem',
+                    letterSpacing: '0.1em',
+                    color: isActive ? 'var(--color-gold)' : 'rgba(200,169,110,0.22)',
+                    transition: 'color 200ms ease',
+                    minWidth: '18px',
+                  }}>
+                    {['I','II','III','IV'][i]}
+                  </span>
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.78rem',
+                    fontWeight: 300,
+                    color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-ghost)',
+                    letterSpacing: '0.04em',
+                    transition: 'color 200ms ease',
+                  }}>
+                    {c.tag}
+                  </span>
+                </button>
+              )
+            })}
+          </nav>
+
+          {/* Dossier pane */}
+          <div
+            aria-live="polite"
+            style={{
+              opacity: transitioning ? 0 : 1,
+              transform: transitioning ? 'translateY(6px)' : 'translateY(0)',
+              transition: 'opacity 200ms ease, transform 200ms ease',
+              paddingTop: 'var(--space-2)',
+            }}
+          >
+            <p style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.54rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(200,169,110,0.4)',
+              marginBottom: 'var(--space-4)',
+            }}>
+              {item.tag}
+            </p>
+
+            <h3 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
+              fontStyle: 'italic',
+              fontWeight: 300,
+              color: 'var(--color-text-primary)',
+              lineHeight: 1.45,
+              marginBottom: 'var(--space-5)',
+              letterSpacing: '-0.01em',
+              whiteSpace: 'pre-line',
+            }}>
+              {item.title}
+            </h3>
+
+            <div style={{
+              width: '28px', height: '1px',
+              background: 'linear-gradient(90deg, var(--color-gold) 0%, transparent 100%)',
+              marginBottom: 'var(--space-5)',
+            }} />
+
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 300,
+              color: 'var(--color-text-secondary)',
+              lineHeight: 1.85,
+              letterSpacing: '0.01em',
+            }}>
+              {item.body}
+            </p>
+
+            <p style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.46rem',
+              letterSpacing: '0.18em',
+              color: 'rgba(200,169,110,0.15)',
+              marginTop: 'var(--space-8)',
+              textTransform: 'uppercase',
+            }}>
+              {['I','II','III','IV'][active]} of {data.cards.length} · {item.tag}
+            </p>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        .forum-chamber {
+          display: grid;
+          grid-template-columns: 1fr 1px 1fr;
+          gap: 0 clamp(32px, 5vw, 72px);
+          align-items: start;
+          margin-top: var(--space-8);
+        }
+        .forum-left  { padding-right: clamp(8px, 2vw, 24px); }
+        .forum-divider {
+          background: linear-gradient(to bottom, transparent 0%, rgba(200,169,110,0.18) 15%, rgba(200,169,110,0.18) 85%, transparent 100%);
+          align-self: stretch;
+          min-height: 300px;
+        }
+        .forum-right { padding-left: clamp(8px, 2vw, 24px); }
+        .forum-tabs  {
+          display: flex;
+          flex-direction: column;
+          border-left: 1px solid rgba(200,169,110,0.09);
+          margin-bottom: var(--space-8);
+        }
+        .forum-tabs button:hover { background: rgba(200,169,110,0.03) !important; }
+        @media (max-width: 768px) {
+          .forum-chamber { grid-template-columns: 1fr !important; gap: var(--space-10) 0 !important; }
+          .forum-divider { display: none !important; }
+          .forum-left, .forum-right { padding: 0 !important; }
+        }
+      `}</style>
     </section>
   )
 }
