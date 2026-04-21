@@ -80,7 +80,9 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 
 export default function WorkSection({ data }: { data: WorkData }) {
   const [active, setActive] = useState<number | null>(null)
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null)
+  const [hovered, setHovered] = useState<number | null>(null)
+
+  const toggle = (i: number) => setActive(prev => prev === i ? null : i)
 
   return (
     <section
@@ -96,14 +98,15 @@ export default function WorkSection({ data }: { data: WorkData }) {
       <p className="section-label">Practice</p>
 
       {/* Two-column: heading left, stats right */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 'clamp(32px, 5vw, 80px)',
-        alignItems: 'end',
-        marginBottom: 'clamp(40px, 6vw, 72px)',
-      }}
-      className="work-header-grid"
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 'clamp(32px, 5vw, 80px)',
+          alignItems: 'end',
+          marginBottom: 'clamp(40px, 6vw, 72px)',
+        }}
+        className="work-header-grid"
       >
         <div>
           <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
@@ -117,121 +120,202 @@ export default function WorkSection({ data }: { data: WorkData }) {
           }}>{data.subheading}</p>
         </div>
 
-        {/* Stats — compact row */}
         <div style={{
           display: 'flex',
           gap: 'clamp(24px, 4vw, 56px)',
           justifyContent: 'flex-end',
           alignItems: 'flex-end',
           paddingBottom: '4px',
-        }}
-        className="reveal"
-        >
+        }} className="reveal">
           {data.stats.map((s, i) => <CounterBadge key={i} value={s.value} label={s.label} />)}
         </div>
       </div>
 
-      {/* Domain register — vertical list, hover expand */}
-      <div
-        className="reveal"
-        role="list"
-        style={{ borderTop: '1px solid var(--color-border-soft)' }}
-      >
+      {/* Domain grid — 3 × 2 gold tiles */}
+      <div className="work-domain-grid reveal">
         {data.cards.map((card, i) => {
-          const isOpen   = active === i
-          const isHover  = hoveredRow === i && !isOpen
-          return (
-            <div
-              key={i}
-              role="listitem"
-              onClick={() => setActive(isOpen ? null : i)}
-              onMouseEnter={() => setHoveredRow(i)}
-              onMouseLeave={() => setHoveredRow(null)}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '120px 1fr 24px',
-                alignItems: 'start',
-                gap: 'clamp(16px, 3vw, 48px)',
-                padding: 'clamp(14px, 2vw, 22px) 0',
-                borderBottom: '1px solid var(--color-border-soft)',
-                cursor: 'pointer',
-                position: 'relative',
-                background: (isOpen || isHover) ? 'rgba(200,169,110,0.025)' : 'transparent',
-                transition: 'background 180ms ease',
-              }}
-            >
-              {/* Left-edge gold strip on hover/open */}
-              <span aria-hidden="true" style={{
-                position: 'absolute', left: 0, top: 0, bottom: 0,
-                width: '1px',
-                background: 'var(--color-gold)',
-                opacity: (isOpen || isHover) ? 1 : 0,
-                transition: 'opacity 180ms ease',
-              }} />
+          const isActive  = active === i
+          const isHovered = hovered === i
 
-              {/* Domain tag */}
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: isOpen ? 'var(--color-gold)'
-                     : isHover ? 'rgba(200,169,110,0.75)'
-                     : 'rgba(200,169,110,0.4)',
-                transition: 'color 180ms ease',
-                paddingTop: '2px',
-                whiteSpace: 'nowrap',
-                paddingLeft: '8px',
+          return (
+            <button
+              key={i}
+              onClick={() => toggle(i)}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              aria-expanded={isActive}
+              className="work-tile"
+              style={{
+                '--shimmer-delay': `${i * 0.55}s`,
+              } as React.CSSProperties}
+            >
+              {/* Shimmer sweep */}
+              <span className="work-tile-shimmer" aria-hidden="true" />
+
+              {/* Top-edge gold line — grows on hover/active */}
+              <span className="work-tile-edge" style={{
+                opacity: (isActive || isHovered) ? 1 : 0,
+                transform: `scaleX(${isActive ? 1 : isHovered ? 0.6 : 0})`,
+              }} aria-hidden="true" />
+
+              {/* Content */}
+              <span className="work-tile-tag" style={{
+                color: isActive ? 'var(--color-gold)'
+                     : isHovered ? 'rgba(200,169,110,0.85)'
+                     : 'rgba(200,169,110,0.45)',
               }}>
                 {card.tag}
               </span>
 
-              {/* Description */}
-              <div>
-                <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.85rem, 1.1vw, 0.95rem)',
-                  fontWeight: 300,
-                  color: isOpen ? 'var(--color-text-primary)'
-                       : isHover ? 'var(--color-text-secondary)'
-                       : 'var(--color-text-secondary)',
-                  lineHeight: 1.5,
-                  letterSpacing: '0.01em',
-                  transition: 'color 180ms ease',
-                }}>
-                  {card.title}
-                </p>
-              </div>
+              <span className="work-tile-desc" style={{
+                color: isActive ? 'var(--color-text-primary)'
+                     : isHovered ? 'var(--color-text-secondary)'
+                     : 'var(--color-text-dim)',
+              }}>
+                {card.title}
+              </span>
 
-              {/* Toggle mark */}
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-                color: isOpen ? 'var(--color-gold)'
-                     : isHover ? 'rgba(200,169,110,0.55)'
-                     : 'rgba(200,169,110,0.25)',
-                transition: 'color 180ms ease, transform 220ms ease',
-                display: 'block',
-                transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-                paddingTop: '2px',
-                justifySelf: 'end',
+              {/* Corner mark */}
+              <span className="work-tile-mark" style={{
+                color: isActive ? 'var(--color-gold)' : 'rgba(200,169,110,0.18)',
+                transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
               }}>
                 +
               </span>
-            </div>
+
+              {/* Active overlay — darkens the tile */}
+              {isActive && <span className="work-tile-active-bg" aria-hidden="true" />}
+            </button>
           )
         })}
       </div>
 
       <style>{`
+        /* ── Domain grid ── */
+        .work-domain-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1px;
+          background: rgba(200,169,110,0.12);
+          border: 1px solid rgba(200,169,110,0.12);
+          border-radius: 2px;
+          overflow: hidden;
+        }
+
+        /* ── Tile base ── */
+        .work-tile {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          padding: clamp(20px, 3vw, 32px) clamp(16px, 2.5vw, 28px);
+          background: rgba(8, 5, 3, 0.92);
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          overflow: hidden;
+          isolation: isolate;
+          transition: background 220ms ease;
+          min-height: 120px;
+        }
+        .work-tile:hover {
+          background: rgba(14, 9, 4, 0.96);
+        }
+
+        /* ── Shimmer sweep ── */
+        .work-tile-shimmer {
+          position: absolute;
+          top: -20%; left: 0;
+          width: 55%; height: 140%;
+          background: linear-gradient(
+            108deg,
+            transparent 15%,
+            rgba(255,255,255,0.02) 35%,
+            rgba(200,169,110,0.09) 50%,
+            rgba(255,255,255,0.02) 65%,
+            transparent 85%
+          );
+          transform: translateX(-140%) skewX(-14deg);
+          animation: workTileShimmer 5s cubic-bezier(0.4,0,0.6,1) infinite;
+          animation-delay: var(--shimmer-delay, 0s);
+          pointer-events: none;
+          z-index: 0;
+        }
+        @keyframes workTileShimmer {
+          0%   { transform: translateX(-140%) skewX(-14deg); opacity: 0; }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translateX(220%) skewX(-14deg); opacity: 0; }
+        }
+
+        /* ── Top-edge gold line ── */
+        .work-tile-edge {
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent 0%, var(--color-gold) 40%, var(--color-gold-bright) 60%, transparent 100%);
+          transform-origin: left;
+          transition: opacity 200ms ease, transform 280ms cubic-bezier(0.23,1,0.32,1);
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        /* ── Tag ── */
+        .work-tile-tag {
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          transition: color 200ms ease;
+          z-index: 1;
+          line-height: 1;
+        }
+
+        /* ── Description ── */
+        .work-tile-desc {
+          font-family: var(--font-body);
+          font-size: clamp(0.75rem, 1vw, 0.85rem);
+          font-weight: 300;
+          line-height: 1.55;
+          letter-spacing: 0.01em;
+          transition: color 200ms ease;
+          z-index: 1;
+          flex: 1;
+        }
+
+        /* ── Corner mark ── */
+        .work-tile-mark {
+          position: absolute;
+          bottom: 12px; right: 14px;
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          color: rgba(200,169,110,0.18);
+          transition: color 200ms ease, transform 220ms ease;
+          z-index: 1;
+        }
+
+        /* ── Active dark overlay ── */
+        .work-tile-active-bg {
+          position: absolute;
+          inset: 0;
+          background: rgba(200,169,110,0.04);
+          border: 1px solid rgba(200,169,110,0.18);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        /* ── Grid responsive ── */
         @media (max-width: 768px) {
+          .work-domain-grid { grid-template-columns: repeat(2, 1fr); }
           .work-header-grid { grid-template-columns: 1fr !important; }
           .work-header-grid > div:last-child { justify-content: flex-start !important; padding-bottom: 0 !important; flex-wrap: wrap; }
         }
-        #work [role="listitem"] { grid-template-columns: 90px 1fr 20px !important; }
         @media (max-width: 480px) {
-          #work [role="listitem"] { grid-template-columns: 1fr !important; gap: 4px !important; }
-          #work [role="listitem"] > span:last-child { display: none !important; }
+          .work-domain-grid { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .work-tile-shimmer { animation: none !important; }
+          .work-tile-edge    { transition: none !important; }
         }
       `}</style>
     </section>
