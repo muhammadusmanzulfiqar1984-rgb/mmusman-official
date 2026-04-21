@@ -4,13 +4,22 @@ import { inferPersona, trackDwell, type PersonaDecision } from '@/lib/policyEngi
 import { eventBus, EVENTS } from '@/lib/eventBus'
 import { record, initScrollTracking, initSectionTracking, initRageClickTracking } from '@/lib/telemetry'
 
+// Static default — must match the "default" rule in rules.json.
+// Used as the initial state on both server and client to prevent hydration mismatch.
+const DEFAULT_ORDER = ['hero','about','work','insights','record','training','harvics','intelligence','contact']
+const DEFAULT_DECISION: PersonaDecision = {
+  persona:      'default',
+  label:        'General Visitor',
+  sectionOrder: DEFAULT_ORDER,
+  heroCta:      'The record',
+  heroCtaHref:  '#work',
+  confidence:   0,
+}
+
 export function usePersonaEngine() {
-  const [engineState, setEngineState] = useState(() => {
-    const initialDecision = inferPersona()
-    return {
-      decision: initialDecision,
-      sectionOrder: initialDecision.sectionOrder,
-    }
+  const [engineState, setEngineState] = useState({
+    decision:     DEFAULT_DECISION,
+    sectionOrder: DEFAULT_ORDER,
   })
 
   const refresh = useCallback(() => {
@@ -22,12 +31,8 @@ export function usePersonaEngine() {
   }, [])
 
   useEffect(() => {
-    if (engineState.decision.persona !== 'default') {
-      eventBus.emit(EVENTS.SCENE_REORDER, {
-        order: engineState.sectionOrder,
-        persona: engineState.decision.persona,
-      })
-    }
+    // Persona inference is client-only — run after mount to avoid hydration mismatch
+    refresh()
 
     // Record page view
     record(EVENTS.PAGE_VIEW, {
@@ -55,7 +60,8 @@ export function usePersonaEngine() {
       cleanRage?.()
       offDwell()
     }
-  }, [engineState.decision.persona, engineState.sectionOrder, refresh])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return { decision: engineState.decision, sectionOrder: engineState.sectionOrder }
 }

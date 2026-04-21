@@ -65,12 +65,11 @@ const DATA_SECTION_MAP: Record<string, unknown> = {
   contact:      ContactSection,
 }
 
-const STANDALONE_MAP: Record<string, React.FC> = {}
 
-const TOUR_STEPS = ['hero','about','work','insights','record','training','harvics','intelligence','contact']
 
 export default function Home() {
   const { decision, sectionOrder } = usePersonaEngine()
+  const TOUR_STEPS = sectionOrder
   const { mode, triggered, simplify, restore, dismiss } = useCognitiveLoadBalancer()
   const [mounted, setMounted] = useState(false)
 
@@ -108,8 +107,6 @@ export default function Home() {
 
       <main id="main-content" tabIndex={-1}>
         {sectionOrder.map(id => {
-          const Standalone = STANDALONE_MAP[id]
-          if (Standalone) return <Standalone key={id} />
           const Component = DATA_SECTION_MAP[id]
           const data = getSection(id)
           if (!Component || !data) return null
