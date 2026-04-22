@@ -942,20 +942,9 @@ html.light-mode #gold-dust-canvas { opacity: 0.2 !important; }
 }
 /* Hide scrollbar on nav overflow */
 .header-nav-desktop ul::-webkit-scrollbar { display: none; }
-/* Metallic inner top edge */
+/* Metallic inner top edge — removed to prevent bright line at section tops */
 .header::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(200,169,110,0.2) 20%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(200,169,110,0.2) 80%,
-    transparent 100%
-  );
-  pointer-events: none;
+  display: none;
 }
 
 /* ── Subsurface glow on gold accent elements ── */
@@ -1600,12 +1589,11 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
   border-bottom: 1px solid rgba(200,169,110,0.2);
   box-shadow:
     0 1px 0 rgba(200,169,110,0.08),     /* bottom edge glow */
-    0 4px 32px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(200,169,110,0.06); /* top inner edge */
+    0 4px 32px rgba(0,0,0,0.3);
 }
-#hero    { box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.12), inset 0 1px 0 rgba(200,169,110,0.08); }
-#work    { box-shadow: 0 1px 0 rgba(200,169,110,0.15), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(200,169,110,0.07) !important; }
-#record  { box-shadow: 0 1px 0 rgba(200,169,110,0.15), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(200,169,110,0.07) !important; }
+#hero    { box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.12); }
+#work    { box-shadow: 0 1px 0 rgba(200,169,110,0.15), 0 8px 32px rgba(0,0,0,0.4) !important; }
+#record  { box-shadow: 0 1px 0 rgba(200,169,110,0.15), 0 8px 32px rgba(0,0,0,0.4) !important; }
 
 /* Gold hairlines on key structural elements glow */
 .quote    { box-shadow: -1px 0 8px rgba(200,169,110,0.2); }
