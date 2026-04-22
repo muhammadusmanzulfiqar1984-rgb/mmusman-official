@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { LangProvider } from '@/lib/langContext'
 import EffectsLayerLoader from '@/components/effects/EffectsLayerLoader'
+import AmbientLight from '@/components/effects/AmbientLight'
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="#main-content" className="skip-link">Skip to main content</a>
           {children}
           <EffectsLayerLoader />
+          <AmbientLight />
           <Analytics />
         </LangProvider>
       </body>
