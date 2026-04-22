@@ -100,7 +100,7 @@ export default function TruthLens({ data }: { data: TruthData }) {
       id="truth"
       aria-label="Verified claims"
       className="section"
-      style={{ background: 'var(--color-bg-alt)', borderLeft: '3px solid var(--color-gold-dim)', boxSizing: 'border-box', padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}
+      style={{ background: 'var(--color-bg-alt)', borderLeft: '3px solid var(--color-gold-dim)', boxSizing: 'border-box', padding: 'clamp(40px, 5vw, 64px) var(--section-pad-x)', borderBottom: '2px solid var(--color-gold)', textAlign: 'left' }}
     >
       <p className="section-label">Truth Lens</p>
 

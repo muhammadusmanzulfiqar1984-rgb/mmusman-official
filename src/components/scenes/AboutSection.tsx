@@ -15,7 +15,7 @@ export default function AboutSection({ data }: { data: AboutData }) {
   const [imgError, setImgError] = useState(false)
   const tags = data.displayTags ?? ['Lawyer', 'Trader', 'Founder', 'Strategist']
   return (
-    <section id="about" aria-label="About" className="section relative py-[clamp(64px,8vw,100px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] box-border">
+    <section id="about" aria-label="About" className="section relative py-[clamp(40px,5vw,64px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] box-border">
       <div className="col2-grid items-center">
 
         {/* LEFT — B&W photo */}

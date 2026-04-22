@@ -99,7 +99,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
       className="section"
       style={{
         boxSizing: 'border-box',
-        padding: 'clamp(64px, 8vw, 100px) var(--section-pad-x)',
+        padding: 'clamp(40px, 5vw, 64px) var(--section-pad-x)',
         borderBottom: '2px solid var(--color-gold)',
         textAlign: 'left',
         position: 'relative',

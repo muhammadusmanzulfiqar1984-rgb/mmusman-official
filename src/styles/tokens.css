@@ -136,7 +136,7 @@
   /* ── Layout ── */
   --container-max:    1280px;
   --section-pad-x:    clamp(24px, 5vw, 72px);
-  --section-pad-y:    clamp(64px, 8vw, 120px);
+  --section-pad-y:    clamp(44px, 5vw, 72px);
   --header-h:         72px;
   --silk-slide-dist:  16px;   /* section entrance translation */
   --parallax-hero:    0.06;

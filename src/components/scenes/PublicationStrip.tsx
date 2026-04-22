@@ -145,7 +145,7 @@ export default function PublicationStrip({ data: _ }: { data?: any }) {
       aria-label="Press, recognition and honours"
       style={{
         boxSizing:    'border-box',
-        padding:      'clamp(72px,9vw,108px) 0',
+        padding:      'clamp(40px,5vw,64px) 0',
         borderBottom: '1px solid rgba(200,169,110,0.22)',
         borderTop:    '1px solid rgba(200,169,110,0.14)',
         background:   'linear-gradient(180deg,rgba(8,4,1,0) 0%,rgba(26,16,4,1) 6%,rgba(20,12,3,1) 50%,rgba(26,16,4,1) 94%,rgba(8,4,1,0) 100%)',

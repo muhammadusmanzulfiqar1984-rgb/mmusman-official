@@ -12,7 +12,7 @@ interface TalksData {
 
 export default function TalksSection({ data }: { data: TalksData }) {
   return (
-    <section id="talks" aria-label="Talks and keynotes" className="section relative py-[clamp(64px,8vw,100px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left box-border">
+    <section id="talks" aria-label="Talks and keynotes" className="section relative py-[clamp(40px,5vw,64px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left box-border">
       <p className="section-label">Talks & Keynotes</p>
 
       <h2 className="h2 reveal mb-[var(--space-4)]">{data.heading}</h2>
