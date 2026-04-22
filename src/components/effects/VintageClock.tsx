@@ -25,9 +25,10 @@ export default function VintageClock({ size = 46 }: { size?: number }) {
     const r  = size / 2 - 2.5
 
     function draw() {
-      // PKT time (UTC+5)
-      const now = new Date()
-      const pkt = new Date(now.getTime() + (now.getTimezoneOffset() + 300) * 60000)
+      // PKT time — UTC+5, independent of local timezone
+      const now    = new Date()
+      const utcMs  = now.getTime() + now.getTimezoneOffset() * 60000
+      const pkt    = new Date(utcMs + 5 * 3600000)
       const h   = pkt.getHours() % 12
       const m   = pkt.getMinutes()
       const s   = pkt.getSeconds()
