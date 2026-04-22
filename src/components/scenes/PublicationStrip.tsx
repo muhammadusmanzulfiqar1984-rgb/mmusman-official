@@ -117,7 +117,7 @@ export default function PublicationStrip({ data: _ }: { data?: any }) {
               letterSpacing: item.letterSpacing ?? 'normal',
               fontStyle:     item.fontStyle ?? 'normal',
               color:         isHov ? 'rgba(248,224,168,1)' : 'rgba(200,169,110,1)',
-              opacity:       isHov ? 1 : anyHov ? 0.06 : 0.2,
+              opacity:       isHov ? 1 : anyHov ? 0.12 : 0.45,
               transition:    'opacity 320ms cubic-bezier(0.4,0,0.2,1), color 320ms ease',
               whiteSpace:    'nowrap',
               lineHeight:    1,
@@ -177,7 +177,7 @@ export default function PublicationStrip({ data: _ }: { data?: any }) {
         boxSizing:  'border-box',
         padding:    'clamp(72px, 9vw, 112px) 0',
         borderBottom: '1px solid var(--color-border-soft)',
-        background: 'linear-gradient(180deg, #070405 0%, #0d0809 35%, #0d0809 65%, #070405 100%)',
+        background: 'linear-gradient(180deg, #0f0a08 0%, #160f0b 35%, #160f0b 65%, #0f0a08 100%)',
         overflow:   'hidden',
         position:   'relative',
       }}
@@ -230,7 +230,7 @@ export default function PublicationStrip({ data: _ }: { data?: any }) {
         </div>
 
         {/* Row B — scrolls right, ghosted backdrop */}
-        <div style={{ overflow: 'hidden', opacity: 0.55 }}>
+        <div style={{ overflow: 'hidden', opacity: 0.75 }}>
           <div
             className="pub-row-b"
             style={{ animationPlayState: paused ? 'paused' : 'running' }}
