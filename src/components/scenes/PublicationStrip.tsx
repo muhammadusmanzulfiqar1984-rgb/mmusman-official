@@ -153,6 +153,7 @@ export default function PublicationStrip({ data: _ }: { data?: any }) {
         position:     'relative',
         zIndex:       10,
         isolation:    'isolate',
+        maxWidth:     '100vw',
       }}
     >
       {/* Reflective editorial band */}
