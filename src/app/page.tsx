@@ -11,6 +11,7 @@ const WorkSection = dynamic(() => import('@/components/scenes/WorkSection'))
 const InsightsSection = dynamic(() => import('@/components/scenes/InsightsSection'))
 const TrainingSection = dynamic(() => import('@/components/scenes/TrainingSection'))
 const RecordSection = dynamic(() => import('@/components/scenes/RecordSection'))
+const PublicationStrip = dynamic(() => import('@/components/scenes/PublicationStrip'))
 const HarvicsSection = dynamic(() => import('@/components/scenes/HarvicsSection'))
 const IntelligenceSection = dynamic(() => import('@/components/scenes/IntelligenceSection'))
 const ContactSection = dynamic(() => import('@/components/scenes/ContactSection'))
@@ -59,6 +60,7 @@ const DATA_SECTION_MAP: Record<string, unknown> = {
   work:         WorkSection,
   insights:     InsightsSection,
   record:       RecordSection,
+  recognition:  PublicationStrip,
   training:     TrainingSection,
   harvics:      HarvicsSection,
   intelligence: IntelligenceSection,

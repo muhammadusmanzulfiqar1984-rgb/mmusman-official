@@ -6,7 +6,7 @@ import { record, initScrollTracking, initSectionTracking, initRageClickTracking 
 
 // Static default — must match the "default" rule in rules.json.
 // Used as the initial state on both server and client to prevent hydration mismatch.
-const DEFAULT_ORDER = ['hero','about','work','insights','record','training','harvics','intelligence','contact']
+const DEFAULT_ORDER = ['hero','about','work','insights','record','recognition','training','harvics','intelligence','contact']
 const DEFAULT_DECISION: PersonaDecision = {
   persona:      'default',
   label:        'General Visitor',

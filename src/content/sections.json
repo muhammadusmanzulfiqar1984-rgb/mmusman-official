@@ -131,6 +131,14 @@
     "audience": ["all"]
   },
   {
+    "id": "recognition",
+    "type": "recognition",
+    "heading": "Press · Recognition · Featured Authority",
+    "priority": 6,
+    "tags": ["recognition"],
+    "audience": ["all"]
+  },
+  {
     "id": "training",
     "type": "training",
     "heading": "The Academy.",

@@ -8,7 +8,7 @@
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero","work","about","insights","record","training","harvics","intelligence","contact"],
+      "sectionOrder": ["hero","work","about","insights","record","recognition","training","harvics","intelligence","contact"],
       "heroCta": "See the work",
       "heroCtaHref": "#work"
     }
@@ -23,7 +23,7 @@
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero","record","about","work","insights","training","harvics","intelligence","contact"],
+      "sectionOrder": ["hero","record","about","work","insights","recognition","training","harvics","intelligence","contact"],
       "heroCta": "View addresses",
       "heroCtaHref": "#record"
     }
@@ -38,7 +38,7 @@
     ],
     "matchAny": true,
     "then": {
-      "sectionOrder": ["hero","training","work","about","insights","record","harvics","intelligence","contact"],
+      "sectionOrder": ["hero","training","work","about","insights","record","recognition","harvics","intelligence","contact"],
       "heroCta": "Discuss a program",
       "heroCtaHref": "#training"
     }
@@ -49,7 +49,7 @@
     "when": [],
     "matchAny": false,
     "then": {
-      "sectionOrder": ["hero","about","work","insights","record","training","harvics","intelligence","contact"],
+      "sectionOrder": ["hero","about","work","insights","record","recognition","training","harvics","intelligence","contact"],
       "heroCta": "See the work",
       "heroCtaHref": "#work"
     }
