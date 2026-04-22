@@ -18,26 +18,27 @@
 
 :root {
   /* ── Colour — Base ── */
-  --color-bg:          #0d080a;
-  --color-bg-alt:      #130c0f;
+  --color-bg:          #100b08;   /* lifted: pure void → warm near-black */
+  --color-bg-alt:      #160f0b;
   --color-bg-card:     #3a2a0a;
   --color-border:      #4a2835;
-  --color-border-soft: #3a2028;
+  --color-border-soft: #3d2530;
 
   /* ── Colour — Gold ── */
-  --color-gold:         #b38b59;
-  --color-gold-bright:  #d9af7a;
-  --color-gold-deep:    #8b653a;
-  --color-gold-dim:     rgba(179, 139, 89, 0.45);
-  --color-gold-glow:    rgba(179, 139, 89, 0.18);
-  --color-gold-shimmer: rgba(217, 175, 122, 0.55);
+  --color-gold:         #c8a060;   /* lifted: richer, warmer gold */
+  --color-gold-bright:  #e8c078;   /* brighter accent gold */
+  --color-gold-deep:    #9a7242;
+  --color-gold-dim:     rgba(200, 160, 96, 0.5);
+  --color-gold-glow:    rgba(200, 160, 96, 0.2);
+  --color-gold-shimmer: rgba(232, 192, 120, 0.6);
 
   /* ── Colour — Text ── */
-  --color-text-primary:   #f5ede8;
-  --color-text-secondary: #ede6e0;
-  --color-text-muted:     #c0b0a8;
-  --color-text-dim:       #9a8a82;
-  --color-text-ghost:     #a09090;
+  /* Grammar: gold family = structure/labels/headings. ivory family = reading/body text. */
+  --color-text-primary:   #f8f2ec;   /* headings, dominant text — near-white warm ivory */
+  --color-text-secondary: #ede0d0;   /* body paragraphs — raised from 0.65 → 0.88 luminance */
+  --color-text-muted:     #cdbfb0;   /* captions, meta — raised from 0.45 → 0.72 */
+  --color-text-dim:       #b0a090;   /* placeholder, ghost labels — raised from 0.38 → 0.55 */
+  --color-text-ghost:     #988878;   /* absolute minimum — still readable */
 
   /* ── Colour — Glassmorphism ── */
   --glass-bg:          rgba(255, 240, 240, 0.05);

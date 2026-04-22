@@ -225,16 +225,20 @@ html.classic-view :focus-visible {
 }
 
 /* ── Typography ── */
+/* COLOUR GRAMMAR:
+   Gold family  (--color-gold, gold-bright)  → structural: headings, labels, eyebrows, section titles
+   Ivory family (--color-text-primary/secondary) → reading: body paragraphs, descriptions, meta
+   Never mix in the same element. One voice at a time. */
 .font-display { font-family: var(--font-display); }
 .font-mono    { font-family: var(--font-mono); }
 
-/* Eyebrow — ultra-thin tracking, no weight, just structure */
+/* Eyebrow — gold, structural */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-bright);
   font-weight: 300;
 }
 
@@ -261,13 +265,13 @@ html.classic-view :focus-visible {
   text-wrap: balance;
 }
 
-/* Body — Inter 300, Apple-like 15px base */
+/* Body — warm ivory, clearly readable, not cold white */
 .body {
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 300;
   line-height: var(--leading-loose);
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   letter-spacing: var(--tracking-normal);
 }
 
@@ -589,14 +593,14 @@ html.classic-view :focus-visible {
   margin: var(--space-8) 0;
 }
 
-/* ── Section label ── */
+/* Section labels — gold structural, clearly visible */
 .section-label {
   font-family: var(--font-body);
   font-size: var(--text-xs);
   font-weight: 300;
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--color-text-ghost);
+  color: var(--color-gold);
   margin-bottom: var(--space-10);
 }
 
@@ -1339,11 +1343,11 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
   color: var(--color-text-primary);
 }
 
-/* Card body text — raise contrast from muted to secondary */
+/* Card body text — warm ivory, clearly legible */
 .card .body,
 .card p,
 .card h3 {
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
 }
 
 /* Section labels — slightly more visible */
@@ -1424,11 +1428,10 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
    ═══════════════════════════════════════════════════════════ */
 
 /* ── LAYER 1 : Base — section-label lift ── */
-/* Labels are the first thing the eye catches entering a section */
 .section-label {
-  color: rgba(200, 169, 110, 0.65) !important;
-  letter-spacing: 0.24em !important;
-  font-size: 0.58rem !important;
+  color: var(--color-gold) !important;
+  letter-spacing: 0.22em !important;
+  font-size: 0.6rem !important;
 }
 
 /* ── Dividers — from near-invisible to readable hairlines ── */
