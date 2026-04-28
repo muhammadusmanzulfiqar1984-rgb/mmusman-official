@@ -825,7 +825,7 @@ function checkPin() {
       initReveal();
       initNav();
       playBriefingAudio();
-    }, 600);
+    }, 200);
   } else {
     status.textContent = 'Invalid access code';
     status.className = 'pin-status error';
@@ -857,7 +857,7 @@ function playBriefingAudio() {
     }).catch(() => {
       // Browser may still require gesture; listeners below will retry.
     });
-  }, 1500);
+  }, 500);
 }
 
 function ensureVoiceRetry() {
@@ -869,14 +869,14 @@ function ensureVoiceRetry() {
       return;
     }
     playBriefingAudio();
-  }, 1200);
+  }, 600);
 
   setTimeout(() => {
     if (briefingVoiceRetry) {
       clearInterval(briefingVoiceRetry);
       briefingVoiceRetry = null;
     }
-  }, 25000);
+  }, 15000);
 }
 
 function attachVoiceEndedHandler() {

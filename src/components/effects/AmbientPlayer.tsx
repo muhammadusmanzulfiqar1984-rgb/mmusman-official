@@ -38,8 +38,8 @@ export default function AmbientPlayer() {
       setTimeout(() => {
         if (!audioRef.current) return
         audioRef.current.muted = false
-        fadeTo(audioRef.current, 0.5, 3000)
-      }, 200)
+        fadeTo(audioRef.current, 0.5, 1000)
+      }, 50)
     } catch { /* blocked — retry loop handles */ }
   }, [fadeTo])
 
@@ -50,7 +50,7 @@ export default function AmbientPlayer() {
     audio.muted  = true
     audioRef.current = audio
     void startMusic()
-    retryRef.current = window.setInterval(() => { void startMusic() }, 800)
+    retryRef.current = window.setInterval(() => { void startMusic() }, 400)
     return () => {
       if (retryRef.current) clearInterval(retryRef.current)
       audio.pause()
