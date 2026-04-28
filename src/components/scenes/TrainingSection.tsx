@@ -1,4 +1,5 @@
 'use client'
+import { useLang } from '@/lib/langContext'
 
 interface TrainingData {
   heading: string
@@ -9,6 +10,12 @@ interface TrainingData {
 }
 
 export default function TrainingSection({ data }: { data: TrainingData }) {
+  const { t } = useLang()
+  const heading = t.training.heading || data.heading
+  const para1   = t.training.para1   || data.paragraphs[0]
+  const para2   = t.training.para2   || data.paragraphs[1]
+  const cta     = t.training.cta     || data.cta.label
+  const paragraphs = [para1, para2].filter(Boolean)
   return (
     <section
       id="training"
@@ -32,10 +39,10 @@ export default function TrainingSection({ data }: { data: TrainingData }) {
         {/* LEFT */}
         <div className="academy-left">
           <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.1 }}>
-            {data.heading}
+            {heading}
           </h2>
 
-          {data.paragraphs.map((p, i) => (
+          {paragraphs.map((p, i) => (
             <p key={i} className="reveal" style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-sm)',
@@ -43,7 +50,7 @@ export default function TrainingSection({ data }: { data: TrainingData }) {
               color: 'var(--color-text-muted)',
               lineHeight: 1.85,
               letterSpacing: '0.01em',
-              marginBottom: i < data.paragraphs.length - 1 ? 'var(--space-5)' : '0',
+              marginBottom: i < paragraphs.length - 1 ? 'var(--space-5)' : '0',
               borderLeft: i === 0 ? '1px solid var(--color-gold-dim)' : 'none',
               paddingLeft: i === 0 ? 'var(--space-5)' : '0',
             }}>
@@ -70,7 +77,7 @@ export default function TrainingSection({ data }: { data: TrainingData }) {
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-gold)' }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(200,169,110,0.3)' }}
           >
-            {data.cta.label} →
+            {cta} →
           </a>
         </div>
 

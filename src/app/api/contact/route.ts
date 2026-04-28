@@ -55,8 +55,8 @@ export async function POST(req: NextRequest) {
   // Send email via Resend (active when RESEND_API_KEY is set)
   try {
     await resend.emails.send({
-      from: 'contact@mmusman.com',
-      to: 'Info@mmusman.com',
+      from: 'onboarding@resend.dev',
+        to: 'info@mmusman.com',
       replyTo: emailStr,
       subject: `Contact from ${nameStr}${typeStr ? ` — ${typeStr}` : ''}`,
       text: `Name: ${nameStr}\nEmail: ${emailStr}\nEngagement: ${typeStr || '—'}\n\n${messageStr}`,

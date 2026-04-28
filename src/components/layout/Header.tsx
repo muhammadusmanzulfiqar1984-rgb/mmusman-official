@@ -5,7 +5,8 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import { useLang } from '@/lib/langContext'
 import LanguageSwitcher from './LanguageSwitcher'
-const VintageClock = dynamic(() => import('@/components/effects/VintageClock'), { ssr: false })
+const VintageClock   = dynamic(() => import('@/components/effects/VintageClock'), { ssr: false })
+const BriefingGate   = dynamic(() => import('./BriefingGate'), { ssr: false })
 
 export default function Header() {
   const { t } = useLang()
@@ -17,8 +18,8 @@ export default function Header() {
     { label: t.nav.thought,       href: '#insights' },
     { label: t.nav.forum,         href: '#record' },
     { label: t.nav.academy,       href: '#training' },
-    { label: 'Harvics',           href: '#harvics' },
-    { label: 'Intelligence',      href: '#intelligence' },
+    { label: t.ui.harvicsNav,     href: '#harvics' },
+    { label: t.ui.intelligenceNav, href: '#intelligence' },
     { label: t.nav.contact,       href: '#contact' },
   ]
   const [scrolled, setScrolled]   = useState(false)
@@ -292,6 +293,9 @@ export default function Header() {
         >
           ◈ Classic
         </button>
+
+        {/* Restricted Briefing Gate */}
+        <BriefingGate />
 
         {/* PKT Clock */}
         <span className="header-clock"><VintageClock size={46} /></span>

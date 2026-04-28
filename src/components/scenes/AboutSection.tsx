@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Image from 'next/image'
+import { useLang } from '@/lib/langContext'
 
 interface AboutData {
   eyebrow: string
@@ -12,8 +13,14 @@ interface AboutData {
 }
 
 export default function AboutSection({ data }: { data: AboutData }) {
+  const { t } = useLang()
   const [imgError, setImgError] = useState(false)
   const tags = data.displayTags ?? ['Lawyer', 'Trader', 'Founder', 'Strategist']
+  const eyebrow   = t.about.eyebrow   || data.eyebrow || data.label
+  const heading   = t.about.heading   || data.heading
+  const para1     = t.about.para1     || data.paragraphs[0]
+  const para2     = t.about.para2     || data.paragraphs[1]
+  const paragraphs = [para1, para2].filter(Boolean)
   return (
     <section id="about" aria-label="About" className="section relative py-[clamp(40px,5vw,64px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] box-border">
       <div className="col2-grid items-center">
@@ -37,14 +44,14 @@ export default function AboutSection({ data }: { data: AboutData }) {
 
         {/* RIGHT — content */}
         <div className="text-left">
-          <p className="eyebrow reveal mb-[var(--space-3)] text-[var(--color-gold-deep)] font-semibold">{data.eyebrow || data.label}</p>
-          <h2 className="h2 reveal mb-[var(--space-6)] text-[var(--color-text-primary)]" style={{ whiteSpace: 'pre-line' }}>{data.heading}</h2>
+          <p className="eyebrow reveal mb-[var(--space-3)] text-[var(--color-gold-deep)] font-semibold">{eyebrow}</p>
+          <h2 className="h2 reveal mb-[var(--space-6)] text-[var(--color-text-primary)]" style={{ whiteSpace: 'pre-line' }}>{heading}</h2>
           <div className="flex flex-col gap-[var(--space-5)]">
-            {data.paragraphs.map((p, i) => <p key={i} className="body reveal text-[var(--color-text-secondary)]">{p}</p>)}
+            {paragraphs.map((p, i) => <p key={i} className="body reveal text-[var(--color-text-secondary)]">{p}</p>)}
           </div>
           <div className="reveal flex flex-wrap gap-[var(--space-3)] mt-[var(--space-8)]">
-            <a href="#work" className="btn btn-primary text-[0.8rem]">Explore the work</a>
-            <a href="#contact" className="btn btn-primary text-[0.8rem]">Get in touch</a>
+            <a href="#work" className="btn btn-primary text-[0.8rem]">{t.about.ctaWork}</a>
+            <a href="#contact" className="btn btn-primary text-[0.8rem]">{t.about.ctaContact}</a>
           </div>
         </div>
       </div>

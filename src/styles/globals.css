@@ -17,7 +17,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--color-bg);
+  background: transparent;
   color: var(--color-text-secondary);
   line-height: var(--leading-normal);
   min-height: 100dvh;
@@ -32,62 +32,29 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ── Alternating section backgrounds ── */
-/* ODD  = deep bronze glass */
-/* EVEN = deep black */
+/* ── Alternating section backgrounds — transparent for cinematic backdrop ── */
 #insights,
 #media,
 #contact {
-  background:
-    linear-gradient(160deg,
-      rgba(255,255,255,0.04) 0%,
-      rgba(179,139,89,0.0) 30%,
-      rgba(179,139,89,0.0) 100%
-    ),
-    linear-gradient(135deg,
-      #14110d 0%,
-      #221a11 35%,
-      #18120c 65%,
-      #0a0805 100%
-    ) !important;
-  backdrop-filter: blur(0px);
-  position: relative;
+  background: transparent !important;
 }
 
-/* Milky White Glass Shimmer for About Section */
 #about {
-  background:
-    linear-gradient(160deg,
-      rgba(253, 251, 247, 0.12) 0%,
-      rgba(253, 251, 247, 0.0) 40%,
-      rgba(253, 251, 247, 0.0) 100%
-    ),
-    linear-gradient(135deg,
-      #14110d 0%,
-      #1c1813 35%,
-      #14110d 65%,
-      #0a0805 100%
-    ) !important;
-  backdrop-filter: blur(0px);
-  position: relative;
+  background: transparent !important;
 }
-
-/* Training — kill all pseudo-element overlays, show image clean */
-#training::before, #training::after { display: none !important; }
 
 /* Training — full-bleed image with readable left overlay */
+#training::before, #training::after { display: none !important; }
 #training {
   background:
     linear-gradient(105deg,
-      rgba(8,3,6,0.88)  0%,
-      rgba(8,3,6,0.75) 40%,
-      rgba(8,3,6,0.30) 70%,
-      rgba(8,3,6,0.10) 100%
+      rgba(8,3,6,0.75)  0%,
+      rgba(8,3,6,0.55) 40%,
+      rgba(8,3,6,0.20) 70%,
+      rgba(8,3,6,0.05) 100%
     ),
     url('/images/Public%20training.webp') center center / cover no-repeat,
-    #0a0408 !important;
-  backdrop-filter: blur(0px);
-  position: relative;
+    transparent !important;
 }
 /* Glass top-edge refraction line */
 #about::before,
@@ -148,16 +115,17 @@ body {
   position: relative;
   z-index: 1;
   box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+  background: rgba(8,5,3,0.18) !important;
 }
-#hero    { z-index: 10; box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.1); }
-#about   { z-index: 9;  box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
-#work    { z-index: 8;  box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-#insights{ z-index: 7;  box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
-#speaking{ z-index: 6; box-shadow: none; background: transparent !important; }
-#training{ z-index: 5; }
-#talks   { z-index: 4; }
-#skillscape{ z-index: 3; }
-#media   { z-index: 2; }
+#hero    { z-index: 10; box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.1); background: rgba(8,5,3,0.12) !important; }
+#about   { z-index: 9;  box-shadow: 0 8px 40px rgba(0,0,0,0.4); background: rgba(8,5,3,0.18) !important; }
+#work    { z-index: 8;  box-shadow: 0 8px 32px rgba(0,0,0,0.4); background: rgba(8,5,3,0.18) !important; }
+#insights{ z-index: 7;  box-shadow: 0 8px 32px rgba(0,0,0,0.4); background: rgba(8,5,3,0.18) !important; }
+#speaking{ z-index: 6; box-shadow: none; background: rgba(8,5,3,0.12) !important; }
+#training{ z-index: 5; background: rgba(8,5,3,0.18) !important; }
+#talks   { z-index: 4; background: rgba(8,5,3,0.18) !important; }
+#skillscape{ z-index: 3; background: rgba(8,5,3,0.18) !important; }
+#media   { z-index: 2; background: rgba(8,5,3,0.18) !important; }
 #contact { z-index: 1; }
 
 /* Skip link (a11y) */
@@ -261,9 +229,20 @@ html.classic-view :focus-visible {
   font-size: var(--text-3xl);
   font-weight: 300;
   line-height: var(--leading-snug);
-  color: var(--color-text-primary);
+  color: #ffffff;
   letter-spacing: var(--tracking-tight);
   text-wrap: balance;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.7);
+}
+/* Gold underline accent under h2 headings */
+.h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-gold), transparent);
+  margin-top: 14px;
+  opacity: 0.8;
 }
 
 /* Body — warm ivory, clearly readable, not cold white */
@@ -272,8 +251,9 @@ html.classic-view :focus-visible {
   font-size: var(--text-base);
   font-weight: 300;
   line-height: var(--leading-loose);
-  color: var(--color-text-secondary);
+  color: #f0e0c0;
   letter-spacing: var(--tracking-normal);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.7);
 }
 
 /* ── Gold accent text — shimmering gradient ── */
@@ -598,11 +578,34 @@ html.classic-view :focus-visible {
 .section-label {
   font-family: var(--font-body);
   font-size: var(--text-xs);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-bright);
   margin-bottom: var(--space-10);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+}
+
+/* ── Card hover lift + gold border brighten ── */
+.work-card, .harvics-card, .intel-card, .insight-card {
+  transition: transform 0.35s cubic-bezier(0.23,1,0.32,1),
+              border-color 0.3s ease,
+              box-shadow 0.35s ease !important;
+}
+.work-card:hover, .harvics-card:hover, .intel-card:hover, .insight-card:hover {
+  transform: translateY(-6px) !important;
+  border-color: var(--color-gold) !important;
+  box-shadow: 0 16px 48px rgba(200,160,96,0.12), 0 0 0 1px rgba(200,160,96,0.2) !important;
+}
+
+/* ── Global text readability over video backdrop ── */
+:not(#hero) .reveal,
+:not(#hero) p,
+:not(#hero) h3,
+:not(#hero) h4,
+:not(#hero) li,
+:not(#hero) span:not(.btn):not(.pill) {
+  text-shadow: 0 1px 6px rgba(0,0,0,0.75);
 }
 
 /* ── Grid helpers ── */
@@ -690,7 +693,7 @@ html.classic-view :focus-visible {
 }
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1.1fr 1fr; gap: var(--space-8); }
@@ -1534,10 +1537,13 @@ canvas[aria-label="Pakistan Standard Time clock"]:hover {
   border-radius: 0 0 1px 1px;
 }
 
-/* ── Section border-bottom — stronger on key sections ── */
-#work    { border-bottom: 1px solid rgba(200,169,110,0.25) !important; }
-#record  { border-bottom: 1px solid rgba(200,169,110,0.25) !important; }
+/* ── Section border-bottom — TEMPORARILY REMOVED ── */
+#work    { border-bottom: none !important; }
+#record  { border-bottom: none !important; }
 #contact { border-bottom: none !important; }
+
+/* TEMP: hide only section-level gold dividers, preserve all internal borders */
+section.section { border-color: transparent !important; }
 
 /* ── Reduced-motion override ── */
 @media (prefers-reduced-motion: reduce) {

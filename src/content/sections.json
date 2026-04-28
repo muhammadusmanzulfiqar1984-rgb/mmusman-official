@@ -45,10 +45,11 @@
       { "tag": "Political Strategy","title": "Senior lobbying, governmental access, political capital and corridor positioning" }
     ],
     "stats": [
-      { "value": "50+", "label": "Conferences" },
-      { "value": "15+", "label": "Years" },
+      { "value": "85+", "label": "Conferences" },
+      { "value": "18+", "label": "Years" },
       { "value": "6",   "label": "Domains" },
-      { "value": "25+", "label": "Organisations" }
+      { "value": "25+", "label": "Organisations" },
+      { "value": "10+", "label": "Domains" }
     ],
     "priority": 3,
     "tags": ["work"],
@@ -115,10 +116,11 @@
       }
     ],
     "proof": [
-      { "value": "50+", "label": "Conferences addressed" },
-      { "value": "15+", "label": "Years in direct operation" },
+      { "value": "85+", "label": "Conferences addressed" },
+      { "value": "18+", "label": "Years in direct operation" },
       { "value": "6",   "label": "Domains with direct authority" },
-      { "value": "25+", "label": "Organisations engaged" }
+      { "value": "25+", "label": "Organisations engaged" },
+      { "value": "10+", "label": "Domains mastered" }
     ],
     "media": [
       { "type": "video", "title": "Many industries. One formation.", "subtitle": "Signature address",  "poster": "/images/speaking.webp" },
@@ -198,8 +200,8 @@
     "type": "contact",
     "heading": "An invitation.",
     "subheading": "For those whose work operates at the intersection of trade, law, markets, and institutional consequence. You will receive a personal response.",
-    "email": "Info@mmusman.com",
-    "phone": "+44 7830 755932",
+    "email": "info@mmusman.eu",
+    "phone": "+1 647 366 4374",
     "whatsapp": "https://wa.me/447830755932",
     "engagementTypes": ["Keynote", "Advisory", "Academy", "Harvics", "Private"],
     "priority": 9,

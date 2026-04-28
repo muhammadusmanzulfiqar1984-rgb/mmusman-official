@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useLang } from '@/lib/langContext'
 
 interface Pillar { tag: string; line: string }
 interface HarvicsData {
@@ -11,9 +12,13 @@ interface HarvicsData {
 }
 
 export default function HarvicsSection({ data }: { data: HarvicsData }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const [transitioning, setTransitioning] = useState(false)
+  const heading    = t.harvics.heading    || data.heading
+  const subheading = t.harvics.subheading || data.subheading
+  const body       = t.harvics.body       || data.body
 
   const select = (i: number) => {
     if (i === active) return
@@ -40,7 +45,7 @@ export default function HarvicsSection({ data }: { data: HarvicsData }) {
         {/* LEFT */}
         <div className="harvics-left">
           <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.05, letterSpacing: '-0.02em' }}>
-            {data.heading}
+            {heading}
           </h2>
           <p className="reveal" style={{
             fontFamily: 'var(--font-display)',
@@ -52,7 +57,7 @@ export default function HarvicsSection({ data }: { data: HarvicsData }) {
             marginBottom: 'var(--space-5)',
             letterSpacing: '-0.01em',
           }}>
-            {data.subheading}
+            {subheading}
           </p>
           <p className="reveal" style={{
             fontFamily: 'var(--font-body)',
@@ -64,7 +69,7 @@ export default function HarvicsSection({ data }: { data: HarvicsData }) {
             paddingLeft: 'var(--space-5)',
             letterSpacing: '0.005em',
           }}>
-            {data.body}
+            {body}
           </p>
           <a
             href={data.cta.href}

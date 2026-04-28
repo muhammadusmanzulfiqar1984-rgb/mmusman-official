@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useLang } from '@/lib/langContext'
 
 interface Pillar { tag: string; line: string }
 interface IntelligenceData {
@@ -10,9 +11,13 @@ interface IntelligenceData {
 }
 
 export default function IntelligenceSection({ data }: { data: IntelligenceData }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const [transitioning, setTransitioning] = useState(false)
+  const heading    = t.intelligence.heading    || data.heading
+  const subheading = t.intelligence.subheading || data.subheading
+  const body       = t.intelligence.body       || data.body
 
   const select = (i: number) => {
     if (i === active) return
@@ -39,7 +44,7 @@ export default function IntelligenceSection({ data }: { data: IntelligenceData }
       <div className="intel-chamber">
         <div className="intel-left">
           <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.05 }}>
-            {data.heading}
+            {heading}
           </h2>
           <p className="reveal" style={{
             fontFamily: 'var(--font-display)',
@@ -51,7 +56,7 @@ export default function IntelligenceSection({ data }: { data: IntelligenceData }
             marginBottom: 'var(--space-5)',
             letterSpacing: '-0.01em',
           }}>
-            {data.subheading}
+            {subheading}
           </p>
           <p className="reveal" style={{
             fontFamily: 'var(--font-body)',
@@ -63,7 +68,7 @@ export default function IntelligenceSection({ data }: { data: IntelligenceData }
             paddingLeft: 'var(--space-5)',
             letterSpacing: '0.005em',
           }}>
-            {data.body}
+            {body}
           </p>
         </div>
 

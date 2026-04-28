@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef } from 'react'
 import PrivacyPanel from '@/components/ai/PrivacyPanel'
+import { useLang } from '@/lib/langContext'
 
 interface ContactData {
   heading: string
@@ -15,6 +16,13 @@ type Status = 'idle' | 'submitting' | 'success' | 'error'
 type SignalStatus = 'idle' | 'sending' | 'done' | 'error'
 
 export default function ContactSection({ data }: { data: ContactData }) {
+  const { t } = useLang()
+  const heading     = t.contact.heading          || data.heading
+  const subheading  = t.contact.subheading       || data.subheading
+  const namePH      = t.contact.namePlaceholder  || 'Your name'
+  const emailPH     = t.contact.emailPlaceholder || 'Your email'
+  const messagePH   = t.contact.messagePlaceholder || 'Your message'
+  const sendLabel   = t.contact.send             || 'Send message'
   const [status, setStatus]   = useState<Status>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -127,8 +135,8 @@ export default function ContactSection({ data }: { data: ContactData }) {
       <div className="col2-grid">
         {/* Left — info */}
         <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>{data.heading}</h2>
-          <p className="body reveal" style={{ marginBottom: 'var(--space-8)' }}>{data.subheading}</p>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-5)' }}>{heading}</h2>
+          <p className="body reveal" style={{ marginBottom: 'var(--space-8)' }}>{subheading}</p>
 
           <div className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
             <a
@@ -267,7 +275,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
               style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}
             >
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={labelStyle}>Name</span>
+                <span style={labelStyle}>{namePH}</span>
                 <input
                   type="text"
                   name="name"
@@ -279,7 +287,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
               </label>
 
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={labelStyle}>Email</span>
+                <span style={labelStyle}>{emailPH}</span>
                 <input
                   type="email"
                   name="email"
@@ -307,7 +315,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
               </label>
 
               <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={labelStyle}>Message</span>
+                <span style={labelStyle}>{messagePH}</span>
                 <textarea
                   name="message"
                   rows={4}
@@ -332,7 +340,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
                 disabled={status === 'submitting'}
                 style={{ opacity: status === 'submitting' ? 0.7 : 1 }}
               >
-                {status === 'submitting' ? 'Sending…' : 'Send message'}
+                {status === 'submitting' ? '…' : sendLabel}
               </button>
             </form>
           )}

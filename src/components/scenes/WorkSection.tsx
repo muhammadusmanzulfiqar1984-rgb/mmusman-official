@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useLang } from '@/lib/langContext'
 
 interface WorkCard { tag: string; title: string }
 interface Stat     { value: string; label: string }
@@ -32,13 +33,12 @@ function Digit({ d }: { d: string }) {
 
 function CounterBadge({ value, label }: { value: string; label: string }) {
   const { numeric, suffix } = parseStatValue(value)
-  const [count, setCount]   = useState(0)
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [count, setCount]   = useState(() => prefersReduced ? numeric : 0)
   const rafRef              = useRef<number>(0)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setCount(numeric); return
-    }
+    if (prefersReduced) return
     const dur = Math.max(1600, numeric * 70)
     let t0: number | null = null
     const tick = (now: number) => {
@@ -49,6 +49,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
     }
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numeric])
 
   return (
@@ -79,8 +80,11 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
 }
 
 export default function WorkSection({ data }: { data: WorkData }) {
+  const { t } = useLang()
   const [active, setActive] = useState<number | null>(null)
   const [hovered, setHovered] = useState<number | null>(null)
+  const heading    = t.work.heading    || data.heading
+  const subheading = t.work.subheading || data.subheading
 
   const toggle = (i: number) => setActive(prev => prev === i ? null : i)
 
@@ -109,7 +113,7 @@ export default function WorkSection({ data }: { data: WorkData }) {
         className="work-header-grid"
       >
         <div>
-          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{data.heading}</h2>
+          <h2 className="h2 reveal" style={{ marginBottom: 'var(--space-4)' }}>{heading}</h2>
           <p className="reveal" style={{
             fontFamily: 'var(--font-body)',
             fontSize: 'var(--text-sm)',
@@ -117,7 +121,7 @@ export default function WorkSection({ data }: { data: WorkData }) {
             color: 'var(--color-text-muted)',
             lineHeight: 1.75,
             maxWidth: '480px',
-          }}>{data.subheading}</p>
+          }}>{subheading}</p>
         </div>
 
         <div style={{

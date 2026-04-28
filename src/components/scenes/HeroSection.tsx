@@ -1,9 +1,49 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import MagneticButton from '@/components/effects/MagneticButton'
 import { useWebGLBackground, useMicroParallax } from '@/lib/hooks/useHeroAnimations'
 import { useLang } from '@/lib/langContext'
+
+function useCountUp(target: number, duration = 1800) {
+  const [count, setCount] = useState(0)
+  const started = useRef(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current; if (!el) return
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || started.current) return
+      started.current = true
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setCount(target); return }
+      let t0: number | null = null
+      const tick = (now: number) => {
+        if (!t0) t0 = now
+        const p = Math.min((now - t0) / duration, 1)
+        setCount(Math.round((1 - Math.pow(1 - p, 3)) * target))
+        if (p < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }, { threshold: 0.5 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [target, duration])
+  return { count, ref }
+}
+
+function StatItem({ value, label }: { value: string; label: string }) {
+  const m = value.match(/^(\d+)(.*)/)
+  const numeric = m ? parseInt(m[1]) : 0
+  const suffix  = m ? m[2] : value
+  const { count, ref } = useCountUp(numeric)
+  return (
+    <div ref={ref}>
+      <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-2xl)', color:'var(--color-text-primary)', lineHeight:'var(--leading-tight)', fontWeight:300 }}>
+        {count}{suffix}
+      </div>
+      <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-gold)', letterSpacing:'var(--tracking-wider)', textTransform:'uppercase', marginTop:'6px', fontWeight:300 }}>{label}</div>
+    </div>
+  )
+}
 
 interface HeroData {
   eyebrow: string
@@ -92,11 +132,8 @@ export default function HeroSection({ data }: { data: HeroData }) {
           </div>
 
           <div className="reveal" style={{ display:'flex', gap:'var(--space-8)', paddingTop:'var(--space-6)', borderTop:'1px solid var(--color-border-soft)' }}>
-            {([['50+','Conferences'],['15+','Years'],['6','Industries'],['25+','Organisations']] as [string,string][]).map(([v,l]) => (
-              <div key={l}>
-                <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-2xl)', color:'var(--color-text-primary)', lineHeight:'var(--leading-tight)', fontWeight:300 }}>{v}</div>
-                <div style={{ fontFamily:'var(--font-body)', fontSize:'var(--text-xs)', color:'var(--color-gold)', letterSpacing:'var(--tracking-wider)', textTransform:'uppercase', marginTop:'6px', fontWeight:300 }}>{l}</div>
-              </div>
+            {([['85+', t.hero.statConferences],['18+', t.hero.statYears],['10+', t.hero.statDomains],['25+', t.hero.statOrganisations]] as [string,string][]).map(([v,l]) => (
+              <StatItem key={l} value={v} label={l} />
             ))}
           </div>
         </div>

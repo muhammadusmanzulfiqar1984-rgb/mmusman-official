@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useLang } from '@/lib/langContext'
 
 // Keyboard shortcuts overlay - Press '?' to show available shortcuts
 // Features: smooth scrolling, accessibility, custom actions
@@ -14,7 +15,17 @@ const SHORTCUTS = [
 ]
 
 export default function KeyboardShortcuts() {
+  const { t } = useLang()
   const [visible, setVisible] = useState(false)
+
+  const SHORTCUTS_LABELED = [
+    { key: 'h', label: t.shortcuts.home,    action: () => document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+    { key: 'a', label: t.shortcuts.about,   action: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+    { key: 'w', label: t.shortcuts.work,    action: () => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+    { key: 'c', label: t.shortcuts.contact, action: () => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+    { key: 't', label: t.shortcuts.top,     action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { key: 'b', label: t.shortcuts.bottom,  action: () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }) },
+  ]
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -37,7 +48,7 @@ export default function KeyboardShortcuts() {
       }
 
       // Execute shortcuts
-      const shortcut = SHORTCUTS.find(s => s.key === e.key.toLowerCase())
+      const shortcut = SHORTCUTS_LABELED.find(s => s.key === e.key.toLowerCase())
       if (shortcut && !e.metaKey && !e.ctrlKey && !e.altKey) {
         e.preventDefault()
         shortcut.action()
@@ -47,7 +58,7 @@ export default function KeyboardShortcuts() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [SHORTCUTS_LABELED])
 
   if (!visible) {
     return (
@@ -120,9 +131,8 @@ export default function KeyboardShortcuts() {
           color: 'var(--color-gold)',
           fontWeight: 300,
         }}>
-          Keyboard Shortcuts
-        </h2>
-        <button
+          {t.shortcuts.title}
+        </h2>        <button
           onClick={() => setVisible(false)}
           aria-label="Close"
           style={{
@@ -147,7 +157,7 @@ export default function KeyboardShortcuts() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        {SHORTCUTS.map(({ key, label }) => (
+        {SHORTCUTS_LABELED.map(({ key, label }) => (
           <div
             key={key}
             style={{

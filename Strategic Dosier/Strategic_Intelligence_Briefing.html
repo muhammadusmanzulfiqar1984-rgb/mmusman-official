@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Intelligence Briefing | Restricted Circulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050505;--bg2:#0a0a0a;--card:#0f0f0f;--card-border:#1a1a1a;
+  --gold:#c8a060;--gold-light:#dcc090;--gold-dim:rgba(200,160,96,0.32);--gold-glow:rgba(200,160,96,0.06);
+  --white:#f4eee6;--white-dim:#b4aca0;--white-soft:#d3cabd;
+  --font-display:'Cormorant Garamond',Georgia,serif;
+  --font-body:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;
+  --font-ui:'DM Mono',-apple-system,BlinkMacSystemFont,'SF Mono','SF Pro Text','Helvetica Neue',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--white);font-family:var(--font-body);line-height:1.72;overflow-x:hidden;font-weight:300;letter-spacing:0.01em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+::selection{background:var(--gold);color:var(--bg)}
+
+/* ===== VIDEO BACKDROP ===== */
+#briefing-bg-video{
+  position:fixed;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  z-index:-2;pointer-events:none;
+  filter:brightness(0.52) saturate(0.95);
+}
+#briefing-bg-overlay{
+  position:fixed;inset:0;
+  background:rgba(5,5,5,0.38);
+  z-index:-1;pointer-events:none;
+}
+
+/* ===== PIN GATE ===== */
+#pin-gate{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  transition:opacity 0.8s ease,visibility 0.8s ease;
+}
+#pin-gate.unlocked{opacity:0;visibility:hidden;pointer-events:none}
+.gate-content{text-align:center;max-width:420px;padding:2rem}
+.gate-label{
+  font-family:var(--font-ui);font-size:0.7rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold-dim);margin-bottom:2rem;
+}
+.gate-title{
+  font-family:var(--font-display);font-size:2.2rem;font-weight:600;
+  color:var(--gold);margin-bottom:0.5rem;
+}
+.gate-subtitle{
+  font-family:var(--font-body);font-size:0.85rem;color:var(--white-dim);
+  margin-bottom:3rem;line-height:1.6;
+}
+.pin-row{display:flex;gap:12px;justify-content:center;margin-bottom:1.5rem}
+.pin-input{
+  width:52px;height:64px;
+  background:var(--card);border:1px solid var(--card-border);border-radius:4px;
+  color:var(--gold);font-family:var(--font-display);font-size:1.8rem;
+  text-align:center;outline:none;caret-color:var(--gold);
+  transition:border-color 0.3s ease,box-shadow 0.3s ease;
+}
+.pin-input:focus{border-color:var(--gold-dim);box-shadow:0 0 20px rgba(201,168,76,0.1)}
+.pin-input.error{border-color:#6b2020;animation:shake 0.4s ease}
+.pin-status{
+  font-family:var(--font-ui);font-size:0.75rem;color:var(--white-dim);
+  min-height:1.2em;transition:color 0.3s ease;
+}
+.pin-status.error{color:#c0392b}
+.pin-status.success{color:var(--gold)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ===== PRESENTATION ===== */
+#presentation{opacity:0;transition:opacity 1.2s ease 0.4s}
+#presentation.visible{opacity:1}
+
+/* Sections */
+.section{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:6rem 2rem;position:relative;
+}
+.section-inner{max-width:960px;width:100%;position:relative}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.9s ease,transform 0.9s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.15s}
+.reveal-delay-2{transition-delay:0.3s}
+.reveal-delay-3{transition-delay:0.45s}
+.reveal-delay-4{transition-delay:0.6s}
+.reveal-delay-5{transition-delay:0.75s}
+
+/* Typography */
+.section-label{
+  font-family:var(--font-ui);font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold-dim);margin-bottom:1.5rem;
+}
+.section-title{
+  font-family:var(--font-display);font-size:clamp(1.5rem,3.8vw,2.15rem);font-weight:400;
+  color:var(--white);margin-bottom:0.85rem;line-height:1.22;letter-spacing:-0.01em;
+}
+.section-subtitle{
+  font-family:var(--font-display);font-size:clamp(0.95rem,2.2vw,1.15rem);font-weight:300;
+  color:var(--white-soft);margin-bottom:2rem;line-height:1.5;font-style:italic;
+}
+.body-text{
+  font-size:0.9rem;color:var(--white-dim);line-height:1.85;margin-bottom:1.35rem;
+}
+.gold-line{
+  width:120px;height:1px;background:var(--gold-dim);margin:2rem 0;
+  position:relative;overflow:hidden;
+}
+.gold-line-full{
+  width:100%;height:1px;background:linear-gradient(90deg,var(--gold-dim),transparent);margin:2rem 0;
+  position:relative;overflow:hidden;
+}
+.gold-line::after,.gold-line-full::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%, rgba(232,192,120,0.8) 50%, transparent 100%);
+  transform:translateX(-120%);
+  animation:lineShimmer 3.8s ease-in-out infinite;
+}
+
+@keyframes lineShimmer{
+  0%{transform:translateX(-120%)}
+  55%{transform:translateX(120%)}
+  100%{transform:translateX(120%)}
+}
+
+/* ===== TITLE SECTION ===== */
+.title-section{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+.title-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(201,168,76,0.03) 0%,transparent 60%);
+}
+.title-restricted{
+  font-family:var(--font-ui);font-size:0.58rem;letter-spacing:0.26em;text-transform:uppercase;
+  color:var(--gold-dim);border:1px solid var(--gold-dim);padding:6px 18px;display:inline-block;
+  margin-bottom:2.5rem;
+}
+.title-main{
+  font-family:var(--font-display);font-size:clamp(1.9rem,5.2vw,3.2rem);font-weight:400;
+  color:var(--white);line-height:1.08;margin-bottom:0.9rem;letter-spacing:-0.015em;
+}
+.title-sub{
+  font-family:var(--font-display);font-size:clamp(0.95rem,1.9vw,1.12rem);font-weight:300;
+  color:var(--white-soft);font-style:italic;line-height:1.5;margin-bottom:3rem;
+}
+.title-author{
+  font-family:var(--font-display);font-size:1.08rem;font-weight:400;
+  color:var(--gold-light);margin-bottom:0.3rem;
+}
+.title-role{
+  font-family:var(--font-body);font-size:0.78rem;color:var(--white-dim);line-height:1.7;
+}
+.title-date{
+  font-family:var(--font-ui);font-size:0.64rem;color:var(--gold-dim);margin-top:2rem;letter-spacing:0.12em;
+}
+
+/* ===== CARDS ===== */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin:2rem 0}
+.card{
+  background:var(--card);border:1px solid var(--card-border);padding:2rem;
+  position:relative;transition:border-color 0.4s ease,box-shadow 0.4s ease;
+  border-color:rgba(200,160,96,0.34);
+  box-shadow:inset 0 0 0 1px rgba(200,160,96,0.08), 0 0 26px rgba(200,160,96,0.03);
+  overflow:hidden;
+}
+.card:hover{border-color:var(--gold-light);box-shadow:inset 0 0 0 1px rgba(232,192,120,0.2), 0 0 44px rgba(200,160,96,0.12)}
+.card::after{
+  content:'';position:absolute;top:0;bottom:0;width:48%;left:-60%;
+  background:linear-gradient(100deg,transparent 0%, rgba(232,192,120,0.14) 48%, transparent 100%);
+  transform:skewX(-18deg);
+  animation:edgeSweep 5.4s ease-in-out infinite;
+  pointer-events:none;
+}
+.card-title{
+  font-family:var(--font-display);font-size:1.02rem;font-weight:400;
+  color:var(--gold-light);margin-bottom:0.65rem;
+}
+.card-body{font-size:0.82rem;color:var(--white-dim);line-height:1.75}
+
+/* ===== CONVERGENCE ROWS ===== */
+.convergence{
+  display:grid;grid-template-columns:60px 1fr;gap:1.5rem;
+  margin-bottom:2.5rem;align-items:start;
+}
+.convergence-num{
+  font-family:var(--font-display);font-size:2.2rem;font-weight:700;
+  color:var(--gold);line-height:1;padding-top:4px;
+}
+.convergence-title{
+  font-family:var(--font-display);font-size:1.08rem;font-weight:400;
+  color:var(--white);margin-bottom:0.5rem;
+}
+.convergence-body{font-size:0.84rem;color:var(--white-dim);line-height:1.82}
+
+/* ===== ACTOR TABLE ===== */
+.actor-row{
+  display:grid;grid-template-columns:180px 1fr;
+  border:1px solid var(--card-border);background:var(--card);
+  margin-bottom:0.75rem;overflow:hidden;
+  transition:border-color 0.3s ease, box-shadow 0.3s ease;
+  border-color:rgba(200,160,96,0.3);
+  box-shadow:inset 0 0 0 1px rgba(200,160,96,0.06);
+  position:relative;
+}
+.actor-row:hover{border-color:var(--gold-light);box-shadow:inset 0 0 0 1px rgba(232,192,120,0.16),0 0 28px rgba(200,160,96,0.08)}
+.actor-row::after{
+  content:'';position:absolute;top:0;bottom:0;width:42%;left:-52%;
+  background:linear-gradient(100deg,transparent 0%, rgba(232,192,120,0.1) 50%, transparent 100%);
+  transform:skewX(-16deg);
+  animation:edgeSweep 6.2s ease-in-out infinite;
+  pointer-events:none;
+}
+.actor-label{
+  font-family:var(--font-display);font-size:0.92rem;font-weight:400;
+  color:var(--gold);padding:1.2rem 1.5rem;
+  border-right:1px solid var(--card-border);
+  display:flex;align-items:center;
+}
+.actor-gap{
+  font-size:0.82rem;color:var(--white-dim);padding:1.2rem 1.5rem;
+  display:flex;align-items:center;
+}
+
+/* ===== INSIGHT BOX ===== */
+.insight-box{
+  border:1px solid var(--gold);background:rgba(201,168,76,0.03);
+  padding:1.8rem 2rem;margin:2.5rem 0;position:relative;
+  box-shadow:inset 0 0 0 1px rgba(232,192,120,0.14), 0 0 34px rgba(200,160,96,0.08);
+  overflow:hidden;
+}
+.insight-box::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);
+}
+.insight-box::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(110deg, transparent 0%, rgba(232,192,120,0.08) 50%, transparent 100%);
+  transform:translateX(-130%);
+  animation:edgeSweep 6.8s ease-in-out infinite;
+  pointer-events:none;
+}
+.insight-text{
+  font-family:var(--font-display);font-size:0.96rem;font-weight:300;
+  color:var(--gold-light);font-style:italic;line-height:1.7;
+}
+
+/* ===== TWO COLUMNS ===== */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin:2rem 0}
+.col-title{
+  font-family:var(--font-display);font-size:1.04rem;font-weight:400;
+  color:var(--gold);margin-bottom:1rem;
+}
+.col-body{font-size:0.84rem;color:var(--white-dim);line-height:1.82}
+
+/* ===== METRICS ===== */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
+.metric{
+  background:var(--card);border:1px solid var(--card-border);
+  text-align:center;padding:2rem 1rem;
+  transition:border-color 0.3s ease, box-shadow 0.3s ease;
+  border-color:rgba(200,160,96,0.32);
+  box-shadow:inset 0 0 0 1px rgba(200,160,96,0.06);
+  position:relative;overflow:hidden;
+}
+.metric:hover{border-color:var(--gold-light);box-shadow:inset 0 0 0 1px rgba(232,192,120,0.16),0 0 30px rgba(200,160,96,0.1)}
+.metric::after{
+  content:'';position:absolute;top:0;bottom:0;width:46%;left:-58%;
+  background:linear-gradient(100deg,transparent 0%, rgba(232,192,120,0.1) 50%, transparent 100%);
+  transform:skewX(-15deg);
+  animation:edgeSweep 6s ease-in-out infinite;
+  pointer-events:none;
+}
+.metric-value{
+  font-family:var(--font-display);font-size:1.8rem;font-weight:700;
+  color:var(--gold);margin-bottom:0.5rem;
+}
+.metric-label{font-family:var(--font-ui);font-size:0.75rem;color:var(--white-dim);line-height:1.5;letter-spacing:0.03em}
+
+/* ===== AI GRID ===== */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}
+.ai-card{
+  background:var(--card);border:1px solid var(--card-border);padding:1.8rem;
+  transition:border-color 0.3s ease, box-shadow 0.3s ease;
+  border-color:rgba(200,160,96,0.3);
+  box-shadow:inset 0 0 0 1px rgba(200,160,96,0.06);
+  position:relative;overflow:hidden;
+}
+.ai-card:hover{border-color:var(--gold-light);box-shadow:inset 0 0 0 1px rgba(232,192,120,0.16),0 0 32px rgba(200,160,96,0.11)}
+.ai-card::after{
+  content:'';position:absolute;top:0;bottom:0;width:44%;left:-56%;
+  background:linear-gradient(100deg,transparent 0%, rgba(232,192,120,0.1) 52%, transparent 100%);
+  transform:skewX(-16deg);
+  animation:edgeSweep 6.4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+@keyframes edgeSweep{
+  0%{transform:translateX(0) skewX(-16deg)}
+  48%{transform:translateX(0) skewX(-16deg)}
+  78%{transform:translateX(270%) skewX(-16deg)}
+  100%{transform:translateX(270%) skewX(-16deg)}
+}
+.ai-card-title{
+  font-family:var(--font-display);font-size:0.96rem;font-weight:400;
+  color:var(--gold);margin-bottom:0.6rem;
+}
+.ai-card-body{font-size:0.8rem;color:var(--white-dim);line-height:1.76}
+
+/* ===== PILLARS ===== */
+.pillar{
+  display:grid;grid-template-columns:40px 3px 1fr;gap:1rem;
+  margin-bottom:2rem;align-items:start;
+}
+.pillar-num{
+  font-family:var(--font-display);font-size:1.3rem;font-weight:700;
+  color:var(--gold);text-align:center;padding-top:2px;
+}
+.pillar-bar{background:var(--gold-dim);border-radius:1px;min-height:100%}
+.pillar-title{
+  font-family:var(--font-display);font-size:1rem;font-weight:400;
+  color:var(--gold-light);margin-bottom:0.4rem;
+}
+.pillar-body{font-size:0.8rem;color:var(--white-dim);line-height:1.76}
+
+/* ===== CONCLUSION POINTS ===== */
+.conclusion-point{
+  display:flex;gap:1rem;margin-bottom:1.2rem;align-items:flex-start;
+}
+.conclusion-bar{width:3px;min-height:100%;background:var(--gold);flex-shrink:0;margin-top:4px}
+.conclusion-text{font-size:0.92rem;color:var(--white-dim);line-height:1.7}
+
+/* ===== AUTHOR ===== */
+.author-section{background:var(--bg2)}
+.author-name{
+  font-family:var(--font-display);font-size:clamp(1.55rem,3.8vw,2.2rem);font-weight:400;
+  color:var(--white);margin-bottom:0.5rem;
+}
+.author-title-text{
+  font-family:var(--font-display);font-size:0.96rem;font-weight:300;
+  color:var(--gold-light);margin-bottom:2rem;line-height:1.5;
+}
+.credential{
+  display:flex;gap:1rem;margin-bottom:1rem;align-items:flex-start;
+}
+.credential-bar{width:3px;min-height:100%;background:var(--gold-dim);flex-shrink:0;margin-top:4px}
+.credential-text{font-size:0.84rem;color:var(--white-dim);line-height:1.72}
+.author-signature{
+  font-family:var(--font-display);font-size:1.06rem;font-weight:400;
+  color:var(--gold);font-style:italic;margin-top:2.5rem;
+}
+.author-contact{
+  font-family:var(--font-ui);font-size:0.75rem;color:var(--gold-dim);
+  margin-top:1.5rem;letter-spacing:0.05em;
+}
+.author-copyright{
+  font-family:var(--font-ui);font-size:0.65rem;color:var(--white-dim);
+  margin-top:1rem;opacity:0.5;
+}
+
+/* ===== AMBIENT ===== */
+.ambient-glow{
+  position:fixed;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,0.02) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+  transition:transform 0.3s ease;
+}
+.section{position:relative;z-index:1}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .two-col,.ai-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:1fr}
+  .actor-row{grid-template-columns:1fr}
+  .actor-label{border-right:none;border-bottom:1px solid var(--card-border);padding:0.8rem 1.2rem}
+  .actor-gap{padding:0.8rem 1.2rem}
+  .convergence{grid-template-columns:40px 1fr;gap:1rem}
+  .pillar{grid-template-columns:30px 3px 1fr;gap:0.8rem}
+  .section{padding:4rem 1.5rem}
+  .pin-input{width:44px;height:56px;font-size:1.4rem}
+}
+
+/* ===== NAV DOTS ===== */
+.nav-dots{
+  position:fixed;right:2rem;top:50%;transform:translateY(-50%);z-index:100;
+  display:flex;flex-direction:column;gap:12px;
+}
+.nav-dot{
+  width:8px;height:8px;border-radius:50%;border:1px solid var(--gold-dim);
+  background:transparent;cursor:pointer;transition:all 0.3s ease;
+  padding:0;
+}
+.nav-dot.active{background:var(--gold);border-color:var(--gold);transform:scale(1.3)}
+@media(max-width:768px){.nav-dots{right:1rem;gap:8px}.nav-dot{width:6px;height:6px}}
+</style>
+</head>
+<body>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div class="gate-content">
+    <div class="gate-label">Restricted Circulation</div>
+    <div class="gate-title">Strategic Intelligence Briefing</div>
+    <div class="gate-subtitle">This document is classified for authorised institutional recipients. Enter your access code to proceed.</div>
+    <div class="pin-row">
+      <input type="password" class="pin-input" maxlength="1" data-idx="0" inputmode="numeric" autocomplete="off">
+      <input type="password" class="pin-input" maxlength="1" data-idx="1" inputmode="numeric" autocomplete="off">
+      <input type="password" class="pin-input" maxlength="1" data-idx="2" inputmode="numeric" autocomplete="off">
+      <input type="password" class="pin-input" maxlength="1" data-idx="3" inputmode="numeric" autocomplete="off">
+      <input type="password" class="pin-input" maxlength="1" data-idx="4" inputmode="numeric" autocomplete="off">
+      <input type="password" class="pin-input" maxlength="1" data-idx="5" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="pin-status" id="pin-status">Enter 6-digit access code</div>
+  </div>
+</div>
+
+<!-- VIDEO BACKDROP -->
+<video id="briefing-bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+  <source src="/backdrop.mp4" type="video/mp4">
+</video>
+<div id="briefing-bg-overlay" aria-hidden="true"></div>
+
+<!-- AMBIENT -->
+<div class="ambient-glow" id="ambient" style="top:-300px;left:-300px"></div>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="nav-dots" style="display:none"></nav>
+
+<!-- PRESENTATION -->
+<div id="presentation">
+
+  <!-- 1. TITLE -->
+  <section class="section title-section" data-section="0">
+    <div class="section-inner" style="text-align:left">
+      <div class="reveal title-restricted">Restricted Circulation — April 2026</div>
+      <div class="reveal reveal-delay-1 gold-line"></div>
+      <h1 class="reveal reveal-delay-1 title-main">Intelligence, Corridors,<br>and Governance</h1>
+      <p class="reveal reveal-delay-2 title-sub">Restructuring the EU–GCC–South Asia Trade Architecture<br>in the Age of AI-Enabled Economic Statecraft</p>
+      <div class="reveal reveal-delay-3 gold-line"></div>
+      <div class="reveal reveal-delay-3 title-author">Mian Muhammad Usman</div>
+      <div class="reveal reveal-delay-4 title-role">Senior Fellow (Independent) & Principal Strategist<br>Global Trade Architecture & Systemic Resilience</div>
+      <div class="reveal reveal-delay-5 title-date">Lahore · London · Toronto</div>
+    </div>
+  </section>
+
+  <!-- 2. EXECUTIVE SUMMARY -->
+  <section class="section" data-section="1">
+    <div class="section-inner">
+      <div class="reveal section-label">Executive Summary</div>
+      <h2 class="reveal section-title">The Corridor's Structural Deficit</h2>
+      <p class="reveal reveal-delay-1 body-text">The EU–GCC–South Asia trade corridor constitutes one of the most strategically underarchitected axes of the contemporary global order. Spanning European capital markets, Gulf logistics sovereignty, and South Asian industrial depth, this corridor intermediates hundreds of billions of dollars in annual commerce — yet remains institutionally ungoverned at the systems level.</p>
+      <div class="reveal reveal-delay-2 card-grid">
+        <div class="card">
+          <div class="card-title">Governance Deficit</div>
+          <div class="card-body">The corridor is growing in complexity faster than the institutional frameworks designed to manage it.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Epistemic Gap</div>
+          <div class="card-body">AI offers the first credible tool for closing the corridor's structural information asymmetry — but only under multilateral governance.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Window Closing</div>
+          <div class="card-body">Fragmentation into competing proprietary ecosystems will foreclose multilateral coordination permanently.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THREE CONVERGENCES -->
+  <section class="section" data-section="2">
+    <div class="section-inner">
+      <div class="reveal section-label">Structural Context</div>
+      <h2 class="reveal section-title">Three Convergent Reconfigurations</h2>
+      <div class="reveal reveal-delay-1 gold-line-full"></div>
+      <div class="reveal reveal-delay-1 convergence">
+        <div class="convergence-num">I</div>
+        <div>
+          <div class="convergence-title">Supply Chain Sovereignty</div>
+          <div class="convergence-body">Post-pandemic disruption structurally delegitimised single-point dependency. South Asian industrial capacity — Pakistan's textile base, Bangladesh's export zones, India's pharma corridors — has shifted from second-order alternative to credible anchor of reoriented production geography. This is not a transient signal. It is structural scaling.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2 convergence">
+        <div class="convergence-num">II</div>
+        <div>
+          <div class="convergence-title">GCC Capital as Trade Architecture</div>
+          <div class="convergence-body">Gulf sovereign wealth funds have transitioned from passive return-seekers to active architects of trade connectivity. Capital deployment into logistics, port capacity, cold-chain, and trade finance signals industrial sovereignty by capital — GCC states are constructing the physical architecture through which future corridor commerce will flow.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-3 convergence">
+        <div class="convergence-num">III</div>
+        <div>
+          <div class="convergence-title">EU Regulatory Reconfiguration</div>
+          <div class="convergence-body">The EU's twin digital-green transitions are actively redesigning market access conditions. CBAM, supply chain due diligence, and ESG mandates are reconstructing the regulatory interface — creating structural leverage for the positioned, epistemic exclusion for the unready.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. EPISTEMIC ARCHITECTURE -->
+  <section class="section" data-section="3">
+    <div class="section-inner">
+      <div class="reveal section-label">Core Analysis</div>
+      <h2 class="reveal section-title">The Epistemic Architecture Problem</h2>
+      <p class="reveal reveal-delay-1 section-subtitle">The corridor's fundamental integration deficit is not logistical, financial, or diplomatic. It is epistemic.</p>
+      <div class="reveal reveal-delay-2 actor-row">
+        <div class="actor-label">European Buyer</div>
+        <div class="actor-gap">Cannot conduct real-time ESG compliance assessment of South Asian supplier networks</div>
+      </div>
+      <div class="reveal reveal-delay-3 actor-row">
+        <div class="actor-label">Gulf Sovereign Fund</div>
+        <div class="actor-gap">Cannot efficiently construct risk-adjusted views of South Asian manufacturing asset classes</div>
+      </div>
+      <div class="reveal reveal-delay-4 actor-row">
+        <div class="actor-label">South Asian Exporter</div>
+        <div class="actor-gap">Cannot anticipate the evolving regulatory architecture of EU institutional procurement at speed</div>
+      </div>
+      <div class="reveal reveal-delay-5 insight-box">
+        <div class="insight-text">The governance priority is not the regulation of AI in trade — it is the multilateral governance of the data infrastructure that makes AI-driven trade intelligence viable as a corridor-level public good.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. GCC DIPLOMATIC ASYMMETRY -->
+  <section class="section" data-section="4">
+    <div class="section-inner">
+      <div class="reveal section-label">Diplomatic Architecture</div>
+      <h2 class="reveal section-title">The GCC Diplomatic Asymmetry</h2>
+      <div class="reveal reveal-delay-1 gold-line-full"></div>
+      <div class="reveal reveal-delay-1 two-col">
+        <div>
+          <div class="col-title">The Structural Position</div>
+          <div class="col-body">Gulf states maintain simultaneous high-trust relationships with the EU, South Asian sovereign governments, and multilateral frameworks at a depth no other corridor actor can replicate. This diplomatic positioning — combined with capital deployment scale, infrastructure ownership, and logistical centrality — makes GCC governments the natural conveners of corridor governance architecture.</div>
+        </div>
+        <div>
+          <div class="col-title">The Institutional Proposition</div>
+          <div class="col-body">A standing trilateral trade facilitation forum — co-chaired by GCC institutional actors — would not be an innovation. It would be the institutional formalisation of a structural reality that already exists in practice. Frameworks that institutionalise this role will prove more durable than those routing governance exclusively through EU–South Asia bilateral mechanisms.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2 insight-box">
+        <div class="insight-text">The GCC's latent role as diplomatic convener — distinct from its function as transit geography — remains the most underutilised institutional asset in the corridor's architecture.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. OMAN-GWADAR -->
+  <section class="section" data-section="5">
+    <div class="section-inner">
+      <div class="reveal section-label">Strategic Intelligence Layer</div>
+      <h2 class="reveal section-title">The Oman–Gwadar Corridor Arbitrage</h2>
+      <p class="reveal reveal-delay-1 body-text">Current corridor analysis is over-indexed on maritime routing through established chokepoints — Hormuz, Suez, Malacca. This routing concentration creates systemic risk exposure structurally underweighted in both trade policy and sovereign investment strategies.</p>
+      <div class="reveal reveal-delay-2 metrics-row">
+        <div class="metric">
+          <div class="metric-value">20–25%</div>
+          <div class="metric-label">Projected cargo<br>redistribution</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">DUQM</div>
+          <div class="metric-label">Deep-water facility<br>strategic non-alignment</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">GWADAR</div>
+          <div class="metric-label">Corridor terminus<br>sovereign repositioning</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-3 insight-box">
+        <div class="insight-text">The Oman–Gwadar axis represents the corridor's most significant structural leverage point for systemic resilience — and it remains almost entirely absent from current multilateral trade architecture discussions. This is a geopolitical hedge, not a logistics project.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. AI SOVEREIGN INFRASTRUCTURE -->
+  <section class="section" data-section="6">
+    <div class="section-inner">
+      <div class="reveal section-label">AI & Trade Intelligence</div>
+      <h2 class="reveal section-title">AI as Sovereign Infrastructure</h2>
+      <p class="reveal reveal-delay-1 section-subtitle">AI, in this framing, is not a trade facilitation tool. It is a sovereign instrument of trade system design.</p>
+      <div class="reveal reveal-delay-2 ai-grid">
+        <div class="ai-card">
+          <div class="ai-card-title">Trade Intelligence Infrastructure</div>
+          <div class="ai-card-body">Aggregating, normalising, and synthesising data streams from across EU, GCC, and South Asian environments into a unified intelligence layer accessible to all authorised corridor actors.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Predictive Regulatory Systems</div>
+          <div class="ai-card-body">Real-time modeling of EU regulatory trajectories, impact simulation across supplier networks, and automated qualification gap analysis at institutional scale.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Supply Chain Visibility Architecture</div>
+          <div class="ai-card-body">End-to-end corridor-level visibility as sovereign asset — mapping production, logistics, compliance, and financial status across the full corridor in real time.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-title">Rapid Systems Prototyping</div>
+          <div class="ai-card-body">Stress-testing governance frameworks against simulated disruption — Hormuz closure, EU regulatory step-change, sovereign instability — before institutional commitment.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. POLICY ARCHITECTURE -->
+  <section class="section" data-section="7">
+    <div class="section-inner">
+      <div class="reveal section-label">Policy Architecture</div>
+      <h2 class="reveal section-title">Five Interlocking Pillars</h2>
+      <div class="reveal reveal-delay-1 gold-line-full"></div>
+      <div class="reveal reveal-delay-1 pillar">
+        <div class="pillar-num">I</div>
+        <div class="pillar-bar"></div>
+        <div>
+          <div class="pillar-title">Corridor Data Governance Framework</div>
+          <div class="pillar-body">AI-ready data standards across supplier compliance, logistics, demand signals, and regulatory trajectories. Machine-readable from inception. Sovereign oversight structurally embedded — not administered through post-hoc regulatory instruments.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2 pillar">
+        <div class="pillar-num">II</div>
+        <div class="pillar-bar"></div>
+        <div>
+          <div class="pillar-title">GCC-Anchored Multilateral Forum</div>
+          <div class="pillar-body">Standing trilateral facilitation forum with GCC co-chairmanship. Regulatory dialogue, investment coordination, supply chain governance, and AI trade intelligence framework oversight.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-3 pillar">
+        <div class="pillar-num">III</div>
+        <div class="pillar-bar"></div>
+        <div>
+          <div class="pillar-title">AI Trade Intelligence Integration</div>
+          <div class="pillar-body">Binding capacity-building architecture for South Asian SMEs. System design requirement — not development concession. Intelligence completeness demands SME integration.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-4 pillar">
+        <div class="pillar-num">IV</div>
+        <div class="pillar-bar"></div>
+        <div>
+          <div class="pillar-title">EU Green Deal Corridor Mechanism</div>
+          <div class="pillar-body">Corridor-specific regulatory transition support. Structured EU commitment — technical assistance, financial instruments, predictive intelligence — integrated into trade provisions, not administered as development aid.</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-5 pillar">
+        <div class="pillar-num">V</div>
+        <div class="pillar-bar"></div>
+        <div>
+          <div class="pillar-title">Economic Diplomacy Capital</div>
+          <div class="pillar-body">Sustained engagement at trade minister, central bank governor, and sovereign fund principal level. Dedicated human capital in economic diplomacy with institutional authority to translate framework design into durable political commitments.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. CONCLUSION -->
+  <section class="section" data-section="8">
+    <div class="section-inner">
+      <div class="reveal section-label">Conclusion</div>
+      <h2 class="reveal section-title">The Window Remains Open</h2>
+      <p class="reveal reveal-delay-1 body-text" style="font-size:1.05rem;color:var(--white)">The EU–GCC–South Asia corridor possesses the scale, structural complementarity, and political conditions to become the defining trade architecture of the coming decade.</p>
+      <p class="reveal reveal-delay-1 body-text">It lacks governance equal to its complexity — and in the absence of that governance, its individual sophistication is becoming a systemic liability rather than an asset.</p>
+      <div class="reveal reveal-delay-2 gold-line-full"></div>
+      <div class="reveal reveal-delay-2 conclusion-point">
+        <div class="conclusion-bar"></div>
+        <div class="conclusion-text">The corridor's integration deficit is epistemic at its core.</div>
+      </div>
+      <div class="reveal reveal-delay-3 conclusion-point">
+        <div class="conclusion-bar"></div>
+        <div class="conclusion-text">AI offers the first historically available instrument for generating shared situational awareness across three distinct regulatory environments.</div>
+      </div>
+      <div class="reveal reveal-delay-4 conclusion-point">
+        <div class="conclusion-bar"></div>
+        <div class="conclusion-text">The Oman–Gwadar corridor represents the most consequential and most underweighted structural leverage point in the corridor's resilience architecture.</div>
+      </div>
+      <div class="reveal reveal-delay-5 conclusion-point">
+        <div class="conclusion-bar"></div>
+        <div class="conclusion-text">The window for institutional coordination remains open. It will not remain open indefinitely.</div>
+      </div>
+      <div class="reveal reveal-delay-5 insight-box" style="margin-top:2.5rem">
+        <div class="insight-text">The policymakers and sovereign fund principals who act within this window will not merely be responding to structural change — they will be designing the architecture within which the next generation of global trade is conducted.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. AUTHOR -->
+  <section class="section author-section" data-section="9">
+    <div class="section-inner">
+      <div class="reveal section-label">Author Authority</div>
+      <div class="reveal gold-line"></div>
+      <div class="reveal reveal-delay-1 author-name">Mian Muhammad Usman</div>
+      <div class="reveal reveal-delay-1 author-title-text">Senior Fellow (Independent) & Principal Strategist<br>Global Trade Architecture & Systemic Resilience</div>
+      <div class="reveal reveal-delay-2 gold-line-full"></div>
+      <div class="reveal reveal-delay-2 credential">
+        <div class="credential-bar"></div>
+        <div class="credential-text">USD 130M global trade portfolio — industrial manufacturing, textiles, cross-border value chain architecture</div>
+      </div>
+      <div class="reveal reveal-delay-3 credential">
+        <div class="credential-bar"></div>
+        <div class="credential-text">Founder & CEO, Harvics Global Venture — Patron, Pakistan Business Forum</div>
+      </div>
+      <div class="reveal reveal-delay-3 credential">
+        <div class="credential-bar"></div>
+        <div class="credential-text">Former Chairman, FPCCI Standing Committee on Textiles — Secretary General, Businessmen Panel</div>
+      </div>
+      <div class="reveal reveal-delay-4 credential">
+        <div class="credential-bar"></div>
+        <div class="credential-text">15+ years principal-level engagement across EU, GCC, South Asia, and North America</div>
+      </div>
+      <div class="reveal reveal-delay-4 credential">
+        <div class="credential-bar"></div>
+        <div class="credential-text">Pioneer of AI-augmented rapid systems prototyping for trade intelligence and governance architecture</div>
+      </div>
+      <div class="reveal reveal-delay-5 author-signature">He does not describe the corridor. He shapes it.</div>
+      <div class="reveal reveal-delay-5 author-contact">usman@harvics.com &nbsp;|&nbsp; +92 322 999 9009 &nbsp;|&nbsp; +44 7830 755 932 &nbsp;|&nbsp; Lahore · London · Toronto</div>
+      <div class="reveal reveal-delay-5 author-copyright">© Mian Muhammad Usman, 2026 — All rights reserved — Not for redistribution without written authorisation</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// ===== PIN GATE =====
+const PIN = "260426"; // Change this to your preferred PIN
+const inputs = document.querySelectorAll('.pin-input');
+const status = document.getElementById('pin-status');
+const gate = document.getElementById('pin-gate');
+const pres = document.getElementById('presentation');
+const navDots = document.getElementById('nav-dots');
+
+inputs.forEach((inp, i) => {
+  inp.addEventListener('input', (e) => {
+    const v = e.target.value;
+    if (v && i < inputs.length - 1) inputs[i + 1].focus();
+    if (i === inputs.length - 1 && v) checkPin();
+  });
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !e.target.value && i > 0) {
+      inputs[i - 1].focus();
+      inputs[i - 1].value = '';
+    }
+  });
+  inp.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const paste = (e.clipboardData || window.clipboardData).getData('text').trim();
+    [...paste].forEach((c, j) => { if (inputs[j]) inputs[j].value = c; });
+    if (paste.length >= inputs.length) checkPin();
+    else if (inputs[paste.length]) inputs[paste.length].focus();
+  });
+});
+
+function checkPin() {
+  const entered = [...inputs].map(i => i.value).join('');
+  if (entered === PIN) {
+    status.textContent = 'Access granted';
+    status.className = 'pin-status success';
+    setTimeout(() => {
+      gate.classList.add('unlocked');
+      pres.classList.add('visible');
+      navDots.style.display = 'flex';
+      initReveal();
+      initNav();
+    }, 600);
+  } else {
+    status.textContent = 'Invalid access code';
+    status.className = 'pin-status error';
+    inputs.forEach(i => { i.classList.add('error'); i.value = ''; });
+    inputs[0].focus();
+    setTimeout(() => {
+      inputs.forEach(i => i.classList.remove('error'));
+      status.textContent = 'Enter 6-digit access code';
+      status.className = 'pin-status';
+    }, 1500);
+  }
+}
+
+setTimeout(() => inputs[0].focus(), 300);
+
+// ===== SCROLL REVEAL =====
+function initReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+}
+
+// ===== NAV DOTS =====
+function initNav() {
+  const sections = document.querySelectorAll('[data-section]');
+  sections.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.setAttribute('aria-label', 'Section ' + (i + 1));
+    dot.addEventListener('click', () => sections[i].scrollIntoView({ behavior: 'smooth' }));
+    navDots.appendChild(dot);
+  });
+  const dots = navDots.querySelectorAll('.nav-dot');
+  const secObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.dataset.section);
+        dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => secObs.observe(s));
+}
+
+// ===== AMBIENT GLOW =====
+document.addEventListener('mousemove', (e) => {
+  const glow = document.getElementById('ambient');
+  if (glow) {
+    glow.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
+  }
+});
+
+// ===== PARTICLE NETWORK =====
+function initParticles() {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55';
+  document.body.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  let W, H, particles;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COUNT = 55;
+  particles = Array.from({length: COUNT}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 1.5 + 0.5,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // connections
+    for (let i = 0; i < COUNT; i++) {
+      for (let j = i + 1; j < COUNT; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 140) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(200,160,96,${0.12 * (1 - dist/140)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    // dots
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,160,96,0.5)';
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ===== SCAN LINE =====
+function initScanLine() {
+  const line = document.createElement('div');
+  line.style.cssText = `
+    position:fixed;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(200,160,96,0.4),transparent);
+    z-index:1;pointer-events:none;
+    box-shadow:0 0 8px rgba(200,160,96,0.2);
+  `;
+  document.body.appendChild(line);
+  let y = -2, dir = 1, speed = 0.4;
+  function tick() {
+    y += speed * dir;
+    if (y > window.innerHeight + 2) dir = -1;
+    if (y < -2) dir = 1;
+    line.style.top = y + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+// ===== CARD GLOW PULSE =====
+function initCardGlow() {
+  document.querySelectorAll('.card,.ai-card,.metric,.actor-row').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.boxShadow = '0 0 30px rgba(200,160,96,0.08), inset 0 0 30px rgba(200,160,96,0.02)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.boxShadow = '';
+    });
+  });
+}
+
+// Boot effects after unlock
+const _origUnlock = window._unlockCallback;
+document.getElementById('pin-gate').addEventListener('transitionend', function(e) {
+  if (e.propertyName === 'opacity' && this.classList.contains('unlocked')) {
+    initParticles();
+    initScanLine();
+    initCardGlow();
+  }
+});
+</script>
+</body>
+</html>

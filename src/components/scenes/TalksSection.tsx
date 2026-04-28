@@ -1,3 +1,6 @@
+'use client'
+import { useLang } from '@/lib/langContext'
+
 interface TalkCard {
   tag: string
   title: string
@@ -11,12 +14,15 @@ interface TalksData {
 }
 
 export default function TalksSection({ data }: { data: TalksData }) {
+  const { t } = useLang()
+  const heading    = t.talks.heading    || data.heading
+  const subheading = t.talks.subheading || data.subheading
   return (
     <section id="talks" aria-label="Talks and keynotes" className="section relative py-[clamp(40px,5vw,64px)] px-[var(--section-pad-x)] border-b-2 border-[var(--color-gold)] text-left box-border">
       <p className="section-label">Talks & Keynotes</p>
 
-      <h2 className="h2 reveal mb-[var(--space-4)]">{data.heading}</h2>
-      <p className="body reveal max-w-[600px] mb-[var(--space-10)]">{data.subheading}</p>
+      <h2 className="h2 reveal mb-[var(--space-4)]">{heading}</h2>
+      <p className="body reveal max-w-[600px] mb-[var(--space-10)]">{subheading}</p>
 
       <div className="grid-3">
         {data.cards.map((card, i) => (

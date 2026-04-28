@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useLang } from '@/lib/langContext'
 
 interface InsightCard {
   tag: string
@@ -18,8 +19,11 @@ interface InsightsData {
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI']
 
 export default function InsightsSection({ data }: { data: InsightsData }) {
+  const { t } = useLang()
   const [active, setActive] = useState<number | null>(null)
   const [hoveredEntry, setHoveredEntry] = useState<number | null>(null)
+  const heading    = t.insights.heading    || data.heading
+  const subheading = t.insights.subheading || data.subheading
 
   const toggle = (i: number) => setActive(prev => (prev === i ? null : i))
 
@@ -51,7 +55,7 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
             className="h2 reveal"
             style={{ fontStyle: 'italic', marginBottom: 'var(--space-6)', lineHeight: 1.08, letterSpacing: '-0.02em' }}
           >
-            {data.heading}
+            {heading}
           </h2>
 
           <p className="reveal" style={{
@@ -65,7 +69,7 @@ export default function InsightsSection({ data }: { data: InsightsData }) {
             marginBottom: 'var(--space-6)',
             letterSpacing: '-0.01em',
           }}>
-            {data.subheading}
+            {subheading}
           </p>
 
           {data.intro && (

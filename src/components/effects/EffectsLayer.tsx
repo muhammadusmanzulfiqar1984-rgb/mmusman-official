@@ -5,6 +5,7 @@ import { useGlassPhobic, useInertialHover } from './GlassPhobic'
 import { shouldEnableHeavyEffects } from '@/lib/deviceTier'
 
 // Dynamically import canvas/JS-heavy effects (no SSR)
+const CinematicBackdrop     = dynamic(() => import('./CinematicBackdrop'),            { ssr: false })
 const SilkCursor            = dynamic(() => import('./SilkCursor'),                   { ssr: false })
 const GoldWave              = dynamic(() => import('./GoldWave'),                     { ssr: false })
 const GoldDust              = dynamic(() => import('./GoldDust'),                     { ssr: false })
@@ -27,6 +28,9 @@ export default function EffectsLayer() {
 
   return (
     <>
+      {/* Cinematic video backdrop — sits behind everything */}
+      <CinematicBackdrop />
+
       {/* Background layers (low z-index) */}
       <SilkWeave />
       {enableHeavy && <GoldWave />}

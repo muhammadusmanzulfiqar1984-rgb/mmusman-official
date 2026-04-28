@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useLang } from '@/lib/langContext'
 
 interface ForumCard { tag: string; title: string; body: string }
 interface ForumData {
@@ -9,8 +10,12 @@ interface ForumData {
 }
 
 export default function SpeakingSection({ data }: { data: ForumData }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
+  const heading      = t.speaking.heading      || data.heading
+  const subheading   = t.speaking.subheading   || data.subheading
+  const availability = t.speaking.availability
 
   const select = (i: number) => {
     if (i === active) return
@@ -38,7 +43,7 @@ export default function SpeakingSection({ data }: { data: ForumData }) {
         {/* LEFT */}
         <div className="forum-left">
           <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.1 }}>
-            {data.heading}
+            {heading}
           </h2>
           <p className="reveal" style={{
             fontFamily: 'var(--font-body)',
@@ -49,7 +54,7 @@ export default function SpeakingSection({ data }: { data: ForumData }) {
             maxWidth: '380px',
             letterSpacing: '0.01em',
           }}>
-            {data.subheading}
+            {subheading}
           </p>
 
           {/* Availability note */}
@@ -63,7 +68,7 @@ export default function SpeakingSection({ data }: { data: ForumData }) {
             paddingTop: 'var(--space-6)',
             borderTop: '1px solid var(--color-border-soft)',
           }}>
-            Available on invitation · Enquiries via contact
+            {availability}
           </p>
         </div>
 

@@ -5,8 +5,15 @@
 
 /* ── RTL language support ── */
 [dir="rtl"] {
-  --font-body:    'Noto Naskh Arabic', 'Inter', serif;
+  --font-body:    'Cairo', 'Inter', sans-serif;
+  --font-display: 'Cairo', 'Cormorant Garamond', serif;
   text-align: right;
+}
+
+/* ── Chinese language support ── */
+[data-lang="zh"] {
+  --font-body:    'Noto Sans SC', 'Inter', sans-serif;
+  --font-display: 'Noto Sans SC', 'Cormorant Garamond', serif;
 }
 [dir="rtl"] .section-label,
 [dir="rtl"] .eyebrow,
@@ -14,6 +21,8 @@
 [dir="rtl"] .h2,
 [dir="rtl"] .body {
   letter-spacing: 0;
+  font-size: 1.08em;
+  line-height: 1.8;
 }
 
 :root {
@@ -34,11 +43,11 @@
 
   /* ── Colour — Text ── */
   /* Grammar: gold family = structure/labels/headings. ivory family = reading/body text. */
-  --color-text-primary:   #f8f2ec;   /* headings, dominant text — near-white warm ivory */
-  --color-text-secondary: #ede0d0;   /* body paragraphs — raised from 0.65 → 0.88 luminance */
-  --color-text-muted:     #cdbfb0;   /* captions, meta — raised from 0.45 → 0.72 */
-  --color-text-dim:       #b0a090;   /* placeholder, ghost labels — raised from 0.38 → 0.55 */
-  --color-text-ghost:     #988878;   /* absolute minimum — still readable */
+  --color-text-primary:   #ffffff;   /* headings — pure white for max contrast over video */
+  --color-text-secondary: #f5ece0;   /* body paragraphs — bright warm white */
+  --color-text-muted:     #e0cfb8;   /* captions, meta */
+  --color-text-dim:       #c8b898;   /* placeholder, ghost labels */
+  --color-text-ghost:     #b0a080;   /* absolute minimum — still readable */
 
   /* ── Colour — Glassmorphism ── */
   --glass-bg:          rgba(255, 240, 240, 0.05);

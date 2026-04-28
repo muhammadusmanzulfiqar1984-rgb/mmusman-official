@@ -17,12 +17,14 @@ const LangContext = createContext<LangContextValue>({
 })
 
 export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<LangCode>('en')
+  const [lang, setLangState] = useState<LangCode>(() => {
+    const stored = getStoredLang()
+    return stored
+  })
 
   useEffect(() => {
-    const stored = getStoredLang()
-    setLangState(stored)
-    applyLangToDocument(stored)
+    applyLangToDocument(lang)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setLang = useCallback((next: LangCode) => {

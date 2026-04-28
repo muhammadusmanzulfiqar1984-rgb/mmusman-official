@@ -4,7 +4,7 @@ import LegalPage from '@/components/layout/LegalPage'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Mian Muhammad Usman',
-  description: 'Privacy policy for mmusman.com covering contact submissions, local analytics, AI assistant usage, and data handling.',
+  description: 'Privacy policy for mmusman.eu covering contact submissions, local analytics, AI assistant usage, and data handling.',
 }
 
 export default function PrivacyPage() {
@@ -76,8 +76,8 @@ export default function PrivacyPage() {
           body: (
             <p>
               For privacy-related requests, including deletion enquiries, contact{' '}
-              <Link href="mailto:Info@mmusman.com" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
-                Info@mmusman.com
+              <Link href="mailto:info@mmusman.eu" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                info@mmusman.eu
               </Link>
               . If you do not agree with this policy, do not use the contact or assistant features.
             </p>

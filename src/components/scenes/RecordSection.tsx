@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Image from 'next/image'
+import { useLang } from '@/lib/langContext'
 
 interface Address { tag: string; title: string; body: string }
 interface ProofItem { value: string; label: string }
@@ -15,8 +16,12 @@ interface RecordData {
 }
 
 export default function RecordSection({ data }: { data: RecordData }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
+  const heading      = t.record.heading      || data.heading
+  const subheading   = t.record.subheading   || data.subheading
+  const verifiedLabel = t.record.verifiedLabel
 
   const select = (i: number) => {
     if (i === active) return
@@ -45,7 +50,7 @@ export default function RecordSection({ data }: { data: RecordData }) {
         {/* LEFT */}
         <div className="record-left">
           <h2 className="h2 reveal" style={{ fontStyle: 'italic', marginBottom: 'var(--space-5)', lineHeight: 1.1 }}>
-            {data.heading}
+            {heading}
           </h2>
           <p className="reveal" style={{
             fontFamily: 'var(--font-body)',
@@ -57,7 +62,7 @@ export default function RecordSection({ data }: { data: RecordData }) {
             letterSpacing: '0.01em',
             marginBottom: 'var(--space-10)',
           }}>
-            {data.subheading}
+            {subheading}
           </p>
 
           {/* Proof strip */}
@@ -73,9 +78,8 @@ export default function RecordSection({ data }: { data: RecordData }) {
               color: 'rgba(200,169,110,0.3)',
               marginBottom: 'var(--space-5)',
             }}>
-              Verified record
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              {verifiedLabel}
+            </p>            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {data.proof.map((p, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-4)' }}>
                   <span style={{

@@ -24,8 +24,20 @@ const MEDIA_ITEMS_FALLBACK: MediaItem[] = [
     subtitle: 'Signature talk',
     poster: '/images/speaking.webp',
   },
-  { type: 'image', title: 'Leadership summit keynote', subtitle: 'Conference address', src: '/images/gallery-1.webp' },
-  { type: 'image', title: 'Industry roundtable', subtitle: 'Panel discussion', src: '/images/gallery-2.webp' },
+  {
+    type: 'video',
+    title: 'CNN — Live News',
+    subtitle: 'Live broadcast',
+    videoUrl: 'https://www.youtube.com/embed/live_stream?channel=UCupvZG-5ko_eiXAX-1KAFtg&autoplay=1&mute=1',
+    poster: '/images/gallery-1.webp',
+  },
+  {
+    type: 'video',
+    title: 'BBC News — Live',
+    subtitle: 'Live broadcast',
+    videoUrl: 'https://www.youtube.com/embed/live_stream?channel=UC16niRr50-MSBwiO3YDb3RA&autoplay=1&mute=1',
+    poster: '/images/gallery-2.webp',
+  },
   { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/gallery-3.webp' },
 ]
 
@@ -82,55 +94,60 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
         position: 'relative',
         marginBottom: 'var(--space-3)',
       }}>
-        {getThumb(current) && (
-          <Image
-            src={getThumb(current)!}
-            alt={current.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 80vw"
-            style={{ objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)' }}
-            onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+        {/* Live stream iframe OR poster image */}
+        {current.videoUrl ? (
+          <iframe
+            key={current.videoUrl}
+            src={current.videoUrl}
+            title={current.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
           />
-        )}
-
-        {/* Gradient overlay + text */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to top, rgba(10,10,10,0.88) 25%, transparent 65%)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-          padding: 'var(--space-8)',
-        }}>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-2)' }}>
-            {current.subtitle}
-          </p>
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-2xl)', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2, margin: 0 }}>
-            {current.title}
-          </p>
-        </div>
-
-        {/* Play button for video */}
-        {current.type === 'video' && (
-          <button
-            onClick={() => setPlaying(true)}
-            aria-label={`Play video: ${current.title}`}
-            style={{
-              position: 'absolute', top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '72px', height: '72px', borderRadius: '50%',
-              background: 'rgba(200,169,110,0.2)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(200,169,110,0.4)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out)',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.35)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1.08)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.2)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1)' }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--color-gold)" aria-hidden="true">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-          </button>
+        ) : (
+          <>
+            {getThumb(current) && (
+              <Image
+                src={getThumb(current)!}
+                alt={current.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 80vw"
+                style={{ objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)' }}
+                onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+              />
+            )}
+            {/* Gradient overlay + text */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(to top, rgba(10,10,10,0.88) 25%, transparent 65%)',
+              display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+              padding: 'var(--space-8)',
+            }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-2)' }}>{current.subtitle}</p>
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-2xl)', color: '#f0e8d8', fontWeight: 300, lineHeight: 1.2, margin: 0 }}>{current.title}</p>
+            </div>
+            {/* Play button */}
+            {current.type === 'video' && (
+              <button
+                onClick={() => setPlaying(true)}
+                aria-label={`Play video: ${current.title}`}
+                style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '72px', height: '72px', borderRadius: '50%',
+                  background: 'rgba(200,169,110,0.2)', backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(200,169,110,0.4)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'background var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out)',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.35)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1.08)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(200,169,110,0.2)'; (e.currentTarget as HTMLButtonElement).style.transform = 'translate(-50%, -50%) scale(1)' }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--color-gold)" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </button>
+            )}
+          </>
         )}
       </div>
 
@@ -150,7 +167,8 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
               cursor: 'pointer',
               padding: 0,
               position: 'relative',
-              aspectRatio: undefined,
+              aspectRatio: '16/9',
+              width: '100%',
               height: '100%',
               transition: 'border-color var(--duration-base) var(--ease-out)',
             }}
@@ -179,56 +197,6 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
           </button>
         ))}
       </div>
-
-        {/* Video modal */}
-        {playing && current.videoUrl && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Video: ${current.title}`}
-            onClick={() => setPlaying(false)}
-            onKeyDown={(e) => e.key === 'Escape' && setPlaying(false)}
-            tabIndex={-1}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 900,
-              background: 'rgba(0,0,0,0.92)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              backdropFilter: 'blur(8px)',
-            }}
-          >
-          <div
-            onClick={e => e.stopPropagation()}
-            onKeyDown={e => e.stopPropagation()}
-            style={{ position: 'relative', width: 'min(900px, 92vw)', aspectRatio: '16/9' }}
-          >
-            <iframe
-              src={`${current.videoUrl}?autoplay=1&rel=0`}
-              title={current.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ width: '100%', height: '100%', border: 'none', borderRadius: 'var(--radius-lg)' }}
-            />
-            <button
-              onClick={() => setPlaying(false)}
-              aria-label="Close video"
-              style={{
-                position: 'absolute', top: '-40px', right: 0,
-                background: 'transparent',
-                border: '1px solid var(--color-gold-dim)',
-                borderRadius: 'var(--radius-sm)',
-                color: 'var(--color-text-muted)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
-                letterSpacing: '0.08em',
-                padding: '4px 10px',
-                cursor: 'pointer',
-              }}
-            >
-              ESC / CLOSE
-            </button>
-          </div>
-        </div>
-      )}
 
     </section>
   )

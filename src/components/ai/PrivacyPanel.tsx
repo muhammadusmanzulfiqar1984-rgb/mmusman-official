@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import { exportData, deleteData, setConsent, getConsent } from '@/lib/telemetry'
+import { useLang } from '@/lib/langContext'
 
 export default function PrivacyPanel() {
+  const { t } = useLang()
   const [open, setOpen] = useState(false)
   const [consent, setConsentState] = useState(getConsent)
   const [deleted, setDeleted] = useState(false)
@@ -35,8 +37,7 @@ export default function PrivacyPanel() {
       {/* Trigger link — in footer area */}
       <button
         onClick={() => setOpen(true)}
-        aria-label="Open privacy settings"
-        style={{
+        aria-label="Open privacy settings"        style={{
           background: 'none',
           border: 'none',
           fontFamily: 'var(--font-mono)',
@@ -49,14 +50,14 @@ export default function PrivacyPanel() {
           textUnderlineOffset: '3px',
         }}
       >
-        Privacy settings
+        {t.privacy.trigger}
       </button>
 
       {open && (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Privacy settings"
+          aria-label={t.privacy.label}
           style={{
             position: 'fixed',
             inset: 0,
@@ -83,7 +84,7 @@ export default function PrivacyPanel() {
           >
             <button
               onClick={() => setOpen(false)}
-              aria-label="Close privacy settings"
+              aria-label="Close"
               style={{
                 position: 'absolute', top: '16px', right: '16px',
                 background: 'none', border: 'none',
@@ -94,22 +95,22 @@ export default function PrivacyPanel() {
             </button>
 
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--color-gold)', marginBottom: 'var(--space-6)' }}>
-              Privacy settings
+              {t.privacy.label}
             </p>
 
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 400, color: 'var(--color-text-primary)', marginBottom: 'var(--space-4)' }}>
-              Your data. Your choice.
+              {t.privacy.heading}
             </h2>
 
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: 1.7, fontWeight: 300, marginBottom: 'var(--space-8)' }}>
-              This site uses <strong style={{ color: 'var(--color-text-secondary)' }}>local-only analytics</strong> — events are stored in your browser local storage only. Nothing is sent to any external server. No cookies. No third-party trackers.
+              {t.privacy.body}
             </p>
 
             {/* Consent toggle */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-4)', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', marginBottom: 'var(--space-4)' }}>
               <div>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', letterSpacing: '0.06em' }}>Local analytics</p>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--color-text-ghost)', marginTop: '2px' }}>Stored in your browser only</p>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', letterSpacing: '0.06em' }}>{t.privacy.localAnalytics}</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: 'var(--color-text-ghost)', marginTop: '2px' }}>{t.privacy.storedBrowser}</p>
               </div>
               <button
                 onClick={handleToggleConsent}
@@ -139,9 +140,9 @@ export default function PrivacyPanel() {
 
             {/* Actions */}
             <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-              <button onClick={handleExport} style={actionBtn}>Export my data</button>
+              <button onClick={handleExport} style={actionBtn}>{t.privacy.export}</button>
               <button onClick={handleDelete} style={{ ...actionBtn, color: deleted ? 'var(--color-text-ghost)' : '#e08080', borderColor: deleted ? 'var(--color-border)' : '#e0808040' }}>
-                {deleted ? 'Data deleted ✓' : 'Delete all data'}
+                {deleted ? t.privacy.deleted : t.privacy.deleteData}
               </button>
             </div>
           </div>

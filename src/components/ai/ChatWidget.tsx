@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { useLang } from '@/lib/langContext'
 
 type SpeechRecognitionResultLike = Array<{ transcript: string }>
 
@@ -50,9 +51,12 @@ const QUICK_REPLIES = [
 ]
 
 export default function ChatWidget() {
+  const { t } = useLang()
+  const welcome = t.chat.welcome || WELCOME
+  const quickReplies = [t.chat.reply1, t.chat.reply2, t.chat.reply3, t.chat.reply4]
   const [open, setOpen]       = useState(false)
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: WELCOME }
+    { role: 'assistant', content: welcome }
   ])
   const [history, setHistory] = useState<HistoryTurn[]>([])
   const [input, setInput]     = useState('')
@@ -76,7 +80,7 @@ export default function ChatWidget() {
   }, [messages, open])
 
   const clearChat = useCallback(() => {
-    setMessages([{ role: 'assistant', content: WELCOME }])
+    setMessages([{ role: 'assistant', content: welcome }])
     setHistory([])
     setInput('')
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -350,7 +354,7 @@ export default function ChatWidget() {
           {/* Quick replies */}
           {messages.length === 1 && (
             <div style={{ padding: '0 var(--space-5) var(--space-3)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-              {QUICK_REPLIES.map(q => (
+              {quickReplies.map(q => (
                 <button
                   key={q}
                   onClick={() => send(q)}

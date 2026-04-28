@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import { getConsent, setConsent } from '@/lib/telemetry'
+import { useLang } from '@/lib/langContext'
 
 export default function ConsentBanner() {
+  const { t } = useLang()
   const [show, setShow] = useState(() => {
     if (typeof window === 'undefined') return false
     const consent = getConsent()
@@ -10,10 +12,10 @@ export default function ConsentBanner() {
     return consent === 'none' && !localStorage.getItem('mian_consent_seen')
   })
 
-  if (!show) return null
+  const accept  = () => { setConsent('local'); localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
+  const decline = () => { setConsent('none');  localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
 
-  const accept = () => { setConsent('local'); localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
-  const decline = () => { setConsent('none'); localStorage.setItem('mian_consent_seen', '1'); setShow(false) }
+  if (!show) return null
 
   return (
     <div
@@ -50,8 +52,8 @@ export default function ConsentBanner() {
         This site uses <strong style={{ color: 'var(--color-text-secondary)' }}>local-only analytics</strong> — stored in your browser, never sent anywhere. No third-party trackers.
       </p>
       <div style={{ display: 'flex', gap: '10px' }}>
-        <button onClick={decline} style={secondaryBtn}>Decline</button>
-        <button onClick={accept} style={primaryBtn}>Allow local analytics</button>
+        <button onClick={decline} style={secondaryBtn}>{t.consent.decline}</button>
+        <button onClick={accept} style={primaryBtn}>{t.consent.allow}</button>
       </div>
     </div>
   )
