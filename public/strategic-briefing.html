@@ -1056,6 +1056,12 @@ document.getElementById('pin-gate').addEventListener('transitionend', function(e
 
 window.addEventListener('beforeunload', () => {
   stopBriefingHeartbeat();
+  try {
+    // Signal other tabs (homepage) to resume ambient music
+    localStorage.removeItem('mmusman:briefing-open-heartbeat');
+    localStorage.setItem('mmusman:briefing-closed', String(Date.now()));
+  } catch(_) {}
+
   if (briefingVoiceRetry) {
     clearInterval(briefingVoiceRetry);
     briefingVoiceRetry = null;

@@ -190,6 +190,34 @@ export default function AmbientPlayer() {
     return () => document.removeEventListener('visibilitychange', onVisibility)
   }, [playing, pause])
 
+  // Stop music when briefing opens, resume after it closes
+  useEffect(() => {
+    const onBriefingOpened = () => pause()
+    const onBriefingClosed = () => { if (!document.hidden) void play() }
+    window.addEventListener('briefing-opened', onBriefingOpened)
+    window.addEventListener('briefing-closed', onBriefingClosed)
+
+    // Also stop if heartbeat was set in a previous session
+    const checkHeartbeat = (e?: StorageEvent) => {
+      try {
+        // Resume when briefing-closed fires
+        if (e?.key === 'mmusman:briefing-closed') { void play(); return }
+        const last = Number(localStorage.getItem('mmusman:briefing-open-heartbeat') ?? '0')
+        if (last > 0 && Date.now() - last < 15000) pause()
+      } catch(_) {}
+    }
+    checkHeartbeat()
+    window.addEventListener('storage', checkHeartbeat)
+    window.addEventListener('focus', checkHeartbeat)
+
+    return () => {
+      window.removeEventListener('briefing-opened', onBriefingOpened)
+      window.removeEventListener('briefing-closed', onBriefingClosed)
+      window.removeEventListener('storage', checkHeartbeat)
+      window.removeEventListener('focus', checkHeartbeat)
+    }
+  }, [pause, play])
+
   if (!visible) return null
 
   return (

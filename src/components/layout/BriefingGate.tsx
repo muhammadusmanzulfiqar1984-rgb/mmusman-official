@@ -41,6 +41,9 @@ export default function BriefingGate() {
         setStatus('success')
         setTimeout(() => {
           setOpen(false)
+          // Tell ambient player to stop music — briefing voice is about to play
+          try { localStorage.setItem('mmusman:briefing-open-heartbeat', String(Date.now())) } catch(_) {}
+          window.dispatchEvent(new Event('briefing-opened'))
           window.open('/strategic-briefing.html', '_blank', 'noopener')
         }, 600)
       } else {
