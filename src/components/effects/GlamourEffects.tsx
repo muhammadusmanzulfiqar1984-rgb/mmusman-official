@@ -5,11 +5,20 @@ import { useEffect, useRef } from 'react'
 export function GlowOnScroll() {
   useEffect(() => {
     const glowElements = document.querySelectorAll('[data-glow]')
+    glowElements.forEach((el) => {
+      const node = el as HTMLElement
+      node.style.opacity = '0'
+      node.style.transform = 'translateY(10px)'
+      node.style.transition = 'opacity 650ms ease, transform 650ms ease, filter 650ms ease'
+      node.style.filter = 'drop-shadow(0 0 0 rgba(200,160,96,0))'
+    })
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          (entry.target as HTMLElement).style.opacity = '1'
-          ;(entry.target as HTMLElement).style.transform = 'translateY(0)'
+          const node = entry.target as HTMLElement
+          node.style.opacity = '1'
+          node.style.transform = 'translateY(0)'
+          node.style.filter = 'drop-shadow(0 8px 22px rgba(200,160,96,0.2))'
         }
       })
     }, { threshold: 0.1 })
@@ -24,18 +33,19 @@ export function GlassmorphismCards() {
   return (
     <style>{`
       [data-glass] {
-        backdrop-filter: blur(12px);
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(200, 160, 96, 0.15);
+        backdrop-filter: blur(14px);
+        background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+        border: 1px solid rgba(200, 160, 96, 0.22);
         border-radius: 16px;
-        transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 28px rgba(0,0,0,0.22);
+        transition: all 0.45s cubic-bezier(0.23, 1, 0.320, 1);
       }
       [data-glass]:hover {
-        backdrop-filter: blur(16px);
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(200, 160, 96, 0.3);
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(200, 160, 96, 0.15);
+        backdrop-filter: blur(22px);
+        background: linear-gradient(160deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+        border-color: rgba(200, 160, 96, 0.48);
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 26px 56px rgba(200, 160, 96, 0.22), inset 0 1px 0 rgba(255,255,255,0.2);
       }
     `}</style>
   )
@@ -49,14 +59,14 @@ export function AnimatedGradient() {
         inset: 0,
         zIndex: -1,
         pointerEvents: 'none',
-        background: 'linear-gradient(135deg, rgba(200,160,96,0.05) 0%, rgba(120,80,40,0.03) 50%, rgba(200,160,96,0.02) 100%)',
-        animation: 'gradient-shift 12s ease-in-out infinite',
+        background: 'radial-gradient(110% 80% at 20% 20%, rgba(210,170,96,0.14) 0%, rgba(210,170,96,0.02) 45%, transparent 70%), radial-gradient(95% 75% at 85% 70%, rgba(126,84,42,0.16) 0%, rgba(126,84,42,0.04) 52%, transparent 76%), linear-gradient(140deg, rgba(16,10,4,0.25) 0%, rgba(12,8,3,0.1) 100%)',
+        animation: 'gradient-shift 16s ease-in-out infinite',
       }}
     >
       <style>{`
         @keyframes gradient-shift {
-          0%, 100% { opacity: 0.8; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.78; transform: scale(1) translateY(0px); }
+          50% { opacity: 1; transform: scale(1.03) translateY(-6px); }
         }
       `}</style>
     </div>
@@ -71,7 +81,7 @@ export function TextRevealOnScroll() {
         if (entry.isIntersecting) {
           const words = (entry.target as HTMLElement).innerText.split(' ')
           const html = words
-            .map((w, i) => `<span style="opacity:0;animation:fadeInUp 0.6s ease ${i * 0.08}s forwards">${w}</span>`)
+            .map((w, i) => `<span style="opacity:0;display:inline-block;animation:fadeInUp 0.75s cubic-bezier(0.23,1,0.32,1) ${i * 0.06}s forwards">${w}</span>`)
             .join(' ')
           ;(entry.target as HTMLElement).innerHTML = html
         }
@@ -84,8 +94,8 @@ export function TextRevealOnScroll() {
   return (
     <style>{`
       @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(14px); filter: blur(4px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
       }
     `}</style>
   )
@@ -98,9 +108,25 @@ export function GoldAccents() {
         position: relative;
         border-bottom: 2px solid rgba(200, 160, 96, 0.3);
         transition: border-color 0.4s ease;
+        overflow: hidden;
       }
       [data-gold-border]:hover {
         border-bottom-color: rgba(200, 160, 96, 0.8);
+      }
+      [data-gold-border]::after {
+        content: '';
+        position: absolute;
+        left: -40%;
+        bottom: -2px;
+        width: 30%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(255,225,160,0.95), transparent);
+        opacity: 0;
+        transition: transform 0.8s ease, opacity 0.35s ease;
+      }
+      [data-gold-border]:hover::after {
+        opacity: 1;
+        transform: translateX(420%);
       }
       [data-gold-text] {
         background: linear-gradient(120deg, #c8a060 0%, #e8d4a8 50%, #c8a060 100%);
@@ -115,43 +141,47 @@ export function GoldAccents() {
 export function ParallaxScroll() {
   useEffect(() => {
     const parallaxElements = document.querySelectorAll('[data-parallax]')
+    let raf = 0
     const onScroll = () => {
-      parallaxElements.forEach(el => {
-        const rect = (el as HTMLElement).getBoundingClientRect()
-        const speed = 0.4
-        const offset = (window.innerHeight - rect.top) * speed
-        ;(el as HTMLElement).style.transform = `translateY(${offset * 0.1}px)`
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        parallaxElements.forEach(el => {
+          const rect = (el as HTMLElement).getBoundingClientRect()
+          const speed = 0.55
+          const offset = (window.innerHeight - rect.top) * speed
+          ;(el as HTMLElement).style.transform = `translateY(${offset * 0.12}px)`
+        })
       })
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    onScroll()
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   return null
 }
 
 export function HoverGlow() {
-  const ref = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
     const onMouseMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
+      const target = (e.target as HTMLElement | null)?.closest('[data-hover-glow]') as HTMLElement | null
+      if (!target) return
+      const rect = target.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
-      el.style.setProperty('--glow-x', `${x}px`)
-      el.style.setProperty('--glow-y', `${y}px`)
+      target.style.setProperty('--glow-x', `${x}px`)
+      target.style.setProperty('--glow-y', `${y}px`)
     }
 
-    el.addEventListener('mousemove', onMouseMove)
-    return () => el.removeEventListener('mousemove', onMouseMove)
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    return () => window.removeEventListener('mousemove', onMouseMove)
   }, [])
 
   return (
     <>
-      <div ref={ref} style={{ position: 'relative' }} />
       <style>{`
         [data-hover-glow] {
           position: relative;
@@ -162,13 +192,14 @@ export function HoverGlow() {
           position: absolute;
           top: var(--glow-y, 0);
           left: var(--glow-x, 0);
-          width: 200px;
-          height: 200px;
-          background: radial-gradient(circle, rgba(200,160,96,0.2) 0%, transparent 70%);
+          width: 260px;
+          height: 260px;
+          background: radial-gradient(circle, rgba(200,160,96,0.24) 0%, rgba(200,160,96,0.1) 35%, transparent 72%);
           pointer-events: none;
           transform: translate(-50%, -50%);
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.28s ease;
+          mix-blend-mode: screen;
         }
         [data-hover-glow]:hover::before {
           opacity: 1;
