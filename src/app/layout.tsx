@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
   description: 'Lawyer, trader, founder and system architect with hands-on experience across retail, oil & gas, capital markets, fashion, law and political strategy. Speaker and executive advisor.',
   keywords: ['Mian Muhammad Usman', 'system design', 'trading', 'advisory', 'keynote speaker', 'retail strategy'],
-  metadataBase: new URL('https://www.mmusman.eu'),
+  metadataBase: new URL('https://www.mmusman.com'),
   openGraph: {
     title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
     description: 'Lawyer, trader, founder and system architect with hands-on experience across six industries.',
     type: 'website',
-    url: 'https://www.mmusman.eu',
+    url: 'https://www.mmusman.com',
     siteName: 'Mian Muhammad Usman',
     locale: 'en_GB',
     images: [
@@ -41,8 +41,8 @@ const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Mian Muhammad Usman',
-  url: 'https://www.mmusman.eu',
-  image: 'https://www.mmusman.eu/opengraph-image',
+  url: 'https://www.mmusman.com',
+  image: 'https://www.mmusman.com/opengraph-image',
   jobTitle: 'Lawyer, Trader, System Builder & Multi-Industry Strategist',
   description: 'System architect with experience across retail, oil & gas, capital markets, fashion, law and political strategy. Speaker and executive advisor.',
   knowsAbout: [

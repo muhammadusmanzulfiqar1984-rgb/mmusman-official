@@ -62,7 +62,7 @@ export default function Image() {
 
         {/* Bottom row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <div style={{ color: '#c9a84c', fontSize: '15px', letterSpacing: '0.08em' }}>mmusman.eu</div>
+          <div style={{ color: '#c9a84c', fontSize: '15px', letterSpacing: '0.08em' }}>mmusman.com</div>
           <div style={{ display: 'flex', gap: '10px' }}>
             {['Retail', 'Oil & Gas', 'Law', 'Capital Markets', 'Fashion', 'Politics'].map(tag => (
               <div key={tag} style={{

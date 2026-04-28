@@ -4,7 +4,7 @@ import LegalPage from '@/components/layout/LegalPage'
 
 export const metadata: Metadata = {
   title: 'Terms of Service — Mian Muhammad Usman',
-  description: 'Terms governing use of mmusman.eu, including site content, enquiries, intellectual property, and limitations of liability.',
+  description: 'Terms governing use of mmusman.com, including site content, enquiries, intellectual property, and limitations of liability.',
 }
 
 export default function TermsPage() {
@@ -75,8 +75,8 @@ export default function TermsPage() {
           body: (
             <p>
               For enquiries regarding these terms, contact{' '}
-              <Link href="mailto:info@mmusman.eu" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
-                info@mmusman.eu
+              <Link href="mailto:info@mmusman.com" style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                info@mmusman.com
               </Link>
               . Continued use of the site after updates to these terms constitutes acceptance of the revised version.
             </p>

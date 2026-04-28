@@ -3,19 +3,19 @@ import type { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://www.mmusman.eu',
+      url: 'https://www.mmusman.com',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: 'https://www.mmusman.eu/privacy',
+      url: 'https://www.mmusman.com/privacy',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: 'https://www.mmusman.eu/terms',
+      url: 'https://www.mmusman.com/terms',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
