@@ -1,0 +1,13 @@
+# Exclude large/duplicate video and audio files to stay within Vercel upload limits
+public/backdrop_orig.mp4
+public/backdrop_prev_before_0123.mp4
+public/Ball Water fall 1 .mp4
+public/FILE 1.mp4
+public/File 3.mp4
+public/File4.mp4
+public/Pen 3.mp4
+public/Room board 2 .mp4
+public/Route 0.mp4
+public/A_Measure_of_State.mp3
+public/Morning_in_the_Tuileries.mp3
+Strategic Dosier/
