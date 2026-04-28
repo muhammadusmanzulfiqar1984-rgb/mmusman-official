@@ -723,11 +723,11 @@ const pres = document.getElementById('presentation');
 const navDots = document.getElementById('nav-dots');
 const BRIEFING_HEARTBEAT_KEY = 'mmusman:briefing-open-heartbeat';
 let briefingAmbient = null;
-let briefingAudioBuffer = null;
-let briefingSource = null;
-let briefingContext = null;
+let briefingVoice = null;
+let briefingVoiceUrl = null;
+let briefingVoiceRetry = null;
 let briefingHeartbeat = null;
-let briefingReady = false;
+let briefingVoiceReady = false;
 let briefingPlayed = false;
 let briefingOpened = false;
 
@@ -756,18 +756,6 @@ function stopBriefingHeartbeat() {
   } catch (_) {
     // Ignore storage restrictions.
   }
-}
-
-function ensureBriefingContext() {
-  if (!briefingContext) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return null;
-    briefingContext = new AudioContextClass();
-  }
-  if (briefingContext.state === 'suspended') {
-    briefingContext.resume().catch(() => {});
-  }
-  return briefingContext;
 }
 
 function fadeAudio(audio, target, duration = 4000) {
@@ -833,15 +821,15 @@ function checkPin() {
     status.textContent = 'Access granted';
     status.className = 'pin-status success';
     startBriefingHeartbeat();
-    ensureBriefingContext();
     void startBriefingAmbient();
+    void startBriefingAudio();
     setTimeout(() => {
       gate.classList.add('unlocked');
       pres.classList.add('visible');
       navDots.style.display = 'flex';
       initReveal();
       initNav();
-      startBriefingAudio();
+      playBriefingAudio();
     }, 600);
   } else {
     status.textContent = 'Invalid access code';
@@ -859,48 +847,76 @@ function checkPin() {
 setTimeout(() => inputs[0].focus(), 300);
 
 // ===== ELEVENLABS BRIEFING AUDIO =====
-function tryPlayBriefingAudio() {
-  if (!briefingReady || briefingPlayed || !briefingAudioBuffer) return;
-  const context = ensureBriefingContext();
-  if (!context) return;
+function playBriefingAudio() {
+  if (!briefingVoiceReady || briefingPlayed || !briefingVoice) return;
 
-  try {
-    const source = context.createBufferSource();
-    const gain = context.createGain();
-    source.buffer = briefingAudioBuffer;
-    gain.gain.value = 0.85;
-    source.connect(gain);
-    gain.connect(context.destination);
-    source.start(context.currentTime + 1.5);
-    briefingSource = source;
-    briefingPlayed = true;
-    source.addEventListener('ended', () => {
-      briefingSource = null;
-    }, { once: true });
-  } catch (_) {
-    // Browser may still require gesture; listeners below will retry.
+  if (briefingAmbient) {
+    fadeAudio(briefingAmbient, 0.18, 800);
   }
+
+  setTimeout(() => {
+    if (!briefingVoice || briefingPlayed) return;
+    briefingVoice.play().then(() => {
+      briefingPlayed = true;
+      if (briefingVoiceRetry) {
+        clearInterval(briefingVoiceRetry);
+        briefingVoiceRetry = null;
+      }
+    }).catch(() => {
+      // Browser may still require gesture; listeners below will retry.
+    });
+  }, 1500);
+}
+
+function ensureVoiceRetry() {
+  if (briefingVoiceRetry) return;
+  briefingVoiceRetry = window.setInterval(() => {
+    if (briefingPlayed) {
+      clearInterval(briefingVoiceRetry);
+      briefingVoiceRetry = null;
+      return;
+    }
+    playBriefingAudio();
+  }, 1200);
+
+  setTimeout(() => {
+    if (briefingVoiceRetry) {
+      clearInterval(briefingVoiceRetry);
+      briefingVoiceRetry = null;
+    }
+  }, 25000);
+}
+
+function attachVoiceEndedHandler() {
+  if (!briefingVoice) return;
+  briefingVoice.addEventListener('ended', () => {
+    if (briefingAmbient) {
+      fadeAudio(briefingAmbient, 0.5, 1500);
+    }
+  }, { once: true });
 }
 
 async function startBriefingAudio() {
-  if (briefingPlayed || briefingReady) return;
+  if (briefingVoiceReady || briefingPlayed) return;
   try {
-    const context = ensureBriefingContext();
-    if (!context) return;
     const res = await fetch('/api/elevenlabs');
     if (!res.ok) return;
-    const audioData = await res.arrayBuffer();
-    briefingAudioBuffer = await context.decodeAudioData(audioData.slice(0));
-    briefingReady = true;
-    tryPlayBriefingAudio();
+    briefingVoiceUrl = URL.createObjectURL(await res.blob());
+    briefingVoice = new Audio(briefingVoiceUrl);
+    briefingVoice.volume = 1;
+    briefingVoice.preload = 'auto';
+    briefingVoiceReady = true;
+    attachVoiceEndedHandler();
+    ensureVoiceRetry();
+    playBriefingAudio();
   } catch (_) {
-    // Network or autoplay policy issues are non-fatal.
+    // Network issues are non-fatal; retry path can recover.
   }
 }
 
 const retryBriefingOnGesture = () => {
   void startBriefingAmbient();
-  tryPlayBriefingAudio();
+  playBriefingAudio();
 };
 window.addEventListener('click', retryBriefingOnGesture, { passive: true });
 window.addEventListener('keydown', retryBriefingOnGesture);
@@ -1050,13 +1066,21 @@ document.getElementById('pin-gate').addEventListener('transitionend', function(e
 
 window.addEventListener('beforeunload', () => {
   stopBriefingHeartbeat();
+  if (briefingVoiceRetry) {
+    clearInterval(briefingVoiceRetry);
+    briefingVoiceRetry = null;
+  }
+  if (briefingVoice) {
+    briefingVoice.pause();
+    briefingVoice = null;
+  }
+  if (briefingVoiceUrl) {
+    URL.revokeObjectURL(briefingVoiceUrl);
+    briefingVoiceUrl = null;
+  }
   if (briefingAmbient) {
     briefingAmbient.pause();
     briefingAmbient = null;
-  }
-  if (briefingSource) {
-    briefingSource.stop();
-    briefingSource = null;
   }
 });
 </script>

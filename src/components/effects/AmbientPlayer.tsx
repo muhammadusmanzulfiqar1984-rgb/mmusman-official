@@ -13,6 +13,7 @@ export default function AmbientPlayer() {
   const audioRef   = useRef<HTMLAudioElement | null>(null)
   const fadeRef    = useRef<number | null>(null)
   const briefingOpenRef = useRef(false)
+  const autoplayRetryRef = useRef<number | null>(null)
   const [playing,  setPlaying]  = useState(false)
   const [visible,  setVisible]  = useState(false)
   const [trackIdx, setTrackIdx] = useState(0)
@@ -95,6 +96,23 @@ export default function AmbientPlayer() {
     } catch { /* autoplay blocked */ }
   }, [fadeTo, vol])
 
+  const tryAutoStart = useCallback(async () => {
+    if (!audioRef.current || briefingOpenRef.current) return false
+    try {
+      audioRef.current.muted = true
+      await audioRef.current.play()
+      setPlaying(true)
+      setTimeout(() => {
+        if (!audioRef.current) return
+        audioRef.current.muted = false
+        fadeTo(vol, 4000)
+      }, 120)
+      return true
+    } catch {
+      return false
+    }
+  }, [fadeTo, vol])
+
   const pause = useCallback(() => {
     if (!audioRef.current) return
     fadeTo(0, 800)
@@ -131,31 +149,42 @@ export default function AmbientPlayer() {
     }
   }, [vol, playing, fadeTo])
 
-  // Auto-play on first user interaction anywhere on the page
+  // Auto-play retries and first interaction fallback
   useEffect(() => {
     const tryAutoPlay = () => {
-      if (!audioRef.current || playing || briefingOpenRef.current) return
-      audioRef.current.muted = true
-      audioRef.current.play().then(() => {
-        setPlaying(true)
-        setTimeout(() => {
-          if (!audioRef.current) return
-          audioRef.current.muted = false
-          fadeTo(vol, 4000)
-        }, 120)
-      }).catch(() => {})
+      if (playing || briefingOpenRef.current) return
+      void tryAutoStart()
     }
-    window.addEventListener('click',      tryAutoPlay, { once: true })
-    window.addEventListener('scroll',     tryAutoPlay, { once: true })
-    window.addEventListener('keydown',    tryAutoPlay, { once: true })
-    window.addEventListener('touchstart', tryAutoPlay, { once: true })
+
+    // Keep retrying for browsers that delay media readiness at startup.
+    if (!autoplayRetryRef.current) {
+      autoplayRetryRef.current = window.setInterval(() => {
+        if (playing || briefingOpenRef.current) return
+        void tryAutoStart()
+      }, 1200)
+      setTimeout(() => {
+        if (autoplayRetryRef.current) {
+          clearInterval(autoplayRetryRef.current)
+          autoplayRetryRef.current = null
+        }
+      }, 20000)
+    }
+
+    window.addEventListener('click',      tryAutoPlay)
+    window.addEventListener('scroll',     tryAutoPlay)
+    window.addEventListener('keydown',    tryAutoPlay)
+    window.addEventListener('touchstart', tryAutoPlay)
     return () => {
+      if (autoplayRetryRef.current) {
+        clearInterval(autoplayRetryRef.current)
+        autoplayRetryRef.current = null
+      }
       window.removeEventListener('click',      tryAutoPlay)
       window.removeEventListener('scroll',     tryAutoPlay)
       window.removeEventListener('keydown',    tryAutoPlay)
       window.removeEventListener('touchstart', tryAutoPlay)
     }
-  }, [playing, fadeTo, vol])
+  }, [playing, tryAutoStart])
 
   // Pause when tab hidden
   useEffect(() => {
