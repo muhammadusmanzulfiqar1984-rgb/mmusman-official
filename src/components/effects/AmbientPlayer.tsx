@@ -7,27 +7,15 @@ const TRACKS = [
   { src: '/A_Measure_of_State.min.mp3',       label: 'A Measure of State' },
 ]
 
-const BRIEFING_HEARTBEAT_KEY = 'mmusman:briefing-open-heartbeat'
-
 export default function AmbientPlayer() {
   const audioRef   = useRef<HTMLAudioElement | null>(null)
   const fadeRef    = useRef<number | null>(null)
-  const briefingOpenRef = useRef(false)
   const autoplayRetryRef = useRef<number | null>(null)
   const [playing,  setPlaying]  = useState(false)
   const [visible,  setVisible]  = useState(false)
   const [trackIdx, setTrackIdx] = useState(0)
   const [vol,      setVol]      = useState(0.5)
   const [label,    setLabel]    = useState(TRACKS[0].label)
-
-  const isBriefingOpen = useCallback(() => {
-    try {
-      const lastHeartbeat = Number(localStorage.getItem(BRIEFING_HEARTBEAT_KEY) ?? '0')
-      return lastHeartbeat > 0 && Date.now() - lastHeartbeat < 15000
-    } catch {
-      return false
-    }
-  }, [])
 
   // Show player after 4 seconds
   useEffect(() => {
@@ -48,24 +36,22 @@ export default function AmbientPlayer() {
     audio.muted = true
     audioRef.current = audio
 
-    // Attempt immediate autoplay unless briefing room is active in another tab.
-    if (!isBriefingOpen()) {
-      audio.play().then(() => {
-        setPlaying(true)
-        setTimeout(() => {
-          if (!audioRef.current) return
-          audioRef.current.muted = false
-          fadeTo(vol, 4000)
-        }, 120)
-      }).catch(() => { /* autoplay blocked — first-interaction handler will retry */ })
-    }
+    // Attempt immediate autoplay
+    audio.play().then(() => {
+      setPlaying(true)
+      setTimeout(() => {
+        if (!audioRef.current) return
+        audioRef.current.muted = false
+        fadeTo(vol, 4000)
+      }, 120)
+    }).catch(() => { /* autoplay blocked — first-interaction handler will retry */ })
 
     return () => {
       audio.pause()
       audio.src = ''
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBriefingOpen])
+  }, [])
 
   // Fade helpers
   const fadeTo = useCallback((target: number, duration = 1200) => {
@@ -83,7 +69,7 @@ export default function AmbientPlayer() {
   }, [])
 
   const play = useCallback(async () => {
-    if (!audioRef.current || briefingOpenRef.current) return
+    if (!audioRef.current) return
     try {
       audioRef.current.muted = true
       await audioRef.current.play()
@@ -97,7 +83,7 @@ export default function AmbientPlayer() {
   }, [fadeTo, vol])
 
   const tryAutoStart = useCallback(async () => {
-    if (!audioRef.current || briefingOpenRef.current) return false
+    if (!audioRef.current) return false
     try {
       audioRef.current.muted = true
       await audioRef.current.play()
@@ -120,7 +106,6 @@ export default function AmbientPlayer() {
   }, [fadeTo])
 
   const toggle = useCallback(() => {
-    if (briefingOpenRef.current) return
     playing ? pause() : play()
   }, [playing, pause, play])
 
@@ -152,37 +137,47 @@ export default function AmbientPlayer() {
   // Auto-play retries and first interaction fallback
   useEffect(() => {
     const tryAutoPlay = () => {
-      if (playing || briefingOpenRef.current) return
+      if (playing) return
       void tryAutoStart()
     }
 
-    // Keep retrying for browsers that delay media readiness at startup.
+    // Keep retrying; clear once playback succeeds.
     if (!autoplayRetryRef.current) {
       autoplayRetryRef.current = window.setInterval(() => {
-        if (playing || briefingOpenRef.current) return
+        if (playing) {
+          if (autoplayRetryRef.current) {
+            clearInterval(autoplayRetryRef.current)
+            autoplayRetryRef.current = null
+          }
+          return
+        }
         void tryAutoStart()
       }, 1200)
-      setTimeout(() => {
-        if (autoplayRetryRef.current) {
-          clearInterval(autoplayRetryRef.current)
-          autoplayRetryRef.current = null
-        }
-      }, 20000)
     }
 
-    window.addEventListener('click',      tryAutoPlay)
-    window.addEventListener('scroll',     tryAutoPlay)
-    window.addEventListener('keydown',    tryAutoPlay)
-    window.addEventListener('touchstart', tryAutoPlay)
+    window.addEventListener('click',        tryAutoPlay)
+    window.addEventListener('pointerdown',  tryAutoPlay)
+    window.addEventListener('pointermove',  tryAutoPlay)
+    window.addEventListener('wheel',        tryAutoPlay)
+    window.addEventListener('scroll',       tryAutoPlay)
+    window.addEventListener('keydown',      tryAutoPlay)
+    window.addEventListener('touchstart',   tryAutoPlay)
+    window.addEventListener('visibilitychange', tryAutoPlay)
+    window.addEventListener('pageshow',     tryAutoPlay)
     return () => {
       if (autoplayRetryRef.current) {
         clearInterval(autoplayRetryRef.current)
         autoplayRetryRef.current = null
       }
-      window.removeEventListener('click',      tryAutoPlay)
-      window.removeEventListener('scroll',     tryAutoPlay)
-      window.removeEventListener('keydown',    tryAutoPlay)
-      window.removeEventListener('touchstart', tryAutoPlay)
+      window.removeEventListener('click',        tryAutoPlay)
+      window.removeEventListener('pointerdown',  tryAutoPlay)
+      window.removeEventListener('pointermove',  tryAutoPlay)
+      window.removeEventListener('wheel',        tryAutoPlay)
+      window.removeEventListener('scroll',       tryAutoPlay)
+      window.removeEventListener('keydown',      tryAutoPlay)
+      window.removeEventListener('touchstart',   tryAutoPlay)
+      window.removeEventListener('visibilitychange', tryAutoPlay)
+      window.removeEventListener('pageshow',     tryAutoPlay)
     }
   }, [playing, tryAutoStart])
 
@@ -194,33 +189,6 @@ export default function AmbientPlayer() {
     document.addEventListener('visibilitychange', onVisibility)
     return () => document.removeEventListener('visibilitychange', onVisibility)
   }, [playing, pause])
-
-  // Stop ambient automatically while briefing room is open in another tab.
-  useEffect(() => {
-    const syncBriefingState = () => {
-      const briefingOpen = isBriefingOpen()
-      const wasBriefingOpen = briefingOpenRef.current
-      briefingOpenRef.current = briefingOpen
-      if (briefingOpen) {
-        audioRef.current?.pause()
-        setPlaying(false)
-        return
-      }
-
-      if (wasBriefingOpen && !document.hidden) {
-        void play()
-      }
-    }
-
-    syncBriefingState()
-    window.addEventListener('storage', syncBriefingState)
-    window.addEventListener('focus', syncBriefingState)
-
-    return () => {
-      window.removeEventListener('storage', syncBriefingState)
-      window.removeEventListener('focus', syncBriefingState)
-    }
-  }, [isBriefingOpen, play])
 
   if (!visible) return null
 

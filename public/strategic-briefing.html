@@ -771,7 +771,7 @@ function fadeAudio(audio, target, duration = 4000) {
   requestAnimationFrame(step);
 }
 
-async function startBriefingAmbient() {
+async function startBriefingAmbient(targetVolume = 0.5) {
   if (briefingAmbient) return;
   briefingAmbient = new Audio('/Morning_in_the_Tuileries.min.mp3');
   briefingAmbient.loop = true;
@@ -783,16 +783,12 @@ async function startBriefingAmbient() {
     setTimeout(() => {
       if (!briefingAmbient) return;
       briefingAmbient.muted = false;
-      fadeAudio(briefingAmbient, 0.5, 4000);
+      fadeAudio(briefingAmbient, targetVolume, 4000);
     }, 120);
   } catch (_) {
     // Fallback listeners below will retry after a gesture.
   }
 }
-
-window.addEventListener('load', () => {
-  void startBriefingAmbient();
-});
 
 inputs.forEach((inp, i) => {
   inp.addEventListener('input', (e) => {
@@ -821,7 +817,6 @@ function checkPin() {
     status.textContent = 'Access granted';
     status.className = 'pin-status success';
     startBriefingHeartbeat();
-    void startBriefingAmbient();
     void startBriefingAudio();
     setTimeout(() => {
       gate.classList.add('unlocked');
@@ -850,14 +845,11 @@ setTimeout(() => inputs[0].focus(), 300);
 function playBriefingAudio() {
   if (!briefingVoiceReady || briefingPlayed || !briefingVoice) return;
 
-  if (briefingAmbient) {
-    fadeAudio(briefingAmbient, 0.18, 800);
-  }
-
   setTimeout(() => {
     if (!briefingVoice || briefingPlayed) return;
     briefingVoice.play().then(() => {
       briefingPlayed = true;
+      void startBriefingAmbient(0.18);
       if (briefingVoiceRetry) {
         clearInterval(briefingVoiceRetry);
         briefingVoiceRetry = null;
@@ -890,9 +882,8 @@ function ensureVoiceRetry() {
 function attachVoiceEndedHandler() {
   if (!briefingVoice) return;
   briefingVoice.addEventListener('ended', () => {
-    if (briefingAmbient) {
-      fadeAudio(briefingAmbient, 0.5, 1500);
-    }
+    void startBriefingAmbient(0.5);
+    if (briefingAmbient) fadeAudio(briefingAmbient, 0.5, 1500);
   }, { once: true });
 }
 
@@ -915,7 +906,6 @@ async function startBriefingAudio() {
 }
 
 const retryBriefingOnGesture = () => {
-  void startBriefingAmbient();
   playBriefingAudio();
 };
 window.addEventListener('click', retryBriefingOnGesture, { passive: true });
