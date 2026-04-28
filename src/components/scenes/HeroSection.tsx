@@ -84,6 +84,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
   return (
     <section
       id="hero" aria-label="Hero"
+      data-parallax
       style={{
         position: 'relative', minHeight: 'calc(100dvh - var(--header-h))', boxSizing: 'border-box',
         paddingTop: 'clamp(60px, 10vh, 120px)',
@@ -112,7 +113,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
           {eyebrow && (
             <p className="eyebrow reveal" style={{ marginBottom: 'var(--space-4)' }}>{eyebrow}</p>
           )}
-          <h1 className="h2 headline-shimmer reveal lens-resolve" style={{
+          <h1 className="h2 headline-shimmer reveal lens-resolve" data-glow data-gold-text style={{
             marginBottom: 'var(--space-6)',
           }}>
             {lines[0]}<br />

@@ -5,6 +5,7 @@ import { LangProvider } from '@/lib/langContext'
 import EffectsLayerLoader from '@/components/effects/EffectsLayerLoader'
 import AmbientLight from '@/components/effects/AmbientLight'
 import AmbientPlayer from '@/components/effects/AmbientPlayer'
+import { GlowOnScroll, GlassmorphismCards, AnimatedGradient, TextRevealOnScroll, GoldAccents, ParallaxScroll, HoverGlow } from '@/components/effects/GlamourEffects'
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
@@ -78,6 +79,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <EffectsLayerLoader />
           <AmbientLight />
           <AmbientPlayer />
+          <AnimatedGradient />
+          <GlassmorphismCards />
+          <TextRevealOnScroll />
+          <GoldAccents />
+          <ParallaxScroll />
+          <HoverGlow />
+          <GlowOnScroll />
           <Analytics />
         </LangProvider>
       </body>
