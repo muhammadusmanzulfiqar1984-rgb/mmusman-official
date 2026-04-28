@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import '../styles/globals.css'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 import { LangProvider } from '@/lib/langContext'
 import EffectsLayerLoader from '@/components/effects/EffectsLayerLoader'
 import AmbientLight from '@/components/effects/AmbientLight'

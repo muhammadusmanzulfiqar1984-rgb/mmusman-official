@@ -7,7 +7,7 @@ const TRACKS = [
   { src: '/A_Measure_of_State.min.mp3',       label: 'A Measure of State' },
 ]
 
-const BRIEFING_OPEN_COUNT_KEY = 'mmusman:briefing-open-count'
+const BRIEFING_HEARTBEAT_KEY = 'mmusman:briefing-open-heartbeat'
 
 export default function AmbientPlayer() {
   const audioRef   = useRef<HTMLAudioElement | null>(null)
@@ -16,12 +16,13 @@ export default function AmbientPlayer() {
   const [playing,  setPlaying]  = useState(false)
   const [visible,  setVisible]  = useState(false)
   const [trackIdx, setTrackIdx] = useState(0)
-  const [vol,      setVol]      = useState(0.55)
+  const [vol,      setVol]      = useState(0.5)
   const [label,    setLabel]    = useState(TRACKS[0].label)
 
   const isBriefingOpen = useCallback(() => {
     try {
-      return Number(localStorage.getItem(BRIEFING_OPEN_COUNT_KEY) ?? '0') > 0
+      const lastHeartbeat = Number(localStorage.getItem(BRIEFING_HEARTBEAT_KEY) ?? '0')
+      return lastHeartbeat > 0 && Date.now() - lastHeartbeat < 15000
     } catch {
       return false
     }
@@ -43,13 +44,18 @@ export default function AmbientPlayer() {
     const audio = new Audio(TRACKS[trackIdx].src)
     audio.loop   = true
     audio.volume = 0
+    audio.muted = true
     audioRef.current = audio
 
     // Attempt immediate autoplay unless briefing room is active in another tab.
     if (!isBriefingOpen()) {
       audio.play().then(() => {
-        fadeTo(vol, 4000)
         setPlaying(true)
+        setTimeout(() => {
+          if (!audioRef.current) return
+          audioRef.current.muted = false
+          fadeTo(vol, 4000)
+        }, 120)
       }).catch(() => { /* autoplay blocked — first-interaction handler will retry */ })
     }
 
@@ -78,9 +84,14 @@ export default function AmbientPlayer() {
   const play = useCallback(async () => {
     if (!audioRef.current || briefingOpenRef.current) return
     try {
+      audioRef.current.muted = true
       await audioRef.current.play()
-      fadeTo(vol, 4000)
       setPlaying(true)
+      setTimeout(() => {
+        if (!audioRef.current) return
+        audioRef.current.muted = false
+        fadeTo(vol, 4000)
+      }, 120)
     } catch { /* autoplay blocked */ }
   }, [fadeTo, vol])
 
@@ -124,7 +135,15 @@ export default function AmbientPlayer() {
   useEffect(() => {
     const tryAutoPlay = () => {
       if (!audioRef.current || playing || briefingOpenRef.current) return
-      audioRef.current.play().then(() => { fadeTo(vol, 4000); setPlaying(true) }).catch(() => {})
+      audioRef.current.muted = true
+      audioRef.current.play().then(() => {
+        setPlaying(true)
+        setTimeout(() => {
+          if (!audioRef.current) return
+          audioRef.current.muted = false
+          fadeTo(vol, 4000)
+        }, 120)
+      }).catch(() => {})
     }
     window.addEventListener('click',      tryAutoPlay, { once: true })
     window.addEventListener('scroll',     tryAutoPlay, { once: true })
@@ -151,10 +170,16 @@ export default function AmbientPlayer() {
   useEffect(() => {
     const syncBriefingState = () => {
       const briefingOpen = isBriefingOpen()
+      const wasBriefingOpen = briefingOpenRef.current
       briefingOpenRef.current = briefingOpen
       if (briefingOpen) {
         audioRef.current?.pause()
         setPlaying(false)
+        return
+      }
+
+      if (wasBriefingOpen && !document.hidden) {
+        void play()
       }
     }
 
@@ -166,7 +191,7 @@ export default function AmbientPlayer() {
       window.removeEventListener('storage', syncBriefingState)
       window.removeEventListener('focus', syncBriefingState)
     }
-  }, [isBriefingOpen])
+  }, [isBriefingOpen, play])
 
   if (!visible) return null
 
