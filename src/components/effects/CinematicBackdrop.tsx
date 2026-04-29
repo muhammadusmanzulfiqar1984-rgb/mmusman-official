@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from 'react'
  *  - Low-end device: skips video entirely
  */
 
-const OVERLAY_OPACITY = 0.45  // 0 = fully transparent, 1 = fully dark
+const OVERLAY_OPACITY = 0.25  // 0 = fully transparent, 1 = fully dark
 
 export default function CinematicBackdrop() {
   const videoRef  = useRef<HTMLVideoElement>(null)

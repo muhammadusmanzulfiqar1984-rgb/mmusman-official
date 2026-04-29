@@ -38,7 +38,7 @@ const MEDIA_ITEMS_FALLBACK: MediaItem[] = [
     videoUrl: 'https://www.youtube.com/embed/live_stream?channel=UC16niRr50-MSBwiO3YDb3RA&autoplay=1&mute=1',
     poster: '/images/gallery-2.webp',
   },
-  { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/gallery-3.webp' },
+  { type: 'image', title: 'Advisory engagement', subtitle: 'Private briefing', src: '/images/keynotes.webp' },
 ]
 
 const getThumb = (item: MediaItem) => item.type === 'video' ? item.poster : item.src
@@ -112,7 +112,7 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
                 alt={current.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 80vw"
-                style={{ objectFit: 'cover', objectPosition: 'center top', filter: 'brightness(0.65)' }}
+                style={{ objectFit: 'contain', objectPosition: 'center center', filter: 'brightness(0.85)' }}
                 onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
               />
             )}
@@ -179,11 +179,11 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
                 alt={item.title}
                 fill
                 sizes="(max-width: 768px) 65vw, 25vw"
-                style={{ objectFit: 'cover', objectPosition: 'center top', filter: active === i ? 'brightness(0.9)' : 'brightness(0.45)', transition: 'filter var(--duration-base) var(--ease-out)' }}
+                style={{ objectFit: 'contain', objectPosition: 'center center', filter: active === i ? 'brightness(1)' : 'brightness(0.9)', transition: 'filter var(--duration-base) var(--ease-out)' }}
                 onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
               />
             )}
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '8px 10px', background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 100%)' }}>
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '8px 10px', background: 'linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 100%)' }}>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: active === i ? 'var(--color-gold)' : 'rgba(255,255,255,0.5)', margin: 0 }}>
                 {item.subtitle}
               </p>

@@ -216,13 +216,13 @@ export default function RecordSection({ data }: { data: RecordData }) {
                   src={(m.poster || m.src) as string}
                   alt={m.title}
                   fill
-                  style={{ objectFit: 'cover', opacity: 0.65 }}
+                  style={{ objectFit: 'contain', objectPosition: 'center center', opacity: 1 }}
                   sizes="160px"
                 />
               )}
               <div style={{
                 position: 'absolute', inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.38) 0%, transparent 58%)',
               }} />
               <p style={{
                 position: 'absolute', bottom: '8px', left: '8px', right: '8px',

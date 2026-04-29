@@ -29,7 +29,7 @@ export default function AboutSection({ data }: { data: AboutData }) {
         <div className="reveal relative">
           <div className={`relative rounded-[20px] overflow-hidden border border-[var(--color-gold-dim)] bg-[var(--color-bg-card)] aspect-[3/4] max-h-[min(520px,calc(100dvh-var(--header-h)-clamp(80px,10vw,144px)))] ${imgError ? 'hidden' : 'block'}`}>
             <Image
-              src="/images/Usman%20Research.webp"
+                  src="/images/usman-research.webp"
               alt="Mian Muhammad Usman at his research desk"
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

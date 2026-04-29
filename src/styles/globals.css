@@ -53,7 +53,7 @@ body {
       rgba(8,3,6,0.20) 70%,
       rgba(8,3,6,0.05) 100%
     ),
-    url('/images/Public%20training.webp') center center / cover no-repeat,
+    url('/images/public-training.webp') center center / cover no-repeat,
     transparent !important;
 }
 /* Glass top-edge refraction line */

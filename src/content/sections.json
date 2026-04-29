@@ -126,7 +126,7 @@
       { "type": "video", "title": "Many industries. One formation.", "subtitle": "Signature address",  "poster": "/images/speaking.webp" },
       { "type": "image", "title": "Leadership summit address",       "subtitle": "Conference address", "src": "/images/gallery-1.webp" },
       { "type": "image", "title": "Executive roundtable",            "subtitle": "Private forum",      "src": "/images/gallery-2.webp" },
-      { "type": "image", "title": "Strategic advisory session",      "subtitle": "Closed engagement",  "src": "/images/gallery-3.webp" }
+      { "type": "image", "title": "Strategic advisory session",      "subtitle": "Closed engagement",  "src": "/images/keynotes.webp" }
     ],
     "priority": 5,
     "tags": ["record"],
