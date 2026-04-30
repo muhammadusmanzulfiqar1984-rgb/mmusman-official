@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 
-const PIN = '260426'
+const PIN = '616161'
 
 export default function BriefingGate() {
   const [open,    setOpen]    = useState(false)
