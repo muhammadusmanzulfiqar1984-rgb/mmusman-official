@@ -5,6 +5,9 @@ import LegalPage from '@/components/layout/LegalPage'
 export const metadata: Metadata = {
   title: 'Privacy Policy — Mian Muhammad Usman',
   description: 'Privacy policy for mmusman.com covering contact submissions, local analytics, AI assistant usage, and data handling.',
+  alternates: {
+    canonical: '/privacy',
+  },
 }
 
 export default function PrivacyPage() {

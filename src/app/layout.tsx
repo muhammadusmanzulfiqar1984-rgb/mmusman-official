@@ -12,6 +12,20 @@ export const metadata: Metadata = {
   description: 'Lawyer, trader, founder and system architect with hands-on experience across retail, oil & gas, capital markets, fashion, law and political strategy. Speaker and executive advisor.',
   keywords: ['Mian Muhammad Usman', 'system design', 'trading', 'advisory', 'keynote speaker', 'retail strategy'],
   metadataBase: new URL('https://www.mmusman.com'),
+  alternates: {
+    canonical: '/',
+  },
+  applicationName: 'Mian Muhammad Usman',
+  authors: [{ name: 'Mian Muhammad Usman', url: 'https://www.mmusman.com' }],
+  creator: 'Mian Muhammad Usman',
+  publisher: 'Mian Muhammad Usman',
+  category: 'Business and Personal Brand',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',
     description: 'Lawyer, trader, founder and system architect with hands-on experience across six industries.',
@@ -53,6 +67,28 @@ const personSchema = {
     'Retail Operations',
     'Strategic Advisory',
   ],
+  sameAs: [
+    'https://x.com/mian_usman',
+    'https://www.linkedin.com',
+  ],
+}
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Mian Muhammad Usman',
+  url: 'https://www.mmusman.com',
+  inLanguage: 'en-GB',
+  description:
+    'Official website of Mian Muhammad Usman, featuring advisory profile, strategic work, speaking, and contact information.',
+}
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Mian Muhammad Usman',
+  url: 'https://www.mmusman.com',
+  logo: 'https://www.mmusman.com/opengraph-image',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -62,6 +98,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

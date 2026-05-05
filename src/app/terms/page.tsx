@@ -5,6 +5,9 @@ import LegalPage from '@/components/layout/LegalPage'
 export const metadata: Metadata = {
   title: 'Terms of Service — Mian Muhammad Usman',
   description: 'Terms governing use of mmusman.com, including site content, enquiries, intellectual property, and limitations of liability.',
+  alternates: {
+    canonical: '/terms',
+  },
 }
 
 export default function TermsPage() {

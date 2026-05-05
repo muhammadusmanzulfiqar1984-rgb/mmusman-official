@@ -297,6 +297,43 @@ export default function Header() {
         {/* Restricted Briefing Gate */}
         <BriefingGate />
 
+        {/* La Vivid Work Button */}
+        <Link
+          href="/la-vinda"
+          aria-label="La Vivid Work"
+          style={{
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'rgba(200,160,96,0.08)',
+            border: '1px solid rgba(200,160,96,0.3)',
+            borderRadius: '3px',
+            padding: '5px 10px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.55rem',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--color-gold)',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            transition: 'background 0.2s, border-color 0.2s',
+            whiteSpace: 'nowrap',
+            fontWeight: 400,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(200,160,96,0.16)'
+            e.currentTarget.style.borderColor = 'rgba(200,160,96,0.6)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(200,160,96,0.08)'
+            e.currentTarget.style.borderColor = 'rgba(200,160,96,0.3)'
+          }}
+        >
+          <span style={{ fontSize: '0.7rem' }}>⌇</span>
+          LA VIVID WORK
+        </Link>
+
         {/* PKT Clock */}
         <span className="header-clock"><VintageClock size={46} /></span>
 
