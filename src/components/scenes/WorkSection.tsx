@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLang } from '@/lib/langContext'
 
@@ -12,7 +12,7 @@ function parseStatValue(v: string) {
   return m ? { numeric: parseInt(m[1], 10), suffix: m[2] ?? '' } : { numeric: 0, suffix: v }
 }
 
-function Digit({ d }: { d: string }) {
+const Digit = React.memo(function Digit({ d }: { d: string }) {
   return (
     <span style={{ display: 'inline-block', overflow: 'hidden', height: '1.05em', verticalAlign: 'bottom' }}>
       <AnimatePresence mode="popLayout" initial={false}>
@@ -29,9 +29,9 @@ function Digit({ d }: { d: string }) {
       </AnimatePresence>
     </span>
   )
-}
+})
 
-function CounterBadge({ value, label }: { value: string; label: string }) {
+const CounterBadge = React.memo(function CounterBadge({ value, label }: { value: string; label: string }) {
   const { numeric, suffix } = parseStatValue(value)
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const [count, setCount]   = useState(() => prefersReduced ? numeric : 0)
@@ -77,7 +77,7 @@ function CounterBadge({ value, label }: { value: string; label: string }) {
       }}>{label}</div>
     </div>
   )
-}
+})
 
 export default function WorkSection({ data }: { data: WorkData }) {
   const { t } = useLang()

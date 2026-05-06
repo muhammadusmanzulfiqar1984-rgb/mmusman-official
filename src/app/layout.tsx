@@ -1,11 +1,19 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { LangProvider } from '@/lib/langContext'
 import EffectsLayerLoader from '@/components/effects/EffectsLayerLoader'
-import AmbientLight from '@/components/effects/AmbientLight'
-import AmbientPlayer from '@/components/effects/AmbientPlayer'
-import { GlowOnScroll, GlassmorphismCards, AnimatedGradient, TextRevealOnScroll, GoldAccents, ParallaxScroll, HoverGlow } from '@/components/effects/GlamourEffects'
+
+const AmbientLight       = dynamic(() => import('@/components/effects/AmbientLight'),       { ssr: false })
+const AmbientPlayer      = dynamic(() => import('@/components/effects/AmbientPlayer'),      { ssr: false })
+const GlowOnScroll       = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.GlowOnScroll })),       { ssr: false })
+const GlassmorphismCards = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.GlassmorphismCards })), { ssr: false })
+const AnimatedGradient   = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.AnimatedGradient })),   { ssr: false })
+const TextRevealOnScroll = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.TextRevealOnScroll })), { ssr: false })
+const GoldAccents        = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.GoldAccents })),        { ssr: false })
+const ParallaxScroll     = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.ParallaxScroll })),     { ssr: false })
+const HoverGlow          = dynamic(() => import('@/components/effects/GlamourEffects').then(m => ({ default: m.HoverGlow })),          { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Mian Muhammad Usman — Lawyer, Trader, System Builder & Multi-Industry Strategist',

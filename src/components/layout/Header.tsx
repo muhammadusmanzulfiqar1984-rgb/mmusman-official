@@ -164,6 +164,7 @@ export default function Header() {
               aria-hidden="true"
               fill
               sizes="56px"
+              loading="lazy"
               style={{ objectFit: 'cover', filter: 'grayscale(0.3)' }}
               onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
             />

@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import MagneticButton from '@/components/effects/MagneticButton'
 import { useWebGLBackground, useMicroParallax } from '@/lib/hooks/useHeroAnimations'
@@ -77,9 +77,12 @@ export default function HeroSection({ data }: { data: HeroData }) {
   const quote        = t.hero.quote        || data.quote
   const quoteSupport = t.hero.quoteSupport || data.quoteSupport
 
-  const lines  = heading.split('\n')
-  const words2 = (lines[1] ?? '').split(' ')
-  const pivot  = Math.ceil(words2.length * 0.55)
+  const { lines, words2, pivot } = useMemo(() => {
+    const lines  = heading.split('\n')
+    const words2 = (lines[1] ?? '').split(' ')
+    const pivot  = Math.ceil(words2.length * 0.55)
+    return { lines, words2, pivot }
+  }, [heading])
 
   return (
     <section

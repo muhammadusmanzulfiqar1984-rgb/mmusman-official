@@ -111,6 +111,7 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
                 src={getThumb(current)!}
                 alt={current.title}
                 fill
+                loading="lazy"
                 sizes="(max-width: 768px) 100vw, 80vw"
                 style={{ objectFit: 'contain', objectPosition: 'center center', filter: 'brightness(0.85)' }}
                 onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
@@ -178,6 +179,7 @@ export default function ConversationsSection({ data }: { data?: ConversationsDat
                 src={getThumb(item)!}
                 alt={item.title}
                 fill
+                loading="lazy"
                 sizes="(max-width: 768px) 65vw, 25vw"
                 style={{ objectFit: 'contain', objectPosition: 'center center', filter: active === i ? 'brightness(1)' : 'brightness(0.9)', transition: 'filter var(--duration-base) var(--ease-out)' }}
                 onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
