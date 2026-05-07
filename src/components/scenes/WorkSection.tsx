@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLang } from '@/lib/langContext'
+import WorldMapBackdrop from '@/components/effects/WorldMapBackdrop'
 
 interface WorkCard { tag: string; title: string }
 interface Stat     { value: string; label: string }
@@ -97,8 +98,19 @@ export default function WorkSection({ data }: { data: WorkData }) {
         boxSizing: 'border-box',
         padding: 'clamp(40px, 5vw, 64px) var(--section-pad-x)',
         borderBottom: '2px solid var(--color-gold)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 0,
+        opacity: 0.8,
+      }}>
+        <WorldMapBackdrop />
+      </div>
+      <div style={{ position: 'relative', zIndex: 1 }}>
       <p className="section-label">Practice</p>
 
       {/* Two-column: heading left, stats right */}
@@ -322,6 +334,7 @@ export default function WorkSection({ data }: { data: WorkData }) {
           .work-tile-edge    { transition: none !important; }
         }
       `}</style>
+      </div>
     </section>
   )
 }
