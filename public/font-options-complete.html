@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Complete Font Options — MMU</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500;600&family=DM+Mono:wght@300;400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Satoshi:wght@300;400;500;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#d4c49a;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui,sans-serif;overflow-x:hidden;padding:40px 24px}
+
+.header{text-align:center;margin-bottom:60px}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,6vw,64px);font-weight:300;letter-spacing:-.015em;line-height:1.1;margin-bottom:12px}
+.header p{font-size:14px;color:#9a8968;max-width:56ch;margin:0 auto;line-height:1.6}
+
+.container{max-width:1400px;margin:0 auto}
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+
+.option{background:rgba(12,28,35,.65);border:1px solid rgba(200,169,110,.16);border-radius:14px;padding:clamp(18px,2.5vw,28px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:all .2s ease}
+.option:hover{border-color:rgba(200,169,110,.32);background:rgba(12,28,35,.8)}
+.option h2{font-size:18px;font-weight:600;margin-bottom:6px;letter-spacing:-.005em;color:#f0e6d2}
+.option .subtitle{font-size:11px;color:#c8a96e;font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.option p{font-size:12px;color:#7a7060;margin-bottom:16px;line-height:1.5}
+
+.demo{display:grid;gap:14px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(200,169,110,.1)}
+.demo-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#8b7d65;margin-bottom:2px}
+
+.heading{font-size:20px;font-weight:500;line-height:1;letter-spacing:-.015em;margin-bottom:6px}
+.body-text{font-size:13px;line-height:1.55;color:#a8927a}
+
+/* 1. SYSTEM FONTS - SF Pro */
+.opt1 .heading{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',system-ui;font-weight:600;letter-spacing:-.01em}
+.opt1 .body-text{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui;font-weight:400;letter-spacing:.2px}
+
+/* 2. CURRENT (Cormorant + Inter) */
+.opt2 .heading{font-family:'Cormorant Garamond',serif;font-weight:400}
+.opt2 .body-text{font-family:'Inter',sans-serif;font-weight:300;letter-spacing:.1px}
+
+/* 3. BOLD CONTRAST (Cormorant + Inter heavier) */
+.opt3 .heading{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.02em}
+.opt3 .body-text{font-family:'Inter',sans-serif;font-weight:400;letter-spacing:.4px}
+
+/* 4. PLUS JAKARTA SANS */
+.opt4 .heading{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;letter-spacing:-.01em}
+.opt4 .body-text{font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;letter-spacing:.3px}
+
+/* 5. SATOSHI (Modern) */
+.opt5 .heading{font-family:'Satoshi',sans-serif;font-weight:700;letter-spacing:-.015em}
+.opt5 .body-text{font-family:'Satoshi',sans-serif;font-weight:400;letter-spacing:.2px}
+
+/* 6. WORK SANS */
+.opt6 .heading{font-family:'Work Sans',sans-serif;font-weight:600;letter-spacing:-.01em}
+.opt6 .body-text{font-family:'Work Sans',sans-serif;font-weight:400;letter-spacing:.3px}
+
+/* 7. SERIF LUXURY (Cormorant only) */
+.opt7 .heading{font-family:'Cormorant Garamond',serif;font-weight:500;letter-spacing:-.03em}
+.opt7 .body-text{font-family:'Cormorant Garamond',serif;font-weight:300;letter-spacing:.4px}
+
+/* 8. GEOMETRIC + SERIF MIX */
+.opt8 .heading{font-family:'Work Sans',sans-serif;font-weight:700;letter-spacing:-.02em;text-transform:uppercase;font-size:16px}
+.opt8 .body-text{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:.3px}
+
+.verdict{margin-top:80px;padding:32px;border-radius:14px;border:2px solid rgba(200,169,110,.24);background:rgba(12,28,35,.8)}
+.verdict h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;margin-bottom:16px;letter-spacing:-.01em}
+.verdict .highlight{color:#f0e6d2;font-weight:600}
+.verdict p{font-size:14px;line-height:1.75;margin-bottom:14px;color:#a8927a}
+.verdict ol{margin-left:24px;color:#9a8968}
+.verdict li{margin-bottom:10px;line-height:1.6}
+
+.tag-best{display:inline-block;background:rgba(200,169,110,.18);border:1px solid rgba(200,169,110,.4);padding:8px 12px;border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#f0e6d2;margin-top:16px}
+
+@media(max-width:768px){
+  .options{grid-template-columns:1fr}
+  .header{margin-bottom:40px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Font Stack Comparison</h1>
+  <p>All 8 options including Apple system fonts (SF Pro), serif-only, and geometric blends. Notice weight, spacing, and optical authority.</p>
+</div>
+
+<div class="container">
+  <div class="options">
+    
+    <!-- 1. APPLE SYSTEM (SF Pro) -->
+    <div class="option opt1">
+      <h2>Option 1</h2>
+      <div class="subtitle">Apple SF Pro (System)</div>
+      <p>What Apple uses on Mac/iPhone. Neutral, modern, trustworthy.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 2. CURRENT -->
+    <div class="option opt2">
+      <h2>Option 2</h2>
+      <div class="subtitle">Cormorant + Inter (Current)</div>
+      <p>Your current stack. Beautiful but reads dull without weight contrast.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 3. BOLD CONTRAST -->
+    <div class="option opt3">
+      <h2>Option 3</h2>
+      <div class="subtitle">Cormorant + Inter (Bold)</div>
+      <p><span class="highlight">✓ RECOMMENDED.</span> Same fonts, but heavier weights + tighter spacing.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 4. PLUS JAKARTA SANS -->
+    <div class="option opt4">
+      <h2>Option 4</h2>
+      <div class="subtitle">Plus Jakarta Sans (Sans)</div>
+      <p>Clean, optical refinement. More editorial than Inter.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 5. SATOSHI -->
+    <div class="option opt5">
+      <h2>Option 5</h2>
+      <div class="subtitle">Satoshi (Geometric)</div>
+      <p>Contemporary, geometric warmth. Modern luxury feel.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 6. WORK SANS -->
+    <div class="option opt6">
+      <h2>Option 6</h2>
+      <div class="subtitle">Work Sans (Balanced)</div>
+      <p>Neutral sans-serif. Institutional, professional tone.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 7. SERIF LUXURY -->
+    <div class="option opt7">
+      <h2>Option 7</h2>
+      <div class="subtitle">Cormorant Full Serif</div>
+      <p>All serif. Editorial, luxury publication feel. More vulnerable.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+    <!-- 8. GEOMETRIC + SERIF MIX -->
+    <div class="option opt8">
+      <h2>Option 8</h2>
+      <div class="subtitle">Work Sans + Cormorant (Bold Mix)</div>
+      <p>Strong contrast: geometric headlines + serif body. Fashion/luxury.</p>
+      <div class="demo">
+        <div class="demo-label">Heading</div>
+        <div class="heading">Where the work</div>
+        <div class="demo-label">Body</div>
+        <div class="body-text">Ten domains across continents. Eighteen years of direct operation.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="verdict">
+    <h2>My Recommendation</h2>
+    <p><span class="highlight">Option 3 (Cormorant + Inter with Bold Contrast)</span> — You don't need new fonts. Just:</p>
+    <ol>
+      <li><strong>Headings:</strong> Change weight from 300 → <strong>500</strong></li>
+      <li><strong>Body:</strong> Change weight from 300 → <strong>400</strong>, add letter-spacing <strong>+0.4px</strong></li>
+      <li><strong>Labels:</strong> Keep DM Mono but increase weight to <strong>500</strong></li>
+    </ol>
+    <p style="margin-top:20px"><strong>Why this works:</strong> Weight contrast makes thin fonts feel intentional. Tighter spacing gives optical density against your dark background.</p>
+    <p><strong>If you want a fresh font stack:</strong> Option 4 (Plus Jakarta Sans) or Option 6 (Work Sans) — both are sharp, professional, and don't need heavy tuning.</p>
+    <span class="tag-best">✓ Quickest fix: Option 3 (no new fonts needed)</span>
+  </div>
+
+</div>
+
+</body>
+</html>

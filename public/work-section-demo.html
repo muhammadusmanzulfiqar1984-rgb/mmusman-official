@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Work Section — World Map Backdrop Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#080808;color:#d4c49a;font-family:'Inter',sans-serif;overflow-x:hidden}
+
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 32px;background:linear-gradient(140deg,#08131a,#0d2028);text-align:center}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,72px);font-weight:300;letter-spacing:-.015em;line-height:1.1;margin-bottom:20px}
+.hero p{font-size:18px;color:#9a8968;max-width:54ch;margin:0 auto;line-height:1.6}
+
+.work{min-height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,5vw,72px) 32px;isolation:isolate}
+.work::before{content:'';position:absolute;inset:0;z-index:-2;background:#080808}
+.map-container{position:absolute;inset:0;z-index:-1}
+.map-container canvas{width:100%;height:100%;display:block}
+
+.work-content{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1}
+.work h2{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5.5vw,58px);font-weight:300;letter-spacing:-.01em;line-height:1.15;margin-bottom:16px}
+.work .kicker{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#c8a96e;margin-bottom:10px}
+.work p{font-size:16px;color:#9a8968;max-width:56ch;line-height:1.7;margin-bottom:40px}
+
+.industry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px}
+.card{background:rgba(12,28,35,.45);border:1px solid rgba(200,169,110,.15);border-radius:16px;padding:24px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:all .3s ease}
+.card:hover{background:rgba(12,28,35,.65);border-color:rgba(200,169,110,.32);transform:translateY(-4px)}
+.card-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c8a96e;margin-bottom:12px}
+.card h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:8px}
+.card p{font-size:13px;color:#7a7060;line-height:1.6}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(200,169,110,.12)}
+.stat{text-align:center}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:-.02em;color:#f0e6d2}
+.stat-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#9a8968;margin-top:8px}
+
+.bottom-cta{margin-top:48px;padding-top:32px;border-top:1px solid rgba(200,169,110,.12)}
+.btn{display:inline-block;padding:12px 28px;border:1px solid rgba(200,169,110,.35);color:#c8a96e;text-decoration:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:all .28s ease;cursor:pointer;background:transparent}
+.btn:hover{background:rgba(200,169,110,.08);border-color:rgba(200,169,110,.65);color:#f0e6d2}
+
+.demo-note{position:fixed;bottom:32px;right:32px;background:rgba(12,28,35,.88);border:1px solid rgba(200,169,110,.24);border-radius:12px;padding:16px 20px;font-family:'DM Mono',monospace;font-size:12px;color:#9a8968;max-width:260px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);line-height:1.5;z-index:100}
+.demo-note strong{color:#c8a96e}
+
+@media(max-width:768px){
+  .industry-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>Mian Muhammad Usman</h1>
+    <p>Scroll down to see the Work section with World Map backdrop applied</p>
+  </div>
+</section>
+
+<!-- WORK SECTION WITH MAP BACKDROP -->
+<section class="work">
+  <div class="map-container"><canvas id="mapCanvas"></canvas></div>
+  
+  <div class="work-content">
+    <p class="kicker">Practice Areas</p>
+    <h2>Where the work was applied.</h2>
+    <p>Ten domains across multiple continents. Eighteen years of direct operation. No proxies. This map shows the geographic footprint of engagement.</p>
+
+    <div class="industry-grid">
+      <div class="card">
+        <div class="card-tag">Law</div>
+        <h3>Legal Architecture</h3>
+        <p>Cross-border structuring, high-stakes counsel and transactional discipline</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">Capital Markets</div>
+        <h3>Market Structure</h3>
+        <p>Active trading, financial architecture and position management</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">Retail</div>
+        <h3>Operating Systems</h3>
+        <p>Enterprise systems at scale, supply chain command, institutional retail</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">Oil & Gas</div>
+        <h3>Energy Strategy</h3>
+        <p>Field-level operational strategy, energy sector positioning and structure</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">Fashion</div>
+        <h3>Production Direction</h3>
+        <p>High-consequence production, brand architecture and public execution</p>
+      </div>
+      <div class="card">
+        <div class="card-tag">Political Strategy</div>
+        <h3>Corridor Positioning</h3>
+        <p>Senior lobbying, governmental access, political capital and positioning</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">85+</div>
+        <div class="stat-label">Conferences</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">18+</div>
+        <div class="stat-label">Years Operating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">10+</div>
+        <div class="stat-label">Domains</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">25+</div>
+        <div class="stat-label">Organisations</div>
+      </div>
+    </div>
+
+    <div class="bottom-cta">
+      <button class="btn" onclick="alert('CTA: Explore the work')">Explore the work</button>
+    </div>
+  </div>
+</section>
+
+<div class="demo-note">
+  <strong>Demo Mode</strong><br/>
+  This is a temporary preview. The World Map backdrop shows your operating cities: London, Karachi, Dubai, Lahore, NY.<br/><br/>
+  Like it? We can integrate it into the actual site.
+</div>
+
+<script>
+const cv=document.getElementById('mapCanvas'),ctx=cv.getContext('2d');
+let W,H,t=0;
+const cities=[
+  {name:'London',lat:51.5,lon:-0.12},
+  {name:'Karachi',lat:24.8,lon:67.0},
+  {name:'Dubai',lat:25.2,lon:55.3},
+  {name:'Lahore',lat:31.5,lon:74.3},
+  {name:'New York',lat:40.7,lon:-74.0},
+];
+
+function latlon(lat,lon,w,h){
+  const x=(lon+180)*(w/360);
+  const y=(90-lat)*(h/180);
+  return{x,y};
+}
+
+function resize(){
+  W=cv.width=cv.offsetWidth;
+  H=cv.height=cv.offsetHeight;
+}
+
+resize();
+window.addEventListener('resize',resize);
+
+function draw(){
+  t+=.0025;
+  ctx.clearRect(0,0,W,H);
+  
+  // Grid background
+  ctx.strokeStyle='rgba(200,169,110,.045)';
+  ctx.lineWidth=0.8;
+  for(let lon=-180;lon<=180;lon+=30){
+    const x=(lon+180)*(W/360);
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+  }
+  for(let lat=-90;lat<=90;lat+=30){
+    const y=(90-lat)*(H/180);
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  }
+
+  // Convert cities to screen coordinates
+  const pts=cities.map(c=>({...latlon(c.lat,c.lon,W,H),name:c.name}));
+  
+  // Draw connection arcs between cities
+  const pairs=[[0,1],[0,2],[1,2],[1,3],[2,3],[0,4]];
+  pairs.forEach(([a,b])=>{
+    const A=pts[a],B=pts[b];
+    const cx=(A.x+B.x)/2, cy=(A.y+B.y)/2-60;
+    const prog=(Math.sin(t+a+b)+1)/2;
+    
+    // Arc line
+    ctx.save();
+    ctx.setLineDash([4,6]);
+    ctx.strokeStyle='rgba(200,169,110,.15)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.quadraticCurveTo(cx,cy,B.x,B.y);ctx.stroke();
+    
+    // Moving dot along arc
+    const bx=Math.pow(1-prog,2)*A.x+2*(1-prog)*prog*cx+Math.pow(prog,2)*B.x;
+    const by=Math.pow(1-prog,2)*A.y+2*(1-prog)*prog*cy+Math.pow(prog,2)*B.y;
+    ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(bx,by,3.5,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,169,110,.85)';ctx.fill();
+    ctx.restore();
+  });
+
+  // City dots with pulse
+  pts.forEach((p,i)=>{
+    const pulse=Math.sin(t*1.2+i)*6+10;
+    ctx.beginPath();ctx.arc(p.x,p.y,pulse,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,169,110,.06)';ctx.fill();
+    ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,169,110,.9)';ctx.fill();
+    
+    // City labels
+    ctx.fillStyle='rgba(220,200,160,.75)';
+    ctx.font='500 11px DM Mono,monospace';
+    ctx.textAlign='left';
+    ctx.fillText(p.name,p.x+10,p.y+4);
+  });
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

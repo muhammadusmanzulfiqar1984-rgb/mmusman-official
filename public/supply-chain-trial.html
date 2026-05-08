@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supply Chain Backdrop Trial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #08131a;
+      --bg-1: #0d2028;
+      --bg-2: #102f35;
+      --ink: #e7f4f0;
+      --muted: #9cb7b2;
+      --line: rgba(133, 192, 179, 0.28);
+      --teal: #69d4be;
+      --teal-2: #2aa58a;
+      --amber: #f0b35a;
+      --danger: #ff6d5b;
+      --card: rgba(12, 28, 35, 0.72);
+      --glass: blur(14px);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(1200px 700px at 88% 12%, rgba(240, 179, 90, 0.14), transparent 60%),
+        radial-gradient(900px 500px at 10% 90%, rgba(87, 170, 152, 0.16), transparent 58%),
+        linear-gradient(140deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
+    }
+
+    .frame {
+      position: relative;
+      min-height: 100vh;
+      isolation: isolate;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(105, 212, 190, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(105, 212, 190, 0.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 50% 45%, black 34%, transparent 94%);
+      animation: drift 20s linear infinite;
+      pointer-events: none;
+      z-index: -4;
+    }
+
+    .scan {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(255, 255, 255, 0.03) 45%,
+        rgba(255, 255, 255, 0.07) 50%,
+        rgba(255, 255, 255, 0.03) 55%,
+        transparent 100%
+      );
+      mix-blend-mode: screen;
+      animation: scan 7s linear infinite;
+      pointer-events: none;
+      z-index: -3;
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(24px, 4vw, 54px);
+      display: grid;
+      gap: 24px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid rgba(105, 212, 190, 0.26);
+      border-radius: 18px;
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-copy {
+      padding: clamp(22px, 3vw, 36px);
+      display: grid;
+      gap: 16px;
+      align-content: center;
+    }
+
+    .kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+      color: var(--teal);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      max-width: 56ch;
+      line-height: 1.55;
+      font-size: clamp(14px, 1.9vw, 18px);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(105, 212, 190, 0.35);
+      color: #bce7dd;
+      background: rgba(105, 212, 190, 0.08);
+    }
+
+    .flow {
+      position: relative;
+      min-height: 360px;
+      overflow: hidden;
+      padding: 12px;
+    }
+
+    .flow svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .dot {
+      filter: drop-shadow(0 0 10px rgba(240, 179, 90, 0.65));
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .metric {
+      padding: 16px;
+      display: grid;
+      gap: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    }
+
+    .metric strong {
+      font-size: clamp(24px, 3vw, 36px);
+      letter-spacing: -0.02em;
+      color: #f6fff9;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(105, 212, 190, 0.24);
+      background: rgba(12, 28, 35, 0.62);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #cceee6;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .fill {
+      height: 100%;
+      width: var(--w, 50%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--teal), var(--amber));
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    .alert {
+      color: #ffd6d0;
+    }
+
+    .alert .fill {
+      background: linear-gradient(90deg, #ff7f72, #ffad63);
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-44px, -44px, 0); }
+    }
+
+    @keyframes scan {
+      from { transform: translateY(-120%); }
+      to { transform: translateY(120%); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.88; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+      .status {
+        grid-template-columns: 1fr;
+      }
+      .flow {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+      .chip {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="scan" aria-hidden="true"></div>
+
+    <section class="content">
+      <div class="hero">
+        <article class="panel hero-copy">
+          <p class="kicker">Trial Concept / Supply Chain Intelligence</p>
+          <h1>Live Backbone.<br/>Moving Inventory.<br/>Visible Risk.</h1>
+          <p class="sub">
+            This backdrop visual treats your supply chain like a command surface: moving routes,
+            active nodes, and live throughput cues. It feels operational, not decorative.
+          </p>
+          <div class="chips">
+            <span class="chip">Warehouse</span>
+            <span class="chip">Cold Chain</span>
+            <span class="chip">Transit Risk</span>
+            <span class="chip">Regional Hubs</span>
+            <span class="chip">Fulfillment</span>
+          </div>
+        </article>
+
+        <article class="panel flow" aria-label="Animated supply chain routes">
+          <svg viewBox="0 0 700 420" role="img" aria-label="Supply network with moving shipments">
+            <defs>
+              <linearGradient id="route" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5bc8b2" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#f0b35a" stop-opacity="0.85" />
+              </linearGradient>
+            </defs>
+
+            <g stroke="url(#route)" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.85">
+              <path id="r1" d="M78 320 C120 220, 230 180, 305 115 C360 70, 480 90, 560 150"/>
+              <path id="r2" d="M100 90 C195 80, 290 170, 390 230 C470 275, 550 270, 618 190"/>
+              <path id="r3" d="M80 250 C190 250, 250 300, 350 330 C450 355, 560 340, 640 300"/>
+              <path id="r4" d="M210 70 C230 180, 210 250, 182 330"/>
+            </g>
+
+            <g fill="#d8fff6">
+              <circle cx="78" cy="320" r="7"/>
+              <circle cx="560" cy="150" r="8"/>
+              <circle cx="618" cy="190" r="8"/>
+              <circle cx="640" cy="300" r="7"/>
+              <circle cx="100" cy="90" r="7"/>
+              <circle cx="210" cy="70" r="6"/>
+              <circle cx="182" cy="330" r="6"/>
+            </g>
+
+            <circle r="5" class="dot" fill="#ffd089">
+              <animateMotion dur="5.1s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#r1"></mpath>
+              </animateMotion>
+            </circle>
+            <circle r="5" class="dot" fill="#7bf3da">
+              <animateMotion dur="4.3s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#r2"></mpath>
+              </animateMotion>
+            </circle>
+            <circle r="4" class="dot" fill="#ffc06d">
+              <animateMotion dur="3.9s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#r3"></mpath>
+              </animateMotion>
+            </circle>
+            <circle r="4" class="dot" fill="#9bf6e3">
+              <animateMotion dur="4.9s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#r4"></mpath>
+              </animateMotion>
+            </circle>
+          </svg>
+        </article>
+      </div>
+
+      <section class="metrics">
+        <div class="metric panel">
+          <strong>98.2%</strong>
+          <span>Fulfillment Accuracy</span>
+        </div>
+        <div class="metric panel">
+          <strong>41m</strong>
+          <span>Average Dock Turnaround</span>
+        </div>
+        <div class="metric panel">
+          <strong>22</strong>
+          <span>Active Route Lanes</span>
+        </div>
+        <div class="metric panel">
+          <strong>+14%</strong>
+          <span>On-Time Delivery Lift</span>
+        </div>
+      </section>
+
+      <section class="status">
+        <article class="card panel">
+          <h3>Port Throughput</h3>
+          <p>Berth windows stabilized after weather delay in the north corridor.</p>
+          <div class="bar"><div class="fill" style="--w:84%"></div></div>
+        </article>
+        <article class="card panel">
+          <h3>Cold Chain Integrity</h3>
+          <p>All routes nominal. Sensor variance remains within threshold.</p>
+          <div class="bar"><div class="fill" style="--w:91%"></div></div>
+        </article>
+        <article class="card panel alert">
+          <h3>Transit Risk</h3>
+          <p>Border transfer queue increasing. Recommend reroute in 2.5 hours.</p>
+          <div class="bar"><div class="fill" style="--w:63%"></div></div>
+        </article>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLang } from '@/lib/langContext'
-import WorldMapBackdrop from '@/components/effects/WorldMapBackdrop'
+import DarkSilkBackdrop from '@/components/effects/DarkSilkBackdrop'
 
 interface WorkCard { tag: string; title: string }
 interface Stat     { value: string; label: string }
@@ -106,9 +106,10 @@ export default function WorkSection({ data }: { data: WorkData }) {
         position: 'absolute',
         inset: 0,
         zIndex: 0,
-        opacity: 0.8,
+        opacity: 1,
+        mixBlendMode: 'screen',
       }}>
-        <WorldMapBackdrop />
+        <DarkSilkBackdrop />
       </div>
       <div style={{ position: 'relative', zIndex: 1 }}>
       <p className="section-label">Practice</p>

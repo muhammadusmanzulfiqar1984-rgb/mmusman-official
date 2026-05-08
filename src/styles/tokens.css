@@ -60,7 +60,7 @@
   /* Body: SF Pro Display equivalent via system-ui with Inter as fallback */
   /* Mono: DM Mono light */
   --font-display:  'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  --font-body:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --font-body:     'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
   --font-mono:     'DM Mono', 'SF Mono', 'Fira Mono', monospace;
 
   /* Type scale — Apple-calibrated: generous display, refined body */

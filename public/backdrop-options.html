@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Backdrop Options — MMU</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080808;color:#d4c49a;font-family:'Inter',sans-serif;padding:48px 32px;display:grid;gap:48px}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:300;letter-spacing:-.01em;line-height:1.1}
+.label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#c8a96e;margin-bottom:14px}
+.sub{font-size:14px;color:#7a7060;margin-top:10px;max-width:52ch;line-height:1.6}
+.option{position:relative;height:360px;border:1px solid rgba(200,169,110,.18);border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+canvas,svg{position:absolute;inset:0;width:100%;height:100%}
+.copy{position:relative;z-index:10;text-align:center;pointer-events:none}
+.header{text-align:center;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- ① GOLD PARTICLES -->
+<div>
+  <p class="label">Option 1 — Gold Particle Constellation</p>
+  <div class="option" id="o1">
+    <canvas id="c1"></canvas>
+    <div class="copy"><h2>Gold Particle<br/>Constellation</h2><p class="sub">Slow-drifting gold dust with subtle connecting lines. Matches your existing GoldDust style but denser and more ambient.</p></div>
+  </div>
+</div>
+
+<!-- ② WORLD MAP -->
+<div>
+  <p class="label">Option 2 — Animated World Map Outline</p>
+  <div class="option" id="o2">
+    <canvas id="c2"></canvas>
+    <div class="copy"><h2>World Map<br/>Outline</h2><p class="sub">Faint geographic meridian lines with glowing city-dots on London, Karachi, Dubai — where you've operated.</p></div>
+  </div>
+</div>
+
+<!-- ③ SILK RIPPLE -->
+<div>
+  <p class="label">Option 3 — Dark Silk Texture</p>
+  <div class="option" id="o3">
+    <canvas id="c3"></canvas>
+    <div class="copy"><h2>Dark Silk<br/>Ripple</h2><p class="sub">Slow fluid-oil shimmer in deep black-gold. Extremely premium, almost tactile. No text distraction.</p></div>
+  </div>
+</div>
+
+<!-- ④ LEGAL MANUSCRIPT -->
+<div>
+  <p class="label">Option 4 — Legal Manuscript Overlay</p>
+  <div class="option" id="o4">
+    <canvas id="c4"></canvas>
+    <div class="copy"><h2>Legal<br/>Manuscript</h2><p class="sub">Ghosted legal text lines slowly scrolling behind content. Nods to your formation in law.</p></div>
+  </div>
+</div>
+
+<!-- ⑤ TRADING CHART GHOST -->
+<div>
+  <p class="label">Option 5 — Trading Chart Ghost</p>
+  <div class="option" id="o5">
+    <canvas id="c5"></canvas>
+    <div class="copy"><h2>Trading Chart<br/>Ghost</h2><p class="sub">Barely visible candlestick chart slowly breathing in the background. Capital markets nod — subtle, not obvious.</p></div>
+  </div>
+</div>
+
+<!-- ⑥ TOPOGRAPHIC CONTOUR -->
+<div>
+  <p class="label">Option 6 — Topographic Contour Lines</p>
+  <div class="option" id="o6">
+    <canvas id="c6"></canvas>
+    <div class="copy"><h2>Topographic<br/>Contour Lines</h2><p class="sub">Animated gold elevation contours on black. Abstract, powerful — feels like strategic terrain mapping.</p></div>
+  </div>
+</div>
+
+<script>
+const G='#c8a96e', G2='rgba(200,169,110,', BG='#080808';
+
+/* ─── 1. GOLD PARTICLE CONSTELLATION ─────────────── */
+(()=>{
+  const cv=document.getElementById('c1'), ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;pts=[];for(let i=0;i<90;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*2.2+.6,o:Math.random()*.7+.3})}
+  resize(); window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(8,8,8,.08)';ctx.fillRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const a=pts[i];
+      a.x+=a.vx;a.y+=a.vy;
+      if(a.x<0||a.x>W)a.vx*=-1;
+      if(a.y<0||a.y>H)a.vy*=-1;
+      for(let j=i+1;j<pts.length;j++){
+        const b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<110){ctx.beginPath();ctx.strokeStyle=G2+((.55-(d/110))*.45)+')';ctx.lineWidth=.7;ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
+      }
+      ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fillStyle=G2+a.o+')';ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── 2. WORLD MAP OUTLINE ────────────────────────── */
+(()=>{
+  const cv=document.getElementById('c2'), ctx=cv.getContext('2d');
+  let W,H,t=0;
+  const cities=[
+    {name:'London',lat:51.5,lon:-0.12},
+    {name:'Karachi',lat:24.8,lon:67.0},
+    {name:'Dubai',lat:25.2,lon:55.3},
+    {name:'Lahore',lat:31.5,lon:74.3},
+    {name:'New York',lat:40.7,lon:-74.0},
+  ];
+  function latlon(lat,lon,w,h){
+    const x=(lon+180)*(w/360);
+    const y=(90-lat)*(h/180);
+    return{x,y};
+  }
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize(); window.addEventListener('resize',resize);
+
+  // simple meridian/parallel grid
+  function draw(){
+    t+=.003;
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(200,169,110,.07)';ctx.lineWidth=.8;
+    // meridians
+    for(let lon=-180;lon<=180;lon+=30){const x=(lon+180)*(W/360);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    // parallels
+    for(let lat=-90;lat<=90;lat+=30){const y=(90-lat)*(H/180);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+    // arc lines between cities
+    const pts=cities.map(c=>({...latlon(c.lat,c.lon,W,H),name:c.name}));
+    const pairs=[[0,1],[0,2],[1,2],[1,3],[2,3],[0,4]];
+    pairs.forEach(([a,b])=>{
+      const A=pts[a],B=pts[b];
+      const cx=(A.x+B.x)/2, cy=(A.y+B.y)/2-40;
+      const prog=(Math.sin(t+a+b)+1)/2;
+      ctx.save();
+      ctx.setLineDash([4,6]);
+      ctx.strokeStyle='rgba(200,169,110,.22)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.quadraticCurveTo(cx,cy,B.x,B.y);ctx.stroke();
+      // moving dot along arc
+      const bx=Math.pow(1-prog,2)*A.x+2*(1-prog)*prog*cx+Math.pow(prog,2)*B.x;
+      const by=Math.pow(1-prog,2)*A.y+2*(1-prog)*prog*cy+Math.pow(prog,2)*B.y;
+      ctx.setLineDash([]);
+      ctx.beginPath();ctx.arc(bx,by,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,169,110,.9)';ctx.fill();
+      ctx.restore();
+    });
+
+    // city dots with pulse
+    pts.forEach((p,i)=>{
+      const pulse=Math.sin(t*1.4+i)*5+8;
+      ctx.beginPath();ctx.arc(p.x,p.y,pulse,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,169,110,.07)';ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,169,110,.95)';ctx.fill();
+      ctx.fillStyle='rgba(220,200,160,.85)';ctx.font='500 10px DM Mono,monospace';
+      ctx.fillText(p.name,p.x+7,p.y+4);
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── 3. SILK RIPPLE ─────────────────────────────── */
+(()=>{
+  const cv=document.getElementById('c3'),ctx=cv.getContext('2d');
+  let W,H,t=0;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    t+=.008;
+    ctx.clearRect(0,0,W,H);
+    const bands=6;
+    for(let b=0;b<bands;b++){
+      const y0=H*(b/bands);
+      const y1=H*((b+1)/bands);
+      const phase=b*.7+t;
+      const alpha=.055+.04*Math.sin(phase);
+      const grd=ctx.createLinearGradient(0,y0,W,y1);
+      grd.addColorStop(0,`rgba(200,169,110,0)`);
+      grd.addColorStop(.3+.2*Math.sin(phase),`rgba(200,169,110,${alpha})`);
+      grd.addColorStop(.6+.15*Math.cos(phase*.7),`rgba(160,120,60,${alpha*.6})`);
+      grd.addColorStop(1,`rgba(200,169,110,0)`);
+      ctx.fillStyle=grd;
+      ctx.beginPath();
+      const amp=22+14*Math.sin(phase*.5);
+      ctx.moveTo(0,y0);
+      for(let x=0;x<=W;x+=4){
+        const wave=Math.sin(x*.012+phase)*amp+Math.sin(x*.007+phase*1.3)*amp*.5;
+        ctx.lineTo(x,y0+wave);
+      }
+      ctx.lineTo(W,y1);
+      for(let x=W;x>=0;x-=4){
+        const wave=Math.sin(x*.012+phase+Math.PI)*amp;
+        ctx.lineTo(x,y1+wave);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── 4. LEGAL MANUSCRIPT ────────────────────────── */
+(()=>{
+  const cv=document.getElementById('c4'),ctx=cv.getContext('2d');
+  let W,H,offset=0;
+  const TEXT=[
+    'WHEREAS the party of the first part, having entered into engagement',
+    'across multiple jurisdictions and commercial territories, hereby warrants',
+    'that the obligations set forth herein shall be binding and enforceable',
+    'under the governing law of England and Wales, subject to the exclusive',
+    'jurisdiction of the courts thereof — the undersigned having reviewed',
+    'all schedules and annexures appended to this instrument — agrees',
+    'to the covenants, representations and conditions detailed hereunder.',
+    '',
+    'IN WITNESS WHEREOF the parties have executed this agreement as of',
+    'the date first written above, in consideration of the mutual promises',
+    'and the sum of good and valuable consideration, receipt whereof is',
+    'hereby acknowledged by all parties to this instrument.',
+    '',
+    'SCHEDULE A — TERMS OF ENGAGEMENT AND SCOPE OF AUTHORITY',
+    'The scope of authority conferred herein extends to all matters arising',
+    'from commercial operations, strategic advisory, and institutional counsel',
+  ];
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  const LH=22;
+  function draw(){
+    offset=(offset+.35)%(TEXT.length*LH);
+    ctx.clearRect(0,0,W,H);
+    ctx.font='300 12px "Cormorant Garamond",serif';
+    ctx.fillStyle='rgba(200,169,110,.09)';
+    const startLine=Math.floor(offset/LH);
+    const yOffset=-(offset%LH);
+    for(let i=-1;i<Math.ceil(H/LH)+2;i++){
+      const lineIdx=(startLine+i+TEXT.length*10)%TEXT.length;
+      ctx.fillText('  '+TEXT[lineIdx],24,yOffset+i*LH+LH);
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── 5. TRADING CHART GHOST ─────────────────────── */
+(()=>{
+  const cv=document.getElementById('c5'),ctx=cv.getContext('2d');
+  let W,H,t=0;
+  const candles=80;
+  let data=[];
+  function makeData(){
+    data=[];let p=180;
+    for(let i=0;i<candles+60;i++){
+      const o=p,c=p+(Math.random()-.48)*8,h=Math.max(o,c)+(Math.random()*4),l=Math.min(o,c)-(Math.random()*4);
+      data.push({o,c,h,l});p=c;
+    }
+  }
+  makeData();
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    t+=.008;
+    ctx.clearRect(0,0,W,H);
+    const shift=(t*6)%60;
+    const visible=data.slice(Math.floor(shift),Math.floor(shift)+candles);
+    const prices=visible.flatMap(d=>[d.h,d.l]);
+    const mn=Math.min(...prices),mx=Math.max(...prices);
+    const py=v=>(H*.8)-((v-mn)/(mx-mn))*(H*.6);
+    const cw=W/candles;
+    const alpha=.13+.04*Math.sin(t*.4);
+    visible.forEach((d,i)=>{
+      const x=i*cw+cw*.5;
+      const bull=d.c>=d.o;
+      ctx.strokeStyle=bull?`rgba(200,169,110,${alpha})`:`rgba(140,100,60,${alpha*.7})`;
+      ctx.lineWidth=.8;
+      ctx.beginPath();ctx.moveTo(x,py(d.h));ctx.lineTo(x,py(d.l));ctx.stroke();
+      ctx.fillStyle=bull?`rgba(200,169,110,${alpha})`:`rgba(80,55,30,${alpha*.5})`;
+      const top=Math.min(py(d.o),py(d.c));
+      const ht=Math.max(Math.abs(py(d.c)-py(d.o)),2);
+      ctx.fillRect(x-cw*.3,top,cw*.6,ht);
+    });
+    // slow moving average line
+    ctx.beginPath();ctx.strokeStyle=`rgba(200,169,110,${alpha*1.5})`;ctx.lineWidth=1.5;
+    visible.forEach((d,i)=>{ctx.lineTo(i*cw+cw*.5,py((d.h+d.l)/2))});ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── 6. TOPOGRAPHIC CONTOURS ────────────────────── */
+(()=>{
+  const cv=document.getElementById('c6'),ctx=cv.getContext('2d');
+  let W,H,t=0;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  function noise(x,y,z){
+    const X=Math.floor(x),Y=Math.floor(y);
+    x-=X;y-=Y;
+    const u=x*x*(3-2*x),v=y*y*(3-2*y);
+    const h=(a,b,c)=>Math.sin(a*12.9898+b*78.233+c*37.719)*43758.5453%1;
+    return h(X,Y,Z=z)*(1-u)*(1-v)+h(X+1,Y,z)*u*(1-v)+h(X,Y+1,z)*(1-u)*v+h(X+1,Y+1,z)*u*v;
+  }
+  const levels=12;
+  function draw(){
+    t+=.004;
+    ctx.clearRect(0,0,W,H);
+    const res=4;
+    // build height field
+    const cols=Math.ceil(W/res)+1, rows=Math.ceil(H/res)+1;
+    const field=[];
+    for(let r=0;r<rows;r++){field[r]=[];for(let c=0;c<cols;c++){
+      const nx=c/cols*3, ny=r/rows*3;
+      field[r][c]=noise(nx+t*.3,ny+t*.15,0)+noise(nx*2+t*.5,ny*2,1)*.5;
+    }}
+    // marching squares — draw contour at each level
+    for(let lv=1;lv<=levels;lv++){
+      const thresh=lv/levels*1.5;
+      const a=.04+.06*(lv%3===0?1:.4);
+      ctx.strokeStyle=`rgba(200,169,110,${a})`;ctx.lineWidth=lv%4===0?1.2:.7;
+      ctx.beginPath();
+      for(let r=0;r<rows-1;r++){for(let c=0;c<cols-1;c++){
+        const v=[[field[r][c],field[r][c+1]],[field[r+1][c],field[r+1][c+1]]];
+        const s=v.map(row=>row.map(val=>val>thresh?1:0));
+        const idx=s[0][0]*8+s[0][1]*4+s[1][1]*2+s[1][0];
+        const x0=c*res,y0=r*res;
+        const lerp=(a,b)=>{const t2=(thresh-(a<b?a:b))/Math.abs(b-a);return Math.min(1,Math.max(0,a<b?t2:1-t2))};
+        const t_=lerp(field[r][c],field[r][c+1]), r_=lerp(field[r][c+1],field[r+1][c+1]);
+        const b_=lerp(field[r+1][c],field[r+1][c+1]), l_=lerp(field[r][c],field[r+1][c]);
+        const T=[x0+t_*res,y0], R=[x0+res,y0+r_*res], B=[x0+b_*res,y0+res], L=[x0,y0+l_*res];
+        const segs=[[5,[T,R]],[10,[L,B]],[7,[T,L]],[11,[B,R]],[14,[L,T]],[13,[B,L]],[3,[R,B]],[6,[T,B]],[9,[L,R]],[12,[T,B]],[3,[R,B]]];
+        const tbl={1:[L,B],2:[B,R],3:[L,R],4:[T,R],5:[T,L],6:[T,B,null,B,R],7:[T,L],8:[L,T],9:[B,R],10:[L,R],11:[B,L],12:[T,R],13:[T,B],14:[L,B],15:[]};
+        const seg=tbl[idx];
+        if(seg&&seg.length>=2){ctx.moveTo(seg[0][0],seg[0][1]);ctx.lineTo(seg[1][0],seg[1][1])}
+      }}
+      ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
