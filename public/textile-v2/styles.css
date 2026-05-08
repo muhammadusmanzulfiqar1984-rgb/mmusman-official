@@ -46,6 +46,115 @@ body {
   overflow-x: hidden;
 }
 
+/* ── Fashion Week Runway Ticker ── */
+.runway-ticker {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  overflow: hidden;
+  height: 28px;
+  background: rgba(10, 8, 5, 0.92);
+  border-top: 1px solid rgba(200, 169, 110, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.runway-ticker__track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  white-space: nowrap;
+  animation: runwayScroll 34s linear infinite;
+  height: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0 24px;
+}
+
+.tick-dot {
+  color: rgba(200, 169, 110, 0.45);
+  font-size: 0.5rem;
+}
+
+@keyframes runwayScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Fashion Week Camera Flash ── */
+.camera-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(255, 250, 240, 0.14);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.camera-flash.flash-active {
+  animation: cameraFlash 0.52s ease-out forwards;
+}
+
+@keyframes cameraFlash {
+  0%   { opacity: 0.55; }
+  18%  { opacity: 0.08; }
+  42%  { opacity: 0.32; }
+  100% { opacity: 0; }
+}
+
+/* ── Editorial Chapter Numbers ── */
+.chapter-bg-num {
+  position: absolute;
+  right: -0.06em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9rem, 18vw, 18rem);
+  font-weight: 600;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200, 169, 110, 0.08);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  letter-spacing: -0.04em;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.scene.scene-active .chapter-bg-num {
+  opacity: 1;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.11;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.08) 0.7px, transparent 1px),
+    radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.07) 0.6px, transparent 1px),
+    radial-gradient(circle at 55% 40%, rgba(0, 0, 0, 0.2) 0.7px, transparent 1px);
+  background-size: 3px 3px, 4px 4px, 5px 5px;
+  animation: grainShift 0.95s steps(2) infinite;
+}
+
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, 1px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
 /* Cinematic backdrop video */
 .bg-video {
   position: fixed;
@@ -115,6 +224,35 @@ a {
   line-height: 1.08;
   max-width: 8ch;
   letter-spacing: 0.01em;
+}
+
+.cinematic-title {
+  will-change: transform, filter, letter-spacing, opacity;
+}
+
+.cinematic-title.title-fired {
+  animation: titleFocusPull 1.05s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes titleFocusPull {
+  0% {
+    opacity: 0.18;
+    transform: translateY(16px) scale(0.985);
+    filter: blur(9px);
+    letter-spacing: 0.09em;
+  }
+  52% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    letter-spacing: 0.028em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    letter-spacing: 0.01em;
+  }
 }
 
 .section-title {
@@ -423,6 +561,34 @@ main section[id] {
 
 .scene {
   position: relative;
+  overflow: hidden;
+}
+
+.scene-wipe {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transform: translateX(-135%);
+  background: linear-gradient(
+    102deg,
+    rgba(200, 169, 110, 0) 12%,
+    rgba(200, 169, 110, 0.08) 42%,
+    rgba(255, 236, 194, 0.2) 50%,
+    rgba(200, 169, 110, 0.08) 58%,
+    rgba(200, 169, 110, 0) 88%
+  );
+}
+
+.scene.scene-active .scene-wipe {
+  animation: sceneWipe 1.05s cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes sceneWipe {
+  0% { opacity: 0; transform: translateX(-135%); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(135%); }
 }
 
 .scene--chapter {
@@ -505,11 +671,17 @@ main section[id] {
   max-width: 640px;
   padding: 0;
   gap: 8px;
+  will-change: transform;
+  transform: translateY(0);
+  transition: transform 0.1s linear;
 }
 
 .hero__side {
   padding: 0;
   border-radius: 0;
+  will-change: transform;
+  transform: translateY(0);
+  transition: transform 0.1s linear;
 }
 
 .orbital-scene {
@@ -635,6 +807,27 @@ main section[id] {
   --media-scale: 1;
   transform: translate3d(0, var(--media-shift), 0) scale(var(--media-scale));
   transition: transform 0.9s cubic-bezier(.2,.65,.16,1), box-shadow 0.7s ease, border-color 0.7s ease;
+}
+
+.section-media::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 55%;
+  height: 140%;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(200, 169, 110, 0.08) 34%,
+    rgba(255, 236, 194, 0.25) 50%,
+    rgba(200, 169, 110, 0.08) 66%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  transform: translateX(-140%) skewX(-14deg);
+  animation: goldSweepPass 9s cubic-bezier(.4,0,.2,1) infinite;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .section-media.card {
@@ -875,6 +1068,34 @@ main section[id] {
   transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+.card::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 55%;
+  height: 140%;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(200, 169, 110, 0.09) 36%,
+    rgba(255, 236, 194, 0.26) 50%,
+    rgba(200, 169, 110, 0.09) 64%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  transform: translateX(-150%) skewX(-12deg);
+  animation: goldSweepPass 7.2s cubic-bezier(.4,0,.2,1) infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes goldSweepPass {
+  0% { transform: translateX(-150%) skewX(-12deg); opacity: 0; }
+  10% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { transform: translateX(240%) skewX(-12deg); opacity: 0; }
+}
+
 .card:hover {
   border-color: rgba(200, 169, 110, 0.7);
 }
@@ -960,12 +1181,14 @@ main section[id] {
   opacity: 0;
   transform: translateX(-34px);
   transition: opacity 0.86s cubic-bezier(.2,.66,.16,1), transform 0.86s cubic-bezier(.2,.66,.16,1);
+  will-change: transform;
 }
 
 .reveal-right {
   opacity: 0;
   transform: translateX(34px);
   transition: opacity 0.86s cubic-bezier(.2,.66,.16,1), transform 0.86s cubic-bezier(.2,.66,.16,1);
+  will-change: transform;
 }
 
 .visible,

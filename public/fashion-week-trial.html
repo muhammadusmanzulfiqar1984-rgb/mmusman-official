@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Fashion Week Effects — Harvics Trial</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:#0a0806;color:#e8e0d0;font-family:'Manrope',system-ui,sans-serif;overflow-x:hidden;padding-bottom:32px}
+
+/* ── Grain overlay ── */
+.grain-overlay{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.11;mix-blend-mode:soft-light;background-image:radial-gradient(circle at 25% 20%,rgba(255,255,255,.08) .7px,transparent 1px),radial-gradient(circle at 80% 65%,rgba(255,255,255,.07) .6px,transparent 1px),radial-gradient(circle at 55% 40%,rgba(0,0,0,.2) .7px,transparent 1px);background-size:3px 3px,4px 4px,5px 5px;animation:grainShift .95s steps(2) infinite}
+@keyframes grainShift{0%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
+
+/* ── Camera flash ── */
+.camera-flash{position:fixed;inset:0;z-index:50;background:rgba(255,250,240,.14);opacity:0;pointer-events:none}
+.camera-flash.flash-active{animation:cameraFlash .52s ease-out forwards}
+@keyframes cameraFlash{0%{opacity:.6}18%{opacity:.08}42%{opacity:.35}100%{opacity:0}}
+
+/* ── Runway ticker ── */
+.runway-ticker{position:fixed;bottom:0;left:0;right:0;z-index:10;overflow:hidden;height:30px;background:rgba(10,8,5,.94);border-top:1px solid rgba(200,169,110,.28);backdrop-filter:blur(8px)}
+.runway-ticker__track{display:flex;align-items:center;gap:32px;white-space:nowrap;animation:runwayScroll 34s linear infinite;height:100%;font-family:'Cormorant Garamond',serif;font-size:.72rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:#c8a96e;padding:0 24px}
+.tick-dot{color:rgba(200,169,110,.42);font-size:.48rem}
+@keyframes runwayScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── Chapter bg numbers ── */
+.chapter-bg-num{position:absolute;right:-.06em;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-size:clamp(9rem,18vw,18rem);font-weight:600;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(200,169,110,.07);pointer-events:none;user-select:none;z-index:0;letter-spacing:-.04em;opacity:0;transition:opacity .9s ease}
+.scene.scene-active .chapter-bg-num{opacity:1}
+
+/* ── Focus pull title ── */
+.cinematic-title{will-change:transform,filter,letter-spacing,opacity}
+.cinematic-title.title-fired{animation:titleFocusPull 1.05s cubic-bezier(.2,.8,.2,1) both}
+@keyframes titleFocusPull{0%{opacity:.18;transform:translateY(16px) scale(.985);filter:blur(9px);letter-spacing:.09em}52%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);letter-spacing:.03em}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);letter-spacing:.01em}}
+
+/* ── Gold sweep ── */
+@keyframes goldSweepPass{0%{transform:translateX(-150%) skewX(-12deg);opacity:0}10%{opacity:1}78%{opacity:1}100%{transform:translateX(240%) skewX(-12deg);opacity:0}}
+
+/* ── Scene wipe ── */
+.scene-wipe{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transform:translateX(-135%);background:linear-gradient(102deg,rgba(200,169,110,0) 12%,rgba(200,169,110,.08) 42%,rgba(255,236,194,.2) 50%,rgba(200,169,110,.08) 58%,rgba(200,169,110,0) 88%)}
+.scene.scene-active .scene-wipe{animation:sceneWipe 1.05s cubic-bezier(.22,.61,.36,1) both}
+@keyframes sceneWipe{0%{opacity:0;transform:translateX(-135%)}12%{opacity:1}100%{opacity:0;transform:translateX(135%)}}
+
+/* ── Reveal animations ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .86s cubic-bezier(.2,.66,.16,1),transform .86s cubic-bezier(.2,.66,.16,1)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .86s cubic-bezier(.2,.66,.16,1),transform .86s cubic-bezier(.2,.66,.16,1)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .86s cubic-bezier(.2,.66,.16,1),transform .86s cubic-bezier(.2,.66,.16,1)}
+.visible{opacity:1;transform:translate(0,0)}
+.delay-1{transition-delay:.15s!important}
+.delay-2{transition-delay:.3s!important}
+.delay-3{transition-delay:.45s!important}
+
+/* ── LAYOUT ── */
+.scene{position:relative;overflow:hidden;min-height:100vh;display:flex;align-items:center;padding:80px clamp(24px,6vw,80px);border-bottom:1px solid rgba(200,169,110,.12)}
+.scene>*{position:relative;z-index:1}
+
+.eyebrow{font-family:'Manrope',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:#e8cc8a;margin-bottom:16px;display:block}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:400;line-height:1.05;color:#fff}
+h1{font-size:clamp(3rem,7vw,6rem);letter-spacing:-.02em;margin-bottom:20px}
+h2{font-size:clamp(2rem,4.5vw,3.8rem);letter-spacing:-.015em;margin-bottom:16px}
+h3{font-size:1.5rem;margin-bottom:8px;color:#c8a96e}
+p{color:rgba(232,224,208,.68);line-height:1.75;font-size:1rem;margin-bottom:12px;max-width:56ch}
+.gold{color:#c8a96e}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;width:100%;max-width:1280px;margin:0 auto}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;width:100%;max-width:1280px;margin:40px auto 0}
+.card{background:rgba(13,11,8,.72);border:1px solid rgba(200,169,110,.4);border-radius:2px;padding:28px 24px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:-20%;left:0;width:55%;height:140%;background:linear-gradient(108deg,rgba(255,255,255,0) 10%,rgba(200,169,110,.09) 36%,rgba(255,236,194,.26) 50%,rgba(200,169,110,.09) 64%,rgba(255,255,255,0) 90%);transform:translateX(-150%) skewX(-12deg);animation:goldSweepPass 7.2s cubic-bezier(.4,0,.2,1) infinite;pointer-events:none;z-index:0}
+.card>*{position:relative;z-index:1}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;color:#c8a96e;display:block;line-height:1}
+.stat-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,224,208,.5);margin-top:4px;display:block}
+.btn{display:inline-block;border:1px solid rgba(200,169,110,.6);color:#c8a96e;font-family:'Manrope',sans-serif;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:13px 28px;text-decoration:none;margin-top:24px;transition:background .2s,border-color .2s}
+.btn:hover{background:rgba(200,169,110,.08);border-color:#c8a96e}
+
+/* media col placeholder */
+.media-col{background:linear-gradient(135deg,rgba(200,169,110,.06) 0%,rgba(0,0,0,0) 100%);border:1px solid rgba(200,169,110,.18);border-radius:2px;height:380px;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:1.2rem;letter-spacing:.3em;color:rgba(200,169,110,.35);text-transform:uppercase}
+
+/* label top-right on each section */
+.section-label{position:absolute;top:32px;right:clamp(24px,5vw,72px);font-family:'Manrope',sans-serif;font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,169,110,.35);z-index:1}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#0a0806}
+::-webkit-scrollbar-thumb{background:rgba(200,169,110,.3);border-radius:999px}
+</style>
+</head>
+<body>
+
+<!-- Grain -->
+<div class="grain-overlay" aria-hidden="true"></div>
+<!-- Camera flash -->
+<div class="camera-flash" id="cameraFlash" aria-hidden="true"></div>
+<!-- Runway Ticker -->
+<div class="runway-ticker" aria-hidden="true">
+  <div class="runway-ticker__track">
+    <span>HARVICS GLOBAL VENTURES</span><span class="tick-dot">✦</span>
+    <span>SS 2026</span><span class="tick-dot">✦</span>
+    <span>MILAN</span><span class="tick-dot">✦</span>
+    <span>LONDON</span><span class="tick-dot">✦</span>
+    <span>NEW YORK</span><span class="tick-dot">✦</span>
+    <span>SOURCING INTELLIGENCE</span><span class="tick-dot">✦</span>
+    <span>40+ COUNTRIES</span><span class="tick-dot">✦</span>
+    <span>TEXTILE · FMCG · LOGISTICS</span><span class="tick-dot">✦</span>
+    <span>HARVICS GLOBAL VENTURES</span><span class="tick-dot">✦</span>
+    <span>SS 2026</span><span class="tick-dot">✦</span>
+    <span>MILAN</span><span class="tick-dot">✦</span>
+    <span>LONDON</span><span class="tick-dot">✦</span>
+    <span>NEW YORK</span><span class="tick-dot">✦</span>
+    <span>SOURCING INTELLIGENCE</span><span class="tick-dot">✦</span>
+    <span>40+ COUNTRIES</span><span class="tick-dot">✦</span>
+    <span>TEXTILE · FMCG · LOGISTICS</span><span class="tick-dot">✦</span>
+  </div>
+</div>
+
+<!-- SECTION 1 — HERO -->
+<section class="scene" id="hero" style="min-height:100vh;background:radial-gradient(ellipse at 30% 50%,rgba(200,169,110,.04) 0%,transparent 60%)">
+  <span class="scene-wipe" aria-hidden="true"></span>
+  <span class="chapter-bg-num" aria-hidden="true">I</span>
+  <span class="section-label">Hero</span>
+  <div class="grid-2">
+    <div>
+      <span class="eyebrow reveal">Harvics Global Ventures · SS 2026</span>
+      <h1 class="cinematic-title reveal delay-1">Where Global<br>Trade Begins</h1>
+      <p class="reveal delay-2">Precision sourcing across 40+ countries. Textile, FMCG, logistics — engineered as one connected chain.</p>
+      <p class="reveal delay-2" style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,169,110,.5)">London · Milan · New York</p>
+      <a href="#chapter-2" class="btn reveal delay-3">Explore The Collection</a>
+    </div>
+    <div class="media-col reveal-right delay-1">Textile · Global</div>
+  </div>
+</section>
+
+<!-- SECTION 2 — WHO WE ARE -->
+<section class="scene" id="chapter-2" style="background:rgba(8,6,4,.6)">
+  <span class="scene-wipe" aria-hidden="true"></span>
+  <span class="chapter-bg-num" aria-hidden="true">II</span>
+  <span class="section-label">Chapter II</span>
+  <div class="grid-2">
+    <div class="media-col reveal-left delay-1">Supply Chain</div>
+    <div>
+      <span class="eyebrow reveal">Chapter II</span>
+      <h2 class="cinematic-title reveal delay-1">Built For The Complexity Of Global Trade</h2>
+      <p class="reveal delay-2">We do not just source products. We engineer supply chains from factory floor to destination — real-time, visible, accountable.</p>
+      <p class="reveal delay-2">18+ years. 120+ verified factory partners. 99% on-time delivery.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 — STATS -->
+<section class="scene" id="chapter-3">
+  <span class="scene-wipe" aria-hidden="true"></span>
+  <span class="chapter-bg-num" aria-hidden="true">III</span>
+  <span class="section-label">Chapter III</span>
+  <div style="max-width:1280px;margin:0 auto;width:100%">
+    <span class="eyebrow reveal" style="text-align:center;display:block">Operating Record</span>
+    <h2 class="cinematic-title reveal delay-1" style="text-align:center;margin-bottom:48px">Numbers That Don't Negotiate</h2>
+    <div class="grid-3">
+      <div class="card reveal delay-1">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">Countries</span>
+        <p style="margin-top:12px;font-size:.85rem">Active sourcing corridors across Europe, Asia, and MENA.</p>
+      </div>
+      <div class="card reveal delay-2">
+        <span class="stat-num">18+</span>
+        <span class="stat-label">Years Experience</span>
+        <p style="margin-top:12px;font-size:.85rem">Built on direct operational knowledge, not proxies.</p>
+      </div>
+      <div class="card reveal delay-3">
+        <span class="stat-num">120+</span>
+        <span class="stat-label">Verified Factory Partners</span>
+        <p style="margin-top:12px;font-size:.85rem">Certified, audited, and relationship-managed directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 — PRINCIPLES -->
+<section class="scene" id="chapter-4" style="background:rgba(8,6,4,.6)">
+  <span class="scene-wipe" aria-hidden="true"></span>
+  <span class="chapter-bg-num" aria-hidden="true">IV</span>
+  <span class="section-label">Chapter IV</span>
+  <div style="max-width:1280px;margin:0 auto;width:100%">
+    <span class="eyebrow reveal">Our Principles</span>
+    <h2 class="cinematic-title reveal delay-1">The Four Pillars</h2>
+    <div class="grid-3" style="grid-template-columns:repeat(2,1fr)">
+      <div class="card reveal delay-1"><h3>Quality</h3><p>Every product, every shipment, every standard uncompromised.</p></div>
+      <div class="card reveal delay-2"><h3>Efficiency</h3><p>Resourceful by design. Rapid by execution. Ready for anything.</p></div>
+      <div class="card reveal delay-3"><h3>Resilience</h3><p>Built to absorb disruption and protect delivery certainty.</p></div>
+      <div class="card reveal delay-1"><h3>Partnership</h3><p>Trust-led operating relationships built for long-term scale.</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const flash = document.getElementById('cameraFlash');
+  const scenes = [...document.querySelectorAll('.scene')];
+  const reveals = [...document.querySelectorAll('.reveal, .reveal-left, .reveal-right')];
+  const titles = [...document.querySelectorAll('.cinematic-title')];
+
+  // reveal observer
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.06, rootMargin: '0px 0px -8% 0px' });
+  reveals.forEach(el => revealObs.observe(el));
+
+  // scene observer — wipe + flash + focus pull
+  const sceneObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      e.target.classList.toggle('scene-active', e.isIntersecting);
+      if (e.isIntersecting && !reduceMotion) {
+        // camera flash
+        flash.classList.remove('flash-active');
+        void flash.offsetWidth;
+        flash.classList.add('flash-active');
+        // focus pull titles
+        e.target.querySelectorAll('.cinematic-title').forEach(t => {
+          t.classList.remove('title-fired');
+          void t.offsetWidth;
+          t.classList.add('title-fired');
+        });
+      }
+    });
+  }, { threshold: 0, rootMargin: '-35% 0px -45% 0px' });
+  scenes.forEach(s => sceneObs.observe(s));
+})();
+</script>
+</body>
+</html>

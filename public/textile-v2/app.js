@@ -9,6 +9,43 @@
   const lazyMedia = [...document.querySelectorAll('[loading="lazy"]')];
   const cards = [...document.querySelectorAll('.card')];
   const orbitalGlobe = document.querySelector('.orbital-globe');
+  const cinematicTitles = [...document.querySelectorAll('.display-title, .section-title')];
+
+  cinematicTitles.forEach((title) => title.classList.add('cinematic-title'));
+
+  // ── Camera Flash element ──
+  const cameraFlash = document.createElement('div');
+  cameraFlash.className = 'camera-flash';
+  cameraFlash.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(cameraFlash);
+
+  // ── Editorial Chapter Background Numbers ──
+  const chapterMap = {
+    'who-we-are': 'I',
+    'principles':  'II',
+    'reach':       'III',
+    'supply-chain':'IV',
+    'portfolio':   'V',
+    'network':     'VI',
+    'contact':     'VII',
+  };
+  sections.forEach((section) => {
+    const num = chapterMap[section.id];
+    if (num && section.classList.contains('scene')) {
+      const bg = document.createElement('span');
+      bg.className = 'chapter-bg-num';
+      bg.textContent = num;
+      bg.setAttribute('aria-hidden', 'true');
+      section.appendChild(bg);
+    }
+  });
+
+  if (!reduceMotion && !document.querySelector('.grain-overlay')) {
+    const grain = document.createElement('div');
+    grain.className = 'grain-overlay';
+    grain.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(grain);
+  }
 
   function markActiveNav(id) {
     navLinks.forEach((link) => {
@@ -21,6 +58,18 @@
       entry.target.classList.toggle('scene-active', entry.isIntersecting);
       if (entry.isIntersecting) {
         markActiveNav(entry.target.id);
+        if (!reduceMotion) {
+          const sceneTitles = entry.target.querySelectorAll('.cinematic-title');
+          sceneTitles.forEach((title) => {
+            title.classList.remove('title-fired');
+            void title.offsetWidth;
+            title.classList.add('title-fired');
+          });
+          // Camera flash on section entry
+          cameraFlash.classList.remove('flash-active');
+          void cameraFlash.offsetWidth;
+          cameraFlash.classList.add('flash-active');
+        }
       }
     });
   }, {
@@ -29,6 +78,12 @@
   });
 
   sections.forEach((section) => {
+    if (!section.querySelector('.scene-wipe')) {
+      const wipe = document.createElement('span');
+      wipe.className = 'scene-wipe';
+      wipe.setAttribute('aria-hidden', 'true');
+      section.appendChild(wipe);
+    }
     sectionObserver.observe(section);
   });
 
@@ -105,32 +160,7 @@
     visibleCardObserver.observe(card);
   });
 
-  if (!reduceMotion && !isTouch && window.matchMedia('(min-width: 901px)').matches) {
-    cards.forEach((card) => {
-      if (card.closest('#portfolio')) return;
-      if (card.querySelector('.section-video')) return;
-
-      card.addEventListener('mousemove', (event) => {
-        if (!card.classList.contains('card-visible')) return;
-
-        const rect = card.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -8;
-        const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 8;
-
-        card.style.transition = 'transform .1s ease-out, box-shadow .1s ease-out';
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
-        card.style.boxShadow = `${-rotateY}px ${rotateX}px 20px rgba(200,169,110,.15)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform .45s cubic-bezier(.23,1,.32,1), box-shadow .45s cubic-bezier(.23,1,.32,1)';
-        card.style.transform = '';
-        card.style.boxShadow = '';
-      });
-    });
-  }
+  // 3D tilt intentionally removed (kept cinematic without perspective distortion)
 
   // ── Section video scroll-play controller ────────────────────────────────
   const sectionVideos = [...document.querySelectorAll('video[data-section-id]')];
@@ -629,5 +659,22 @@
       if (!e.target.closest('.portfolio-details-btn')) return;
     });
   });
+
+  // ── Hero Parallax Depth Effect ──────────────────────────────────
+  if (!reduceMotion) {
+    const heroCopy = document.querySelector('.hero__copy');
+    const heroSide = document.querySelector('.hero__side');
+    const hero = document.querySelector('.hero');
+    
+    if (heroCopy && heroSide && hero) {
+      window.addEventListener('scroll', () => {
+        const heroRect = hero.getBoundingClientRect();
+        const scrollProgress = Math.max(0, 1 - heroRect.top / window.innerHeight);
+        const offset = scrollProgress * 24;
+        heroCopy.style.transform = `translateY(${offset * -1}px)`;
+        heroSide.style.transform = `translateY(${offset * 0.5}px)`;
+      });
+    }
+  }
 
 })();
