@@ -7,14 +7,19 @@
   <meta name="description" content="Harvics Global Ventures V2: a premium cinematic presentation for AI-powered global sourcing and execution." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400&family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Schema.org Organization structured data -->
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Harvics Global Ventures","url":"https://www.harvics.com","description":"AI-powered global sourcing and supply chain execution for retailers, brands, and complex supply chains.","telephone":"+16473664374","email":"info@harvics.com","address":{"@type":"PostalAddress","addressCountry":"CA"},"sameAs":[]}</script>
 </head>
 <body>
-  <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="assets/video/bg-master.jpg" aria-hidden="true">
+  <!-- Fashion-week overlay layer (safe set: front-row badge, editorial caption, vertical strut, ken-burns is on bg-video via CSS) -->
+  <div class="fw-overlay" aria-hidden="true">
+    <p class="fw-caption" data-fw-caption>LOOK 01 &middot; Built For The Intelligence Of Global Trade &middot; SS 2026</p>
+  </div>
+
+  <video class="bg-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/bg-master.jpg" aria-hidden="true">
     <source src="assets/video/bg-master.mp4" type="video/mp4" />
   </video>
   <div class="site-shell">
@@ -99,7 +104,6 @@
         </div>
 
         <a class="button button--ghost header-login" href="#contact" data-i18n="header.login">Login</a>
-        <a class="button button--ghost header-login" href="archive.html" aria-label="Open Archive">Archive</a>
       </div>
     </header>
 
@@ -191,7 +195,7 @@
             <p class="body-copy" data-i18n="ch.who.body">Harvics was forged by seasoned trade professionals with deep roots across Pakistan's manufacturing corridors and global retail networks. The company is building infrastructure for AI-powered global sourcing where real-time intelligence and execution control converge.</p>
           </div>
           <figure class="section-media card reveal-right delay-1">
-            <video class="section-video" data-section-id="who-we-are" muted playsinline preload="none" poster="assets/images/2_Built-for-the-Complexity-of-Global-Trade.png" aria-label="Built for complexity of global trade video"><source data-src="assets/video/gold-thread.mp4" type="video/mp4" /></video>
+            <video class="section-video" data-section-id="who-we-are" muted playsinline preload="none" poster="assets/optimized/2_Built-for-the-Complexity-of-Global-Trade.avif" aria-label="Built for complexity of global trade video"><source data-src="assets/video/gold-thread.mp4" type="video/mp4" /></video>
           </figure>
         </div>
       </section>
@@ -206,6 +210,19 @@
             <article class="card reveal delay-3"><h3 data-i18n="card.resilience.t">Resilience</h3><p data-i18n="card.resilience.b">Built to absorb disruption and protect delivery certainty.</p></article>
             <article class="card reveal"><h3 data-i18n="card.partnership.t">Partnership</h3><p data-i18n="card.partnership.b">Trust-led operating relationships built for long-term scale.</p></article>
           </div>
+        </div>
+      </section>
+
+      <section class="section scene scene--chapter" id="hidden-cost">
+        <div class="shell split-layout">
+          <div class="section-copy reveal-right">
+            <p class="eyebrow">Hidden Cost</p>
+            <h2 class="section-title">The Cost Of Disconnection</h2>
+            <p class="body-copy">Fragmented supply chain data costs European retailers an average 23% in preventable compliance penalties and margin leakage annually.</p>
+          </div>
+          <figure class="section-media hidden-cost__stage reveal-left delay-1" aria-hidden="true">
+            <canvas class="hidden-cost__canvas" data-nodes="PROCUREMENT,ESG DATA,LOGISTICS,REPORTING,SUPPLIERS,COMPLIANCE"></canvas>
+          </figure>
         </div>
       </section>
 
@@ -230,8 +247,76 @@
             <p class="body-copy" data-i18n="ch.supply.body">Every link in the chain is managed with precision and intelligence: product development, global sourcing, quality assurance, logistics, freight, and multi-node execution visibility.</p>
           </div>
           <figure class="section-media card reveal-right delay-1">
-            <video class="section-video" data-section-id="supply-chain" muted playsinline preload="none" poster="assets/images/5_End-to-End-Supply-Chain-Command.png" aria-label="Supply chain command video"><source data-src="assets/video/supply-chain.mp4" type="video/mp4" /></video>
+            <video class="section-video" data-section-id="supply-chain" muted playsinline preload="none" poster="assets/optimized/5_End-to-End-Supply-Chain-Command.avif" aria-label="Supply chain command video"><source data-src="assets/video/supply-chain.mp4" type="video/mp4" /></video>
           </figure>
+        </div>
+      </section>
+
+      <section class="section scene scene--chapter" id="architecture">
+        <div class="shell">
+          <div class="section-copy reveal-left architecture__head">
+            <p class="eyebrow">The Architecture</p>
+            <h2 class="section-title">End-To-End. No Gaps. No Exit.</h2>
+          </div>
+        </div>
+        <div class="architecture__rows" aria-label="End-to-end supply chain capabilities">
+          <div class="arch-row arch-row--ltr">
+            <div class="arch-row__track">
+              <article class="arch-card" data-icon="sourcing" style="--i:0">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ic-spin"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></g></svg>
+                <p class="arch-card__num">01</p>
+                <h3 class="arch-card__title">Sourcing</h3>
+                <p class="arch-card__body">Factory identification, supplier vetting, and procurement alignment across 40 plus manufacturing corridors.</p>
+              </article>
+              <article class="arch-card" data-icon="procurement" style="--i:1">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ic-bob"><path d="M3 5h3l2.4 11.2a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.5L21 8H7"/><circle cx="10" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></g></svg>
+                <p class="arch-card__num">02</p>
+                <h3 class="arch-card__title">Procurement</h3>
+                <p class="arch-card__body">Purchase order management, cost negotiation, and buying workflow automation in real time.</p>
+              </article>
+              <article class="arch-card" data-icon="quality" style="--i:2">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="ic-draw" d="M5 12.5 10 17l9-10" pathLength="1"/></svg>
+                <p class="arch-card__num">03</p>
+                <h3 class="arch-card__title">Quality</h3>
+                <p class="arch-card__body">In-line and final inspection protocols embedded at every production stage.</p>
+              </article>
+            </div>
+          </div>
+          <div class="arch-row arch-row--rtl">
+            <div class="arch-row__track">
+              <article class="arch-card" data-icon="logistics" style="--i:0">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="ic-drive"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle class="ic-wheel" cx="7" cy="18" r="1.6"/><circle class="ic-wheel" cx="17" cy="18" r="1.6"/></g></svg>
+                <p class="arch-card__num">04</p>
+                <h3 class="arch-card__title">Logistics</h3>
+                <p class="arch-card__body">Freight forwarding, DC routing, consolidation, and last-mile execution globally.</p>
+              </article>
+              <article class="arch-card" data-icon="reporting" style="--i:1">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line class="ic-bar ic-bar--1" x1="4" y1="20" x2="4" y2="8"/><line class="ic-bar ic-bar--2" x1="10" y1="20" x2="10" y2="14"/><line class="ic-bar ic-bar--3" x1="16" y1="20" x2="16" y2="4"/><line x1="22" y1="20" x2="2" y2="20"/></svg>
+                <p class="arch-card__num">05</p>
+                <h3 class="arch-card__title">Reporting</h3>
+                <p class="arch-card__body">Live procurement to sales data unified across every brand market and channel.</p>
+              </article>
+              <article class="arch-card arch-card--accent" data-icon="compliance" style="--i:2">
+                <span class="arch-card__line" aria-hidden="true"></span>
+                <span class="arch-card__sweep" aria-hidden="true"></span>
+                <svg class="arch-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="ic-shield" d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/><path class="ic-draw" d="m9 12 2 2 4-4" pathLength="1"/></svg>
+                <p class="arch-card__num">06</p>
+                <h3 class="arch-card__title">Compliance</h3>
+                <p class="arch-card__body">CSRD aligned ESG data capture continuous and audit ready at supplier level.</p>
+                <p class="arch-card__tag">Your Chain. Fully Held.</p>
+              </article>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -256,7 +341,7 @@
             <p class="body-copy" data-i18n="ch.speed.body">A 48-hour sourcing response model compresses cycles from brief to supplier engagement. Harvics uses real-time supplier intelligence to shorten delays without compromising operational rigor.</p>
           </div>
           <figure class="section-media card reveal-right delay-1">
-            <video class="section-video" data-section-id="speed" muted playsinline preload="none" poster="assets/images/7_Speed.png" aria-label="Speed and competence video"><source data-src="assets/video/speed.mp4" type="video/mp4" /></video>
+            <video class="section-video" data-section-id="speed" muted playsinline preload="none" poster="assets/optimized/7_Speed.avif" aria-label="Speed and competence video"><source data-src="assets/video/speed.mp4" type="video/mp4" /></video>
           </figure>
         </div>
       </section>
@@ -269,7 +354,7 @@
             <p class="body-copy" data-i18n="ch.digital.body">AI sourcing engines, risk scoring, procurement automation, and digital command tools are embedded into every layer of the Harvics operating model.</p>
           </div>
           <figure class="section-media card reveal-left delay-1">
-            <video class="section-video" data-section-id="digital" muted playsinline preload="none" poster="assets/images/8_Intelligence-at-the-Core.png" aria-label="Digital infrastructure video"><source data-src="assets/video/digital-infrastructure.mp4" type="video/mp4" /></video>
+            <video class="section-video" data-section-id="digital" muted playsinline preload="none" poster="assets/optimized/8_Intelligence-at-the-Core.avif" aria-label="Digital infrastructure video"><source data-src="assets/video/digital-infrastructure.mp4" type="video/mp4" /></video>
           </figure>
         </div>
       </section>
@@ -282,7 +367,7 @@
             <p class="body-copy" data-i18n="ch.sustain.body">Responsible trade is embedded in how Harvics sources, operates, and grows through environmental stewardship, responsible materials, and carbon-conscious logistics choices.</p>
           </div>
           <figure class="section-media card reveal-right delay-1">
-            <video class="section-video" data-section-id="sustainability" muted playsinline preload="none" poster="assets/images/9_Responsible-Trade-at-Scale.png" aria-label="Sustainability video"><source data-src="assets/video/sustainability.mp4" type="video/mp4" /></video>
+            <video class="section-video" data-section-id="sustainability" muted playsinline preload="none" poster="assets/optimized/9_Responsible-Trade-at-Scale.avif" aria-label="Sustainability video"><source data-src="assets/video/sustainability.mp4" type="video/mp4" /></video>
           </figure>
         </div>
       </section>
@@ -346,7 +431,7 @@
             <article class="card team-card reveal delay-1">
               <div class="team-avatar" aria-hidden="true"><span>AH</span></div>
               <h3>Mark D'souza</h3>
-              <p class="team-role">Founder &amp; CEO</p>
+              <p class="team-role">CEO</p>
               <p>18+ years navigating Pakistan's manufacturing corridors and global retail networks.</p>
             </article>
             <article class="card team-card reveal delay-2">

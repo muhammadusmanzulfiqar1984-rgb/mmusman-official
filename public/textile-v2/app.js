@@ -29,6 +29,36 @@
     'network':     'VI',
     'contact':     'VII',
   };
+
+  // Fashion-week editorial caption per chapter
+  const fwCaptionEl = document.querySelector('[data-fw-caption]');
+  const fwCaptions = {
+    'hero':         'LOOK 01 · Built For The Intelligence Of Global Trade · SS 2026',
+    'who-we-are':   'LOOK 02 · Engineered For The Complexity Of Global Trade · SS 2026',
+    'principles':   'LOOK 03 · Principles That Lead The Chain · SS 2026',
+    'reach':        'LOOK 04 · From Source To Shore · SS 2026',
+    'supply-chain': 'LOOK 05 · End-To-End Supply Chain Command · SS 2026',
+    'architecture': 'LOOK 06 · No Gaps. No Exit. · SS 2026',
+    'future':       'LOOK 07 · The Future Of Trade Is Intelligent · SS 2026',
+    'speed':        'LOOK 08 · Speed As A Competence · SS 2026',
+    'digital':      'LOOK 09 · Intelligence At The Core · SS 2026',
+    'sustainability':'LOOK 10 · Responsible Trade At Scale · SS 2026',
+    'services':     'LOOK 11 · Service Coverage Across The Value Chain · SS 2026',
+    'portfolio':    'LOOK 12 · Product Portfolio · SS 2026',
+    'network':      'LOOK 13 · A Global Network Of Trust · SS 2026',
+    'hidden-cost':  'LOOK 14 · The Cost Of Disconnection · SS 2026',
+    'contact':      'FINALE · Let\u2019s Talk Commercial · SS 2026',
+  };
+  function setFwCaption(id) {
+    if (!fwCaptionEl) return;
+    const next = fwCaptions[id];
+    if (!next || fwCaptionEl.textContent === next) return;
+    fwCaptionEl.classList.add('is-changing');
+    setTimeout(() => {
+      fwCaptionEl.textContent = next;
+      fwCaptionEl.classList.remove('is-changing');
+    }, 320);
+  }
   sections.forEach((section) => {
     const num = chapterMap[section.id];
     if (num && section.classList.contains('scene')) {
@@ -58,6 +88,7 @@
       entry.target.classList.toggle('scene-active', entry.isIntersecting);
       if (entry.isIntersecting) {
         markActiveNav(entry.target.id);
+        setFwCaption(entry.target.id);
         if (!reduceMotion) {
           const sceneTitles = entry.target.querySelectorAll('.cinematic-title');
           sceneTitles.forEach((title) => {
@@ -676,5 +707,215 @@
       });
     }
   }
+
+  // ── Hidden Cost: disconnection → connection ─────────────────────
+  (function initHiddenCost() {
+    const canvas = document.querySelector('#hidden-cost .hidden-cost__canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const labels = (canvas.dataset.nodes || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!labels.length) return;
+
+    const GOLD_RGB = '200, 169, 110'; // var(--gold)
+    let dpr = Math.max(1, window.devicePixelRatio || 1);
+    let w = 0, h = 0;
+    let nodes = [];
+    let connectStart = 0;     // ms timestamp when connect animation begins
+    let connecting = false;
+    let connected = false;
+    let pulseStart = 0;
+    let dashOffset = 0;
+    let raf = 0;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Re-seed scatter positions on resize if not yet connected
+      if (!connecting && !connected) seedNodes();
+    }
+
+    function seedNodes() {
+      const pad = 60;
+      nodes = labels.map((label, i) => {
+        const x = pad + Math.random() * Math.max(1, w - pad * 2);
+        const y = pad + Math.random() * Math.max(1, h - pad * 2);
+        const angle = (i / labels.length) * Math.PI * 2;
+        const orbitR = Math.min(w, h) * 0.22;
+        return {
+          label,
+          sx: x, sy: y,                 // scatter (start) position
+          x, y,                         // current
+          tx: w / 2 + Math.cos(angle) * orbitR,  // target (connected orbit)
+          ty: h / 2 + Math.sin(angle) * orbitR,
+          drift: { vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18 },
+          phase: Math.random() * Math.PI * 2,
+        };
+      });
+    }
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function draw(now) {
+      if (!w || !h) { raf = requestAnimationFrame(draw); return; }
+      ctx.clearRect(0, 0, w, h);
+
+      let progress = 0;
+      if (connecting) {
+        progress = Math.min(1, (now - connectStart) / 2000);
+        if (progress >= 1) { connecting = false; connected = true; pulseStart = now; }
+      }
+      const eased = easeOutCubic(progress);
+
+      // Update positions
+      nodes.forEach((n) => {
+        if (connecting || connected) {
+          n.x = n.sx + (n.tx - n.sx) * (connected ? 1 : eased);
+          n.y = n.sy + (n.ty - n.sy) * (connected ? 1 : eased);
+        } else {
+          // gentle drift, bounce inside padded area
+          const pad = 50;
+          n.x += n.drift.vx;
+          n.y += n.drift.vy;
+          if (n.x < pad || n.x > w - pad) n.drift.vx *= -1;
+          if (n.y < pad || n.y > h - pad) n.drift.vy *= -1;
+          n.sx = n.x; n.sy = n.y;
+        }
+      });
+
+      // Lines
+      const lineAlpha = connected ? 0.85 : (connecting ? 0.18 + eased * 0.67 : 0.10 + Math.sin(now * 0.004) * 0.06);
+      ctx.lineWidth = connected ? 1.1 : 0.8;
+      if (!connected) {
+        dashOffset = (dashOffset + 0.4) % 12;
+        ctx.setLineDash([4, 6]);
+        ctx.lineDashOffset = -dashOffset;
+      } else {
+        ctx.setLineDash([]);
+      }
+      ctx.strokeStyle = `rgba(${GOLD_RGB}, ${lineAlpha.toFixed(3)})`;
+      ctx.beginPath();
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+        }
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Pulse ring (one-shot)
+      if (connected && now - pulseStart < 1600) {
+        const p = (now - pulseStart) / 1600;
+        const radius = 40 + p * Math.min(w, h) * 0.55;
+        const alpha = (1 - p) * 0.55;
+        ctx.beginPath();
+        ctx.arc(w / 2, h / 2, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${GOLD_RGB}, ${alpha.toFixed(3)})`;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+
+      // Nodes
+      nodes.forEach((n) => {
+        const baseR = 5;
+        const glowR = connected ? 26 : 20;
+        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
+        const coreA = connected ? 0.95 : 0.7;
+        grad.addColorStop(0, `rgba(${GOLD_RGB}, ${coreA})`);
+        grad.addColorStop(0.4, `rgba(${GOLD_RGB}, ${coreA * 0.35})`);
+        grad.addColorStop(1, `rgba(${GOLD_RGB}, 0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(${GOLD_RGB}, ${connected ? 1 : 0.85})`;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, baseR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Label
+        ctx.fillStyle = `rgba(232, 224, 208, ${connected ? 0.78 : 0.55})`;
+        ctx.font = '500 9.5px Manrope, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        // simulate letter-spacing
+        const text = n.label;
+        const spaced = text.split('').join('\u2009');
+        ctx.fillText(spaced, n.x, n.y + glowR - 4);
+      });
+
+      raf = requestAnimationFrame(draw);
+    }
+
+    function start() {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(draw);
+    }
+
+    // Resize observer
+    const ro = new ResizeObserver(() => { resize(); });
+    ro.observe(canvas.parentElement);
+    resize();
+
+    if (reduceMotion) {
+      // jump straight to connected state, no animation loop needed beyond one paint
+      connected = true;
+      pulseStart = 0;
+      // single paint
+      requestAnimationFrame(draw);
+      return;
+    }
+
+    start();
+
+    const trigger = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !connecting && !connected) {
+          connecting = true;
+          connectStart = performance.now();
+        }
+      });
+    }, { threshold: 0.35 });
+    trigger.observe(canvas);
+  })();
+
+  // ── Architecture: two-row cinematic marquee ─────────────────────
+  (function initArchitecture() {
+    const rows = [...document.querySelectorAll('#architecture .arch-row')];
+    if (!rows.length) return;
+
+    // Clone each row's cards once for seamless -50% marquee loop
+    if (!reduceMotion) {
+      rows.forEach((row) => {
+        const track = row.querySelector('.arch-row__track');
+        if (!track) return;
+        const originals = [...track.children];
+        originals.forEach((card) => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.dataset.clone = '1';
+          track.appendChild(clone);
+        });
+      });
+    }
+
+    // Per-card top-line stagger when section enters viewport
+    const cards = [...document.querySelectorAll('#architecture .arch-card')];
+    const lineObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          lineObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach((c) => lineObs.observe(c));
+  })();
 
 })();
