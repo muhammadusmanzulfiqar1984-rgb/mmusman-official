@@ -1,184 +1,82 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090807">
-<meta name="description" content="Harvics Global Ventures — IFCO Istanbul 2027 Hosted Buyer Profile. Apparel, fashion, private label, wholesale and EU/GCC distribution.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090807">
+<meta name="description" content="Harvics Global Ventures Ltd. — IFCO Istanbul 2027 Hosted Buyer Profile.">
 <title>Harvics · IFCO 2027 Hosted Buyer Profile</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#090807;--ink:#eee8dc;--muted:#a49b8d;--gold:#c8a96e;--line:rgba(200,169,110,.24);--panel:rgba(17,14,11,.76)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:Manrope,Arial,sans-serif;line-height:1.65;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button{font:inherit}
-.grain{position:fixed;inset:0;pointer-events:none;z-index:8;opacity:.08;background-image:radial-gradient(rgba(255,255,255,.45) .55px,transparent .8px);background-size:4px 4px}
-.video-bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#090807}
-.video-bg video{width:100%;height:100%;object-fit:cover;opacity:.22;filter:brightness(.52) saturate(.55)}
-.video-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,8,7,.94),rgba(9,8,7,.64) 55%,rgba(9,8,7,.82)),linear-gradient(0deg,#090807 0%,transparent 55%)}
-.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(18px,4vw,54px);background:rgba(9,8,7,.88);border-bottom:1px solid var(--line);backdrop-filter:blur(18px)}
-.brand{font-size:.72rem;letter-spacing:.17em;text-transform:uppercase;color:#e4d7bd}
-.brand span{color:var(--gold)}
-.nav-right{display:flex;align-items:center;gap:20px}
-.navlinks{display:flex;gap:18px;color:var(--muted);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase}
-.navlinks a:hover{color:var(--gold)}
-.action{border:1px solid rgba(200,169,110,.55);padding:9px 14px;color:var(--gold);background:transparent;font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
-.action:hover{background:rgba(200,169,110,.1)}
-.sound-control{position:fixed;right:20px;bottom:20px;z-index:20;background:rgba(9,8,7,.86);backdrop-filter:blur(8px)}
-.container{width:min(1160px,calc(100% - 44px));margin:0 auto}
-section{position:relative;padding:clamp(70px,10vw,140px) 0;border-bottom:1px solid var(--line)}
-.hero{min-height:calc(100vh - 70px);display:flex;align-items:center;padding:100px 0 80px}
-.hero-content{max-width:1000px}
-.eyebrow{font-size:.64rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Manrope,Arial,sans-serif}button{font:inherit;color:inherit;cursor:pointer}
+.video-bg{position:fixed;inset:0;z-index:-2;background:#090807}.video-bg video{width:100%;height:100%;object-fit:cover;opacity:.22;filter:brightness(.5) saturate(.5)}.video-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,8,7,.94),rgba(9,8,7,.65) 60%,rgba(9,8,7,.83)),linear-gradient(0deg,#090807 0%,transparent 60%)}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.07;background-image:radial-gradient(rgba(255,255,255,.45) .55px,transparent .8px);background-size:4px 4px}
+.topbar{position:fixed;z-index:10;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:20px clamp(18px,4vw,54px);border-bottom:1px solid var(--line);background:rgba(9,8,7,.62);backdrop-filter:blur(16px)}
+.brand{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#e4d7bd}.brand span{color:var(--gold)}
+.controls{display:flex;align-items:center;gap:9px}.control{border:1px solid rgba(200,169,110,.45);background:rgba(9,8,7,.55);padding:9px 13px;color:var(--gold);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}.control:hover{background:rgba(200,169,110,.12)}
+.stage{position:relative;height:100dvh;width:100vw;display:flex;align-items:center;justify-content:center;padding:95px 5vw 90px}
+.scene{display:none;opacity:0;transform:translateY(12px);width:min(1180px,100%);max-height:calc(100dvh - 170px);overflow:auto;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;transition:opacity .45s,transform .45s}
+.scene.active{display:block}.scene.visible{opacity:1;transform:none}
+.eyebrow,.kicker{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
 h1,h2,h3,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300}
-h1{font-size:clamp(3.25rem,8vw,7.8rem);line-height:.95;letter-spacing:-.035em;max-width:960px}
-h1 em{font-weight:300;color:var(--gold)}
-.lead{max-width:720px;color:#c4b9a8;font-size:clamp(1rem,1.5vw,1.18rem);margin-top:28px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--line);background:var(--line);margin-top:60px}
-.metric{background:rgba(12,10,8,.88);padding:24px 22px}
-.metric strong{display:block;font-family:"Cormorant Garamond",serif;font-weight:300;color:var(--gold);font-size:clamp(1.65rem,3vw,2.8rem);line-height:1.1}
-.metric small{display:block;color:var(--muted);font-size:.59rem;letter-spacing:.17em;text-transform:uppercase;margin-top:10px}
-.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:48px}
-.section-number{font-size:.62rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
-h2{font-size:clamp(2.4rem,5.2vw,5rem);line-height:1;max-width:760px}
-.intro{max-width:580px;color:var(--muted);font-size:.95rem}
-.grid{display:grid;gap:18px}
-.grid-2{grid-template-columns:1fr 1fr}
-.grid-3{grid-template-columns:repeat(3,1fr)}
-.card{background:var(--panel);border:1px solid var(--line);padding:clamp(22px,3vw,34px);position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(transparent,var(--gold),transparent);opacity:.7}
-.card h3{font-size:1.8rem;color:var(--gold);margin-bottom:12px;line-height:1.1}
-.card p,.card li{color:#b9b0a3;font-size:.88rem}
-.card ul{padding-left:18px;display:grid;gap:9px;margin-top:12px}
-.category-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.category{border:1px solid var(--line);padding:15px 17px;background:rgba(16,13,10,.7);font-size:.77rem;color:#ded5c6;letter-spacing:.04em}
-.category:before{content:"✦";color:var(--gold);margin-right:10px;font-size:.65rem}
-.callout{margin-top:24px;padding:24px 28px;border:1px solid rgba(200,169,110,.45);background:rgba(200,169,110,.05)}
-.callout p{color:#c9bead}
-.pillar-index{font-family:"Cormorant Garamond",serif;color:rgba(200,169,110,.55);font-size:3rem;margin-bottom:20px}
-.pillar h3{font-size:1.75rem}
-.credential-list{border-top:1px solid var(--line)}
-.credential{display:grid;grid-template-columns:220px 1fr;gap:28px;padding:20px 0;border-bottom:1px solid var(--line)}
-.credential .label{color:var(--gold);font-size:.64rem;letter-spacing:.17em;text-transform:uppercase}
-.credential .value{color:#d7cebf;font-size:.9rem}
-.contact-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;background:rgba(14,11,9,.85);border:1px solid var(--line);padding:clamp(24px,4vw,48px)}
-.contact-panel h2{margin-bottom:20px}
-.contact-panel p{color:var(--muted)}
-.contact-links{display:grid;gap:12px;color:#d8c8a8;font-size:.9rem}
-.contact-links span{color:var(--muted);display:inline-block;width:120px;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em}
-.footer{padding:30px 0 50px;color:#7e766b;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;display:flex;justify-content:space-between;gap:20px}
-@media(max-width:850px){.navlinks{display:none}.metrics{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:1fr}.section-head{display:block}.intro{margin-top:20px}.contact-panel{grid-template-columns:1fr}}
-@media(max-width:560px){.grid-2{grid-template-columns:1fr}.category-list{grid-template-columns:1fr}.credential{grid-template-columns:1fr;gap:8px}.hero{padding:78px 0 54px}.metrics{margin-top:38px}.topbar{padding:14px 18px}.brand{font-size:.58rem;letter-spacing:.1em}.action{padding:8px 10px;font-size:.56rem}.footer{display:block}.footer div+div{margin-top:10px}}
+h1{font-size:clamp(3rem,8.2vw,8rem);line-height:.91;letter-spacing:-.035em;margin:0;max-width:980px}h1 em,h2 em{color:var(--gold);font-style:normal}
+h2{font-size:clamp(2.5rem,5.6vw,5.7rem);line-height:.98;margin:0 0 24px}
+h3{font-size:clamp(1.45rem,2.5vw,2.4rem);color:var(--gold);line-height:1.08;margin:0 0 12px}
+.lead{max-width:770px;color:#c4b9a8;font-size:clamp(1rem,1.55vw,1.24rem);line-height:1.7;margin-top:28px}
+.sub{color:var(--muted);max-width:620px;font-size:.9rem;line-height:1.75}
+.gold-line{width:70px;height:1px;background:var(--gold);margin:28px 0}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:42px}
+.metric{padding:20px;background:rgba(12,10,8,.82)}.metric strong{display:block;font-family:"Cormorant Garamond",serif;font-weight:300;color:var(--gold);font-size:clamp(1.6rem,3vw,2.8rem);line-height:1.1}.metric small{display:block;color:var(--muted);font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;margin-top:8px}
+.cards{display:grid;gap:16px}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.four{grid-template-columns:repeat(4,1fr)}
+.card{border:1px solid var(--line);background:var(--panel);padding:clamp(20px,3vw,32px);position:relative}.card:before{content:"";position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(transparent,var(--gold),transparent);opacity:.65}
+.card p,.card li{color:#b9b0a3;font-size:.85rem;line-height:1.7}.card ul{padding-left:18px;margin:10px 0 0;display:grid;gap:7px}
+.category{border:1px solid var(--line);padding:14px 16px;background:rgba(16,13,10,.7);font-size:.74rem;color:#ded5c6}.category:before{content:"✦";color:var(--gold);margin-right:9px;font-size:.62rem}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.index{font-family:"Cormorant Garamond",serif;color:rgba(200,169,110,.55);font-size:3rem;margin-bottom:12px}
+.callout{border:1px solid rgba(200,169,110,.45);background:rgba(200,169,110,.05);padding:22px 26px;margin-top:18px;color:#c9bead;font-size:.88rem}
+.credentials{border-top:1px solid var(--line)}.credential{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:15px 0;border-bottom:1px solid var(--line)}.credential .label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}.credential .value{color:#d7cebf;font-size:.88rem}
+.contact{display:grid;grid-template-columns:1.1fr .9fr;gap:38px;align-items:center;border:1px solid var(--line);padding:clamp(24px,4vw,48px);background:rgba(14,11,9,.85)}.links{display:grid;gap:14px;color:#d8c8a8;font-size:.88rem}.links label{display:inline-block;width:120px;color:var(--muted);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}.links a{color:#d8c8a8;text-decoration:none}
+.eventline{display:flex;flex-wrap:wrap;gap:24px;margin-top:32px;color:#cbbda7;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:16px;padding:17px clamp(18px,4vw,54px);background:rgba(9,8,7,.68);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.progress{height:2px;flex:1;background:rgba(200,169,110,.2);position:relative}.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .35s}
+.counter{font-size:.62rem;letter-spacing:.16em;color:var(--muted);min-width:55px;text-align:center}.bottom .control{padding:8px 12px}.sound{position:fixed;right:18px;bottom:70px;z-index:11}
+.scene-footer{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#82796d;margin-top:24px}
+@media(max-width:850px){.three,.four{grid-template-columns:1fr 1fr}.categories{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.stage{padding:86px 5vw 82px}.scene{max-height:calc(100dvh - 150px)}.topbar{padding:14px 18px}.brand{font-size:.56rem}.control{font-size:.55rem;padding:8px 10px}.contact{grid-template-columns:1fr}}
+@media(max-width:560px){.two,.three,.four{grid-template-columns:1fr}.categories{grid-template-columns:1fr}.credential{grid-template-columns:1fr;gap:6px}.stage{padding:80px 18px 78px}.scene{max-height:calc(100dvh - 142px)}h1{font-size:clamp(2.7rem,13vw,4.5rem)}.metrics{margin-top:26px}.metric{padding:14px}.eventline{gap:12px}.bottom{gap:8px;padding:12px 14px}.bottom .control{padding:7px 9px}.sound{bottom:63px;right:14px}}
 @media print{
- @page{size:A4;margin:15mm}
+ @page{size:A4 landscape;margin:12mm}
  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- html,body{background:#090807!important;color:#eee8dc!important}
- .video-bg,.grain,.sound-control,.topbar .navlinks,.topbar .action{display:none!important}
- .topbar{position:static;background:#090807;border:0;padding:0 0 12mm}
- section{padding:14mm 0;min-height:auto;break-inside:avoid}
- .hero{min-height:auto;padding:12mm 0 14mm}
- .container{width:100%}
- h1{font-size:48pt}
- h2{font-size:30pt}
- .metrics{grid-template-columns:repeat(4,1fr)}
- .metric{padding:12px}
- .metric strong{font-size:22pt}
- .card,.contact-panel,.callout,.category{break-inside:avoid}
- .grid-3{grid-template-columns:repeat(3,1fr)}
- .footer{padding:8mm 0}
- a{color:inherit;text-decoration:none}
+ html,body{height:auto;overflow:visible;background:#090807!important}
+ .video-bg,.grain,.topbar,.bottom,.sound{display:none!important}
+ .stage{display:block;height:auto;padding:0}
+ .scene{display:block!important;opacity:1!important;transform:none!important;width:100%;max-height:none;overflow:visible;padding:12mm 0;break-after:page;page-break-after:always}
+ .scene:last-child{break-after:auto;page-break-after:auto}
+ h1{font-size:42pt}h2{font-size:30pt}.metrics{grid-template-columns:repeat(4,1fr)}.three{grid-template-columns:repeat(3,1fr)}.four{grid-template-columns:repeat(4,1fr)}.cards,.card,.contact,.callout{break-inside:avoid}
 }
-</style>
-</head>
+</style></head>
 <body>
-<div class="video-bg" aria-hidden="true"><video id="bgVideo" autoplay muted loop playsinline preload="metadata"><source src="/backdrop.mp4" type="video/mp4"></video></div>
-<div class="grain" aria-hidden="true"></div>
-<header class="topbar">
- <div class="brand">Harvics <span>·</span> IFCO 2027 Hosted Buyer Profile</div>
- <div class="nav-right">
-  <nav class="navlinks" aria-label="Page navigation"><a href="#mandate">Buying Mandate</a><a href="#partners">Partner Value</a><a href="#credentials">Credentials</a><a href="#engage">Engage</a></nav>
-  <button class="action" onclick="window.print()">Save / Print PDF</button>
- </div>
-</header>
-<main>
-<section class="hero">
- <div class="container hero-content">
-  <div class="eyebrow">Harvics Global Ventures Ltd. · IFCO Istanbul 2027 Hosted Buyer Dossier</div>
-  <h1>From Turkish Craftsmanship<br>to <em>EU &amp; GCC Retail.</em></h1>
-  <p class="lead">Harvics Global Ventures manages private-label collections, wholesale distribution, and EU-compliant apparel sourcing across 40+ markets in Europe, the UK, and the Gulf.</p>
-  <div class="metrics">
-   <div class="metric"><strong>40+</strong><small>Active Markets</small></div>
-   <div class="metric"><strong>EU · UK · GCC</strong><small>Distribution Corridors</small></div>
-   <div class="metric"><strong>8 Categories</strong><small>Apparel, Leather &amp; Footwear</small></div>
-   <div class="metric"><strong>OEM · ODM</strong><small>Private Label &amp; Wholesale</small></div>
-  </div>
-  <p class="intro" style="margin-top:32px">IFCO — Istanbul Fashion Connection · 3–6 February 2027 · Istanbul Expo Center</p>
- </div>
-</section>
-<section id="mandate">
- <div class="container">
-  <div class="section-head"><div><div class="section-number">01 / Buying Mandate</div><h2>What we are sourcing<br>in Istanbul.</h2></div><p class="intro">A focused buying brief for Turkish manufacturers, ateliers and export-ready production partners.</p></div>
-  <div class="grid grid-2">
-   <div class="card"><h3>Core product categories</h3><div class="category-list">
-    <div class="category">Menswear &amp; Womenswear RTW</div><div class="category">Premium Denim &amp; Casualwear</div><div class="category">Knitwear</div><div class="category">Outerwear</div><div class="category">Leather Goods</div><div class="category">Footwear</div><div class="category">Corporate Workwear</div><div class="category">Industrial Workwear</div>
-   </div></div>
-   <div class="card"><h3>Order &amp; volume structure</h3><ul><li>Seasonal private-label OEM / ODM programs</li><li>Capsule collections and focused product drops</li><li>Ready-stock wholesale distribution</li><li>Programs for European and Middle Eastern retail partners</li><li>Supplier relationships built around repeat orders, quality consistency and delivery discipline</li></ul></div>
-  </div>
-  <div class="callout"><div class="section-number">European hub expansion</div><p style="margin-top:10px">Dedicated EU commercial showroom and bonded-logistics hub launching via <strong>Harvics Iberia S.L. (Spain)</strong>, supporting distribution of Turkish-manufactured collections across Spain, France, Germany and the UK.</p></div>
- </div>
-</section>
-<section id="partners">
- <div class="container">
-  <div class="section-head"><div><div class="section-number">02 / Manufacturer Partnership</div><h2>Why Turkish manufacturers<br>partner with Harvics.</h2></div><p class="intro">Three commercial pillars connect production capability with buyer access, compliance discipline and governed execution.</p></div>
-  <div class="grid grid-3">
-   <article class="card pillar"><div class="pillar-index">01</div><h3>Direct EU &amp; GCC Shelf Access</h3><p>Established B2B distributor and retail-buyer network across 40+ markets, creating a route for Turkish ateliers and manufacturers to reach European and Gulf buyers.</p></article>
-   <article class="card pillar"><div class="pillar-index">02</div><h3>DPP &amp; ESG Compliance Readiness</h3><p>Batch traceability and supplier-document workflows designed to support EU Digital Product Passport readiness and verification of OEKO-TEX, BSCI and SEDEX documentation where applicable.</p></article>
-   <article class="card pillar"><div class="pillar-index">03</div><h3>Governed Execution &amp; Settlement</h3><p>14-stage quality-assurance and shipment-visibility operating path, paired with structured trade-finance options and documented LC / escrow arrangements subject to transaction and provider terms.</p></article>
-  </div>
- </div>
-</section>
-<section id="credentials">
- <div class="container">
-  <div class="section-head"><div><div class="section-number">03 / Corporate Credentials</div><h2>Institutional profile.<br>Executive attendance.</h2></div><p class="intro">Prepared for the IFCO 2027 Hosted Buyer Organising Committee — İTKİB / Promise Organizasyon.</p></div>
-  <div class="credential-list">
-   <div class="credential"><div class="label">Legal Entity</div><div class="value">Harvics Global Ventures Ltd.</div></div>
-   <div class="credential"><div class="label">Incorporation</div><div class="value">9 September 2025</div></div>
-   <div class="credential"><div class="label">Registration / Licence No.</div><div class="value">[Insert UK Companies House / UAE Licence No.]</div></div>
-   <div class="credential"><div class="label">Office Location</div><div class="value">[Insert City, UK / UAE]</div></div>
-   <div class="credential"><div class="label">Attending Executive</div><div class="value"><strong>Mian Muhammad Usman</strong> — Founder &amp; Managing Director</div></div>
-   <div class="credential"><div class="label">Attendance</div><div class="value">IFCO Istanbul · 3–6 February 2027 · Istanbul Expo Center</div></div>
-  </div>
- </div>
-</section>
-<section id="engage">
- <div class="container">
-  <div class="contact-panel">
-   <div><div class="eyebrow">Hosted Buyer · IFCO 2027</div><h2>Let's build the<br><em style="color:var(--gold)">next collection.</em></h2><p>Harvics is seeking export-ready Turkish apparel, textile, leather and footwear manufacturers for private-label programs, capsule collections and wholesale distribution across EU and GCC corridors.</p></div>
-   <div class="contact-links"><div><span>Founder</span>Mian Muhammad Usman</div><div><span>Email</span><a href="mailto:usman@harvics.com">usman@harvics.com</a></div><div><span>Partnerships</span><a href="mailto:partnerships@harvics.com">partnerships@harvics.com</a></div><div><span>Web</span><a href="https://www.harvics.com" target="_blank" rel="noopener">www.harvics.com</a></div></div>
-  </div>
- </div>
-</section>
+<div class="video-bg" aria-hidden="true"><video id="bgVideo" autoplay muted loop playsinline preload="metadata"><source src="/backdrop.mp4" type="video/mp4"></video></div><div class="grain"></div>
+<header class="topbar"><div class="brand">Harvics <span>·</span> IFCO 2027 Hosted Buyer Profile</div><div class="controls"><button class="control" id="printBtn">Save / Print PDF</button><button class="control" id="fullBtn">Fullscreen</button></div></header>
+<main class="stage" id="stage">
+<section class="scene active visible" data-title="Cover"><div class="eyebrow">Harvics Global Ventures Ltd. · IFCO Istanbul 2027 Hosted Buyer Dossier</div><h1>From Turkish Craftsmanship<br>to <em>EU &amp; GCC Retail.</em></h1><p class="lead">Harvics Global Ventures manages private-label collections, wholesale distribution, and EU-compliant apparel sourcing across 40+ markets in Europe, the UK, and the Gulf.</p><div class="metrics"><div class="metric"><strong>40+</strong><small>Active Markets</small></div><div class="metric"><strong>EU · UK · GCC</strong><small>Distribution Corridors</small></div><div class="metric"><strong>8 Categories</strong><small>Apparel, Leather &amp; Footwear</small></div><div class="metric"><strong>OEM · ODM</strong><small>Private Label &amp; Wholesale</small></div></div><div class="eventline"><span>IFCO · Istanbul Fashion Connection</span><span>3–6 February 2027</span><span>Istanbul Expo Center</span></div></section>
+<section class="scene" data-title="Buyer Profile"><div class="eyebrow">01 · Buyer Profile</div><h2>Commercial buying power.<br><em>Retail execution.</em></h2><p class="lead">A B2B apparel buyer, wholesale distributor, private-label partner and sourcing operator focused on repeatable programmes—not one-off transactions.</p><div class="cards four" style="margin-top:34px"><article class="card"><h3>Wholesale</h3><p>Distribution programs and product assortments for retail partners.</p></article><article class="card"><h3>Private Label</h3><p>OEM / ODM collections with defined specifications and commercial targets.</p></article><article class="card"><h3>Retail</h3><p>Buyer-led assortment planning and route-to-market across multiple channels.</p></article><article class="card"><h3>Sourcing</h3><p>Supplier discovery, product development, quality and delivery oversight.</p></article></div><div class="scene-footer">Executive · Mian Muhammad Usman, Founder &amp; Managing Director</div></section>
+<section class="scene" data-title="Scale"><div class="eyebrow">02 · Commercial Scale</div><h2>Built for multi-market<br><em>buying programmes.</em></h2><p class="sub">Commercial indicators supplied in the IFCO Hosted Buyer application. They are presented as buyer-submitted profile figures.</p><div class="metrics"><div class="metric"><strong>$50M+</strong><small>Annual Turnover</small></div><div class="metric"><strong>$10M+</strong><small>Annual Import Value</small></div><div class="metric"><strong>100</strong><small>Department Stores</small></div><div class="metric"><strong>10</strong><small>Retail Stores</small></div></div><div class="metrics"><div class="metric"><strong>100</strong><small>Employees</small></div><div class="metric"><strong>40+</strong><small>Markets</small></div><div class="metric"><strong>Private Label</strong><small>Buying Model</small></div><div class="metric"><strong>Mid-Market</strong><small>Positioning</small></div></div></section>
+<section class="scene" data-title="Markets"><div class="eyebrow">03 · Distribution Corridors</div><h2>Markets connected.<br><em>Supply in motion.</em></h2><div class="cards two" style="margin-top:34px"><article class="card"><h3>Europe &amp; United Kingdom</h3><p>Established commercial corridors and planned EU hub infrastructure to support market access, assortment distribution and supplier relationships.</p></article><article class="card"><h3>Gulf Cooperation Council</h3><p>Wholesale and retail distribution opportunities across Gulf markets, supported by buyer-led category selection and market-specific assortment planning.</p></article></div><div class="callout"><strong>Türkiye → EU → UK → GCC</strong><br>Supplier partnership proposition: connect Turkish manufacturing capability to commercial buyer networks and distribution corridors.</div></section>
+<section class="scene" data-title="Categories"><div class="eyebrow">04 · Buying Categories</div><h2>Eight category lanes.<br><em>One focused mandate.</em></h2><div class="categories" style="margin-top:32px"><div class="category">Menswear Ready-to-Wear</div><div class="category">Womenswear Ready-to-Wear</div><div class="category">Premium Denim &amp; Casualwear</div><div class="category">Knitwear</div><div class="category">Outerwear</div><div class="category">Leather Goods</div><div class="category">Footwear</div><div class="category">Corporate / Industrial Workwear</div></div><p class="sub" style="margin-top:20px">Primary focus includes womenswear, menswear, kidswear and eveningwear; adjacent sourcing interests span denim, casualwear, knitwear, outerwear, leather, footwear and workwear.</p></section>
+<section class="scene" data-title="Price & Positioning"><div class="eyebrow">05 · Commercial Positioning</div><h2>Mid-market value.<br><em>Quality without compromise.</em></h2><div class="cards three" style="margin-top:32px"><article class="card"><h3>$40–$80</h3><p>Indicative wholesale price band from the submitted buyer profile.</p></article><article class="card"><h3>Private Label</h3><p>Brand-led product development, specifications and repeatable collection programmes.</p></article><article class="card"><h3>Retail Ready</h3><p>Commercially balanced design, dependable construction, sizing and delivery.</p></article></div><div class="callout">Target supplier profile: competitive pricing, quality consistency, flexible development, export documentation and production reliability.</div></section>
+<section class="scene" data-title="Buying Programs"><div class="eyebrow">06 · Order Structure</div><h2>From seasonal collection<br>to <em>ready-stock.</em></h2><div class="cards three" style="margin-top:32px"><article class="card"><div class="index">01</div><h3>Seasonal OEM / ODM</h3><p>Private-label programmes with product briefs, technical specifications, sample approval and production milestones.</p></article><article class="card"><div class="index">02</div><h3>Capsule Collections</h3><p>Focused drops and curated assortments for defined retail partners and market opportunities.</p></article><article class="card"><div class="index">03</div><h3>Ready-Stock Wholesale</h3><p>Existing inventory and fast-turn opportunities for European and Middle Eastern distribution.</p></article></div></section>
+<section class="scene" data-title="Why Türkiye"><div class="eyebrow">07 · Sourcing Rationale</div><h2>Türkiye brings craft,<br><em>capacity and proximity.</em></h2><p class="lead">Our IFCO mandate is to identify Turkish production partners whose manufacturing strengths match the requirements of our buyer and distribution channels.</p><div class="cards four" style="margin-top:32px"><article class="card"><h3>Craft</h3><p>Textile know-how, garment construction and product development capability.</p></article><article class="card"><h3>Integration</h3><p>Potential for coordinated material, garment and finishing operations.</p></article><article class="card"><h3>Proximity</h3><p>Geographic advantages for European sourcing, communication and logistics planning.</p></article><article class="card"><h3>Export</h3><p>Partner selection prioritises export readiness, documentation and proven delivery.</p></article></div></section>
+<section class="scene" data-title="Supplier Criteria"><div class="eyebrow">08 · Partner Selection</div><h2>What makes a supplier<br><em>the right partner?</em></h2><div class="cards two" style="margin-top:30px"><article class="card"><h3>Production &amp; Commercial</h3><ul><li>Relevant category capability and OEM / ODM experience</li><li>Transparent costing and competitive pricing</li><li>Capacity, minimums and order flexibility</li><li>Sampling speed and production calendar discipline</li><li>Export experience and long-term reliability</li></ul></article><article class="card"><h3>Quality &amp; Compliance</h3><ul><li>Documented quality-control process and inspection access</li><li>Material specifications and batch traceability</li><li>Verifiable certifications and supplier documentation</li><li>Clear corrective-action process</li><li>Accurate shipment, packing and export documentation</li></ul></article></div></section>
+<section class="scene" data-title="Partner Value"><div class="eyebrow">09 · Manufacturer Partnership</div><h2>Three pillars of<br><em>commercial partnership.</em></h2><div class="cards three" style="margin-top:30px"><article class="card"><div class="index">01</div><h3>Direct EU &amp; GCC Shelf Access</h3><p>Established B2B distributor and retail-buyer network across 40+ markets, offering Turkish manufacturers a route to European and Gulf commercial opportunities.</p></article><article class="card"><div class="index">02</div><h3>DPP &amp; ESG Readiness</h3><p>Batch traceability and supplier-document workflows designed to support EU Digital Product Passport readiness, with OEKO-TEX, BSCI and SEDEX verification where applicable.</p></article><article class="card"><div class="index">03</div><h3>Governed Execution &amp; Settlement</h3><p>14-stage QA and shipment visibility framework, with structured trade-finance, LC and escrow arrangements subject to transaction terms and provider availability.</p></article></div></section>
+<section class="scene" data-title="EU Expansion"><div class="eyebrow">10 · European Hub Expansion</div><h2>Planned EU presence.<br><em>Closer to the market.</em></h2><p class="lead">A dedicated commercial showroom and bonded-logistics hub is planned via Harvics Iberia S.L. in Spain, to support distribution of Turkish-manufactured collections.</p><div class="cards four" style="margin-top:32px"><article class="card"><h3>Spain</h3><p>Planned commercial hub and showroom base.</p></article><article class="card"><h3>France</h3><p>Target distribution corridor.</p></article><article class="card"><h3>Germany</h3><p>Target distribution corridor.</p></article><article class="card"><h3>United Kingdom</h3><p>Target distribution corridor.</p></article></div><div class="callout">Expansion status is presented as planned—not as an already operational showroom or logistics facility.</div></section>
+<section class="scene" data-title="IFCO Objectives"><div class="eyebrow">11 · IFCO Istanbul 2027</div><h2>Three days.<br><em>Long-term relationships.</em></h2><div class="cards three" style="margin-top:32px"><article class="card"><div class="index">01</div><h3>Identify</h3><p>Shortlist export-ready apparel, textile, leather and footwear manufacturers across the buying mandate.</p></article><article class="card"><div class="index">02</div><h3>Evaluate</h3><p>Review product, capacity, pricing, samples, compliance documentation and production readiness.</p></article><article class="card"><div class="index">03</div><h3>Build</h3><p>Develop supplier relationships for seasonal OEM / ODM, capsule and wholesale programmes.</p></article></div><div class="eventline"><span>AW 2027 / 28</span><span>Buyer visit · 3 days</span><span>First IFCO attendance</span><span>1–2 representatives</span></div></section>
+<section class="scene" data-title="Credentials & Contact"><div class="eyebrow">12 · Corporate Credentials &amp; Executive</div><div class="contact"><div><h2>Let's build the<br><em>next collection.</em></h2><p class="sub">Harvics is seeking export-ready Turkish manufacturers for private-label programmes, capsule collections and wholesale distribution across EU and GCC corridors.</p><div class="gold-line"></div><p class="sub"><strong>Mian Muhammad Usman</strong><br>Founder &amp; Managing Director<br>Attending IFCO Istanbul · February 3–6, 2027</p></div><div class="links"><div><label>Legal Entity</label>Harvics Global Ventures Ltd.</div><div><label>Incorporated</label>9 September 2025</div><div><label>Registration</label>[Insert UK Companies House / UAE Licence No.]</div><div><label>Office</label>[Insert City, UK / UAE]</div><div><label>Email</label><a href="mailto:usman@harvics.com">usman@harvics.com</a></div><div><label>Partnerships</label><a href="mailto:partnerships@harvics.com">partnerships@harvics.com</a></div><div><label>Website</label><a href="https://www.harvics.com" target="_blank" rel="noopener">www.harvics.com</a></div></div></div><div class="scene-footer">Harvics Global Ventures Ltd. · IFCO Istanbul 2027 Hosted Buyer Profile · Confidential</div></section>
 </main>
-<footer class="container footer"><div>Harvics Global Ventures Ltd. · IFCO Istanbul 2027</div><div>Hosted Buyer Profile · Confidential</div></footer>
-<button class="action sound-control" id="soundToggle" type="button" aria-pressed="false">Background audio: muted</button>
+<div class="bottom"><button class="control" id="prev">← Previous</button><div class="progress"><i id="bar"></i></div><div class="counter" id="counter">01 / 12</div><button class="control" id="next">Next →</button></div><button class="control sound" id="soundToggle" aria-pressed="false">Background audio: muted</button>
 <script>
-(() => {
- const video=document.getElementById('bgVideo');
- const sound=document.getElementById('soundToggle');
- if(!video)return;
- video.muted=true;
- video.volume=0;
- video.play().catch(()=>{});
- sound.addEventListener('click',()=>{
-   if(video.muted){video.muted=false;video.volume=.22;sound.textContent='Background audio: on';sound.setAttribute('aria-pressed','true');}
-   else{video.muted=true;video.volume=0;sound.textContent='Background audio: muted';sound.setAttribute('aria-pressed','false');}
- });
- document.addEventListener('visibilitychange',()=>{if(document.hidden){video.pause();video.muted=true;video.volume=0;sound.textContent='Background audio: muted';sound.setAttribute('aria-pressed','false');}else{video.play().catch(()=>{});}});
-})();
-</script>
-</body>
-</html>
+(()=>{const scenes=[...document.querySelectorAll('.scene')],prev=document.getElementById('prev'),next=document.getElementById('next'),bar=document.getElementById('bar'),counter=document.getElementById('counter'),sound=document.getElementById('soundToggle'),video=document.getElementById('bgVideo');let index=0;
+function show(n){index=Math.max(0,Math.min(scenes.length-1,n));scenes.forEach((s,i)=>{s.classList.remove('active','visible');if(i===index){s.classList.add('active');requestAnimationFrame(()=>s.classList.add('visible'));s.scrollTop=0}});prev.disabled=index===0;next.disabled=index===scenes.length-1;prev.style.opacity=index===0?.45:1;next.style.opacity=index===scenes.length-1?.45:1;counter.textContent=String(index+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');bar.style.width=((index+1)/scenes.length*100)+'%';document.title='Harvics · IFCO 2027 · '+scenes[index].dataset.title}
+prev.addEventListener('click',()=>show(index-1));next.addEventListener('click',()=>show(index+1));document.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();show(index+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}if(e.key==='Home')show(0);if(e.key==='End')show(scenes.length-1);if(e.key==='Escape'&&document.fullscreenElement)document.exitFullscreen()});
+document.getElementById('printBtn').addEventListener('click',()=>window.print());document.getElementById('fullBtn').addEventListener('click',()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()});
+if(video){video.muted=true;video.volume=0;video.play().catch(()=>{});sound.addEventListener('click',()=>{if(video.muted){video.muted=false;video.volume=.18;sound.textContent='Background audio: on';sound.setAttribute('aria-pressed','true')}else{video.muted=true;video.volume=0;sound.textContent='Background audio: muted';sound.setAttribute('aria-pressed','false')}});document.addEventListener('visibilitychange',()=>{if(document.hidden){video.pause();video.muted=true;video.volume=0;sound.textContent='Background audio: muted';sound.setAttribute('aria-pressed','false')}else video.play().catch(()=>{})})}show(0)})();
+</script></body></html>
